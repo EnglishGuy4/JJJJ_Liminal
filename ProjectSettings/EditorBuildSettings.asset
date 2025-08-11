@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/LiminalExample.unity
-    guid: 54a83721c2a297642a49dfcfbe3835bf
+    path: Assets/Scenes/TurretGame.unity
+    guid: f8cb97f87adc1a34096b1a16f50bb1fc
   m_configObjects: {}
