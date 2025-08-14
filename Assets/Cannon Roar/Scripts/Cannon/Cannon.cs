@@ -8,39 +8,38 @@ using UnityEngine.Analytics;
 
 public class Cannon : MonoBehaviour
 {
-    //Prefabs
+    // Prefabs
     [SerializeField]
-    private GameObject cannonBall; // prefab of the cannonballs
+    private GameObject cannonBall;
     [SerializeField]
-    private GameObject barrelEnd; // the empty game object placed at the end of the barrel of the cannon that the cannonball prefab will instantiate from
-    public GameObject hand; // The hand model
-    public GameObject handleHand; // A prefab of the handle with the hand placed in the center, using this to remove the jittering of the hand that would happen when the hand was moved directly to the handle position. by Disabling the mesh renderer of the hand when and enabling this prefab, the hand movement looks much smoother
+    private GameObject barrelEnd;
+    public GameObject hand;
+    public GameObject handleHand;
     public GameObject primaryHand;
     public GameObject cannonPos;
     private CannonBall cb;
 
-    //Transform information for hand movement
+    // Transform information for hand movement
     [SerializeField]
-    private Transform primaryHandAnchor; // The Transform position of the Primary Hand Anchor on the VR Avatar, used to return the hand to the original position when the player lets go of the cannon
+    private Transform primaryHandAnchor;
     [SerializeField]
-    private Transform cannon; // The Transform position of the empty game object named Pivot in the heirarchy located under the cannon game object, this is for rotating the cannon barrel on the X Axis
+    private Transform cannon;
     [SerializeField]
-    private Transform cBase; // The transform position of the base of the cannon that will rotate on the Y Axis
+    private Transform cBase;
 
-    //Audio & Particle Effects
-    private new ParticleSystem particleSystem; // Fire or smoke, whatever looks cool
-    private new AudioSource audio; // bang!
+    // Audio & Particle Effects
+    private new ParticleSystem particleSystem;
+    private new AudioSource audio;
 
-    //Bools for grabbing the handle on the cannon
+    // Bools for grabbing the handle on the cannon
     [HideInInspector]
-    public bool grabHandle; // When this bool is active the cannon will move with the hand
+    public bool grabHandle;
     [HideInInspector]
-    public bool grabHandleComplete; // Sets up the hand position when grabbing the handle
+    public bool grabHandleComplete;
     [HideInInspector]
-    public bool initialGrab; // This is for the script on the handle not triggering every time the hand moves in and out of the collider
-    private bool cannonReload;
+    public bool initialGrab;
+    private bool cannonReload; // no longer used to block firing
 
-    // Start is called before the first frame update
     void Start()
     {
         initialGrab = false;
@@ -51,19 +50,18 @@ public class Cannon : MonoBehaviour
         audio = GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        IVRInputDevice primaryInput = VRDevice.Device.PrimaryInputDevice;
-        IVRInputDevice secondaryInput = VRDevice.Device.SecondaryInputDevice;
-        
+        IVRInputDevice primaryInput = VRDevice.Device != null ? VRDevice.Device.PrimaryInputDevice : null;
+        IVRInputDevice secondaryInput = VRDevice.Device != null ? VRDevice.Device.SecondaryInputDevice : null;
+
         if (!grabHandleComplete)
         {
-                handleHand.GetComponent<MeshRenderer>().enabled = true;
-                hand.GetComponent<MeshRenderer>().enabled = false;
-                cannonReload = false;
-                grabHandleComplete = true;
-                grabHandle = true;
+            handleHand.GetComponent<MeshRenderer>().enabled = true;
+            hand.GetComponent<MeshRenderer>().enabled = false;
+            cannonReload = false;
+            grabHandleComplete = true;
+            grabHandle = true;
         }
 
         if (grabHandle)
@@ -72,7 +70,7 @@ public class Cannon : MonoBehaviour
             float handX = Mathf.Clamp(rotation.x, -0.4f, 0.2f);
             float handY = Mathf.Clamp(rotation.y, -0.4f, 0.4f);
 
-            if (primaryInput.GetButton(VRButton.Trigger) || Input.GetKey(KeyCode.Q))
+            if ((primaryInput != null && primaryInput.GetButton(VRButton.Trigger)) || Input.GetKey(KeyCode.Q))
             {
                 cBase.transform.rotation = Quaternion.Slerp(cBase.transform.rotation, new Quaternion(0, handY, 0, cBase.transform.rotation.w), 0.25f * Time.deltaTime);
                 cannon.transform.localRotation = Quaternion.Slerp(cannon.transform.localRotation, new Quaternion(handX, 0, 0, cannon.transform.localRotation.w), 0.25f * Time.deltaTime);
@@ -87,22 +85,35 @@ public class Cannon : MonoBehaviour
             {
                 cannonPos.transform.position += cannonPos.transform.forward * Time.deltaTime;
             }
-
             else if (primaryHand.transform.position.z < handleHand.transform.position.z - 0.075f && cannonPos.transform.localPosition.z >= 0.8814323f)
             {
                 cannonPos.transform.position -= cannonPos.transform.forward * Time.deltaTime;
             }
 
-            if (cannonPos.transform.localPosition.z >= 0.9314323f)
-                cannonReload = false;
+            // Firing logic - unlimited in both VR & Editor
+            bool firePressed = false;
 
-            if (cannonPos.transform.localPosition.z <= 0.8814323f && !cannonReload)
+            if (Application.isEditor)
+            {
+                // PC / Editor Mode
+                firePressed = Input.GetMouseButtonDown(0);
+            }
+            else
+            {
+                // VR Mode - either controller's trigger
+                if (primaryInput != null && primaryInput.GetButtonDown(VRButton.Trigger))
+                    firePressed = true;
+                if (secondaryInput != null && secondaryInput.GetButtonDown(VRButton.Trigger))
+                    firePressed = true;
+            }
+
+            if (firePressed)
             {
                 FireCannon();
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.A) || primaryInput.GetButtonDown(VRButton.Three))
+        if (Input.GetKeyDown(KeyCode.A) || (primaryInput != null && primaryInput.GetButtonDown(VRButton.Three)))
         {
             grabHandle = false;
             grabHandleComplete = true;
@@ -129,6 +140,6 @@ public class Cannon : MonoBehaviour
         particleSystem.Play();
         cb.smokeEffect.Play();
         audio.Play();
-        cannonReload = true;
+        // cannonReload removed from firing restriction
     }
 }

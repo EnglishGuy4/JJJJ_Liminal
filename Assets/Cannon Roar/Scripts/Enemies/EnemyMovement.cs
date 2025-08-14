@@ -1,127 +1,81 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
-
-[RequireComponent(typeof(NavMeshAgent))]
 
 public class EnemyMovement : MonoBehaviour
 {
-    [HideInInspector]
-    public Transform enemyTarget; //Holds the target that the enemies will move towards
-
-    //General Components
-    private NavMeshAgent agent;
-    private Collider enemyCollider;
-    private EnemyHealth enemyHealth;
-    private SpawnerManager spawnerManager;
-    private int lastNumber;
-    private int currentNumber;
-    [HideInInspector]
-    public bool isDead = false;
-
-    //Waypoints
+    // Public variables for speed and waypoint handling
     public float enemyWaypointSpeed = 3f;
     public float enemyWaypointStoppingDistance = 2f;
-    private int wayPointIndex = 0; //Stores the waypoint key that the enemy will move towards.
-    [HideInInspector]
     public List<Transform> waypoints = new List<Transform>();
+
+    // Internal tracking
+    private int lastNumber;
+    private int currentNumber;
+    private int wayPointIndex = 0;
+
+    private EnemyHealth enemyHealth;
+    private SpawnerManager spawnerManager;
+    public bool isDead = false;
 
     private void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
-        enemyCollider = GetComponentInChildren<Collider>();
         enemyHealth = GetComponent<EnemyHealth>();
         spawnerManager = GameObject.Find("SpawnerManager").GetComponent<SpawnerManager>();
     }
 
     private void OnEnable()
     {
-        agent.updatePosition = true; //Stops the enemy from moving
-        agent.updateRotation = true; //Stops the enemy from rotating
-        enemyCollider.enabled = true;
-        agent.enabled = true;
+        if (waypoints.Count == 0 && spawnerManager != null)
+            waypoints = spawnerManager.waypoints;
+
+        PickNextWaypoint();
     }
 
-    public void FixedUpdate()
+    private void FixedUpdate()
     {
-        EnemyMovementAI();
+        MoveTowardsWaypoint();
     }
 
-    public void OnTriggerEnter(Collider other)
+    void MoveTowardsWaypoint()
     {
-        if (agent.updateRotation == false)
-        {
-            if (enemyHealth.health > 0)
-            {
-                agent.updateRotation = true;
-                Invoke("UpdatePosition", 0.8f);
-            }
-        }
-    }
+        if (isDead || waypoints.Count == 0)
+            return;
 
-    public void UpdatePosition()
-    {
-        agent.updatePosition = true;
-        NavMeshHit closestHit;
+        Transform targetWaypoint = waypoints[wayPointIndex];
 
-        if (NavMesh.SamplePosition(transform.position, out closestHit, 500, 1))
-        {
-            agent.Warp(closestHit.position);
-        }
-        else
-        {
-            enemyHealth.Death();
-        }
-    }
+        // Move enemy towards waypoint
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            targetWaypoint.position,
+            enemyWaypointSpeed * Time.deltaTime
+        );
 
-    void EnemyMovementAI()
-    {
-        Waypoints();
+        // Rotate to face the waypoint
+        Vector3 direction = (targetWaypoint.position - transform.position).normalized;
+        if (direction != Vector3.zero)
+            transform.rotation = Quaternion.LookRotation(direction);
 
-        if (agent.updatePosition == true && !agent.isOnNavMesh)
+        // Check if reached waypoint
+        float distance = Vector3.Distance(transform.position, targetWaypoint.position);
+        if (distance <= enemyWaypointStoppingDistance)
         {
-            enemyHealth.Death();
+            PickNextWaypoint();
         }
     }
 
-    public void NavMeshAgentSettings(Vector3 enemyTarget, float enemySpeed, float enemyStoppingDistance)
+    void PickNextWaypoint()
     {
-        if (agent.isOnNavMesh)
-        {
-            agent.SetDestination(enemyTarget); //Moves enemy to the Target
-            agent.speed = enemySpeed; //Sets the chase speed
-            agent.stoppingDistance = enemyStoppingDistance;
-        }
-    }
-
-    public void Waypoints()
-    {
-        //Debug.Log(waypoints.Count);
-        if (!isDead && agent.remainingDistance <= agent.stoppingDistance)
-        {
-                wayPointIndex = GetRandom(0, spawnerManager.waypoints.Count);
-        }
-
-        if (waypoints == null)
-        {
-            enemyHealth.Death();
-        }
-        else
-        {
-            if (currentNumber != wayPointIndex)
-            {
-                currentNumber = lastNumber;
-                NavMeshAgentSettings(waypoints[wayPointIndex].position, enemyWaypointSpeed, enemyWaypointStoppingDistance);
-            }
-        }
+        if (waypoints.Count <= 1) return;
+        wayPointIndex = GetRandom(0, waypoints.Count);
     }
 
     int GetRandom(int min, int max)
     {
         int rand = Random.Range(min, max);
-        while (rand == lastNumber)
+        while (rand == lastNumber && max > 1)
             rand = Random.Range(min, max);
+
         lastNumber = rand;
         return rand;
     }

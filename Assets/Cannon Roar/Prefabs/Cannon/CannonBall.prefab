@@ -127,9 +127,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
-  force: 3000
+  force: 12000
   damage: 1
   trailRenderer: {fileID: 0}
+  smokeEffect: {fileID: 0}
 --- !u!96 &-5833508122467058739
 TrailRenderer:
   serializedVersion: 2
@@ -232,16 +233,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7631248479265808528}
     m_Modifications:
-    - target: {fileID: 1480925450122551300, guid: 44c0c129973459947a65431364068097,
-        type: 3}
-      propertyPath: m_Name
-      value: RockHit
-      objectReference: {fileID: 0}
-    - target: {fileID: 1480925450122551300, guid: 44c0c129973459947a65431364068097,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1480925450122551299, guid: 44c0c129973459947a65431364068097,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -297,6 +288,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1480925450122551300, guid: 44c0c129973459947a65431364068097,
+        type: 3}
+      propertyPath: m_Name
+      value: RockHit
+      objectReference: {fileID: 0}
+    - target: {fileID: 1480925450122551300, guid: 44c0c129973459947a65431364068097,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1480925450122551298, guid: 44c0c129973459947a65431364068097,
         type: 3}
       propertyPath: moveWithTransform
@@ -322,11 +323,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7631248479265808528}
     m_Modifications:
-    - target: {fileID: 7316349234404702153, guid: 8a79985c05191854c83228e5adfdeeef,
-        type: 3}
-      propertyPath: m_Name
-      value: SmokeEffect
-      objectReference: {fileID: 0}
     - target: {fileID: 7316349234404702004, guid: 8a79985c05191854c83228e5adfdeeef,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -381,6 +377,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7316349234404702153, guid: 8a79985c05191854c83228e5adfdeeef,
+        type: 3}
+      propertyPath: m_Name
+      value: SmokeEffect
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a79985c05191854c83228e5adfdeeef, type: 3}
