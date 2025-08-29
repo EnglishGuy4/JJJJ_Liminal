@@ -590,6 +590,7 @@ MonoBehaviour:
   spherePart: {fileID: 4231595308977417250}
   hitMaterial: {fileID: 2100000, guid: 53ea6713c968d0041a677ce2a3d1e451, type: 2}
   cannonBall: {fileID: 0}
+  scoreValue: 100
 --- !u!114 &8320729604627551746
 MonoBehaviour:
   m_ObjectHideFlags: 0

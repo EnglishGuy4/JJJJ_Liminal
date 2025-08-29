@@ -15,18 +15,28 @@ public class EnemyHealth : MonoBehaviour
     public BoxCollider boxCollider;
     private GameManager gameManager;
     private EnemyMovement enemyMovement;
+
+    [Header("Enemy Settings")]
     public bool bossShip;
     public bool enemyShip;
     public bool explodeIntoPieces;
+
+    [Header("Death Effects")]
     public GameObject explodesInto;
     public GameObject spherePart;
     public Material hitMaterial;
+
     [HideInInspector]
     public GameObject cannonBall;
 
+    [Header("Scoring")]
+    public int scoreValue = 100; // ✅ How many points this enemy gives when it dies
+
     void Awake()
     {
+        // Find GameManager in scene
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         if (enemyShip)
         {
             boxCollider = GetComponentInChildren<BoxCollider>();
@@ -65,7 +75,7 @@ public class EnemyHealth : MonoBehaviour
             Death();
         }
 
-        // If it's about to break, change it's colour. (Hardcoded values because this is for debugging, at least for now.)
+        // Debug feedback
         if (health == 1)
         {
             Debug.Log("Wow! You got the hit!");
@@ -74,6 +84,12 @@ public class EnemyHealth : MonoBehaviour
 
     public void Death()
     {
+        // ✅ Award score before deactivating
+        if (gameManager != null)
+        {
+            gameManager.AddScore(scoreValue);
+        }
+
         gameManager.enemies.Remove(gameObject);
 
         if (enemyShip)
@@ -91,7 +107,6 @@ public class EnemyHealth : MonoBehaviour
         // Should we explode and fly out into a million (or two) pieces?
         if (explodeIntoPieces)
         {
-            // Spawn 2 pieces
             for (int i = 0; i < 2; i++)
             {
                 GameObject shrapnel = Instantiate(
@@ -103,7 +118,6 @@ public class EnemyHealth : MonoBehaviour
                 Rigidbody rb = shrapnel.GetComponent<Rigidbody>();
                 if (rb != null)
                 {
-                    // Send each one flying in opposite(ish) directions
                     Vector3 dir = (i == 0 ? Vector3.left : Vector3.right) + Vector3.up;
                     rb.AddForce(dir.normalized * 5f, ForceMode.Impulse);
                 }

@@ -1,26 +1,31 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEngine.UI;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using Liminal.SDK.Core;
 using Liminal.Core.Fader;
-
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    //Make this class accessible from any class - GameController.gameController.Variable or method name
-    //public static GameManager gameManager;
-
-    //Settings
+    // Settings
     public List<GameObject> enemies = new List<GameObject>();
     public List<GameObject> allies = new List<GameObject>();
 
     public bool gameMusic = true;
-
     public AudioSource gameMusicAudioSource;
-
     public GameObject bossShip;
+
+    // Score system
+    private int score = 0;
+    public TextMeshProUGUI scoreText; // Assign in Inspector
+
+    [Header("Score Animation Settings")]
+    public float scaleAmount = 1.2f;   // How much bigger the text gets
+    public float animationTime = 0.2f; // Time to scale up and back
+
+    private Vector3 originalScale;
+    private Coroutine scoreAnimCoroutine;
 
     private void Awake()
     {
@@ -28,6 +33,63 @@ public class GameManager : MonoBehaviour
         Invoke("Fader", 147f);
         Invoke("BossShip", 60f);
         enemies.Add(bossShip);
+
+        if (scoreText != null)
+            originalScale = scoreText.rectTransform.localScale;
+
+        UpdateScoreUI();
+    }
+
+    // Called by enemies when they die
+    public void AddScore(int amount)
+    {
+        score += amount;
+        UpdateScoreUI();
+
+        if (scoreAnimCoroutine != null)
+            StopCoroutine(scoreAnimCoroutine);
+
+        scoreAnimCoroutine = StartCoroutine(AnimateScorePop());
+    }
+
+    private void UpdateScoreUI()
+    {
+        if (scoreText != null)
+        {
+            scoreText.text = score.ToString(); // ✅ just the number now
+        }
+        else
+        {
+            Debug.LogWarning("No Score Text (TextMeshProUGUI) assigned in GameManager!");
+        }
+    }
+
+    private IEnumerator AnimateScorePop()
+    {
+        float halfTime = animationTime / 2f;
+        Vector3 targetScale = originalScale * scaleAmount;
+
+        // Scale up
+        float t = 0;
+        while (t < halfTime)
+        {
+            t += Time.deltaTime;
+            float lerp = t / halfTime;
+            scoreText.rectTransform.localScale = Vector3.Lerp(originalScale, targetScale, lerp);
+            yield return null;
+        }
+
+        // Scale back
+        t = 0;
+        while (t < halfTime)
+        {
+            t += Time.deltaTime;
+            float lerp = t / halfTime;
+            scoreText.rectTransform.localScale = Vector3.Lerp(targetScale, originalScale, lerp);
+            yield return null;
+        }
+
+        scoreText.rectTransform.localScale = originalScale;
     }
 
     public bool GameMusicToggle()
@@ -54,7 +116,6 @@ public class GameManager : MonoBehaviour
     public void Quit()
     {
         ExperienceApp.End();
-        //Application.Quit();
     }
 
     public void Fader()
