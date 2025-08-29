@@ -294,7 +294,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e6d6cbccdc0b25547806ba3bcd89bea9, type: 2}
+  - {fileID: 2100000, guid: 5c98b8e7d22a137459aee4a99ab5a398, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -400,8 +400,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7487179757901829721}
   m_LocalRotation: {x: 0.49999925, y: -0.5000007, z: 0.49999925, w: 0.5000007}
-  m_LocalPosition: {x: 26.202614, y: 0.77359587, z: 0.061425697}
-  m_LocalScale: {x: 3.4066262, y: 26.464878, z: 3.3085377}
+  m_LocalPosition: {x: 20.56, y: 0.77, z: 0.06}
+  m_LocalScale: {x: 2.6372056, y: 16.70554, z: 2.5612714}
   m_Children: []
   m_Father: {fileID: 8808442054071122345}
   m_RootOrder: 2
@@ -495,7 +495,7 @@ GameObject:
   - component: {fileID: 2122034443036215323}
   - component: {fileID: 8320729604627551746}
   m_Layer: 0
-  m_Name: PirateShip
+  m_Name: SmallerProjectile
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -510,7 +510,7 @@ Transform:
   m_GameObject: {fileID: 8829255948184301283}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5.9687033, y: 1.8418946, z: 6.1421366}
+  m_LocalScale: {x: 4.2974668, y: 1.3261641, z: 4.4223385}
   m_Children:
   - {fileID: 8808442054071122345}
   m_Father: {fileID: 0}
@@ -579,16 +579,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
-  health: 2
+  health: 1
   enemySpawnerScript: {fileID: 0}
   boxCollider: {fileID: 0}
   bossShip: 0
   enemyShip: 1
-  explodeIntoPieces: 1
-  explodesInto: {fileID: 8829255948184301283, guid: 18f64d2e63001ad468e67ad6464990c9,
-    type: 3}
-  spherePart: {fileID: 4231595308977417250}
-  hitMaterial: {fileID: 2100000, guid: 53ea6713c968d0041a677ce2a3d1e451, type: 2}
+  explodeIntoPieces: 0
+  explodesInto: {fileID: 0}
   cannonBall: {fileID: 0}
 --- !u!114 &8320729604627551746
 MonoBehaviour:
