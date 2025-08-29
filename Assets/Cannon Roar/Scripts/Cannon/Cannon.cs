@@ -40,6 +40,11 @@ public class Cannon : MonoBehaviour
     public bool initialGrab;
     private bool cannonReload; // no longer used to block firing
 
+    // Sensitivity for mouse look
+    public float mouseSensitivity = 50f;
+    private float pitch = 0f; // up and down
+    private float yaw = 0f;   // left and right
+
     void Start()
     {
         initialGrab = false;
@@ -66,41 +71,47 @@ public class Cannon : MonoBehaviour
 
         if (grabHandle)
         {
-            Quaternion rotation = Quaternion.LookRotation(cannonPos.transform.position - (primaryHand.transform.position - cannonPos.transform.position) * 1000);
-            float handX = Mathf.Clamp(rotation.x, -0.4f, 0.2f);
-            float handY = Mathf.Clamp(rotation.y, -0.4f, 0.4f);
-
-            if ((primaryInput != null && primaryInput.GetButton(VRButton.Trigger)) || Input.GetKey(KeyCode.Q))
+            // ---------- VR Controls ----------
+            if (!Application.isEditor && VRDevice.Device != null)
             {
-                cBase.transform.rotation = Quaternion.Slerp(cBase.transform.rotation, new Quaternion(0, handY, 0, cBase.transform.rotation.w), 0.25f * Time.deltaTime);
-                cannon.transform.localRotation = Quaternion.Slerp(cannon.transform.localRotation, new Quaternion(handX, 0, 0, cannon.transform.localRotation.w), 0.25f * Time.deltaTime);
+                Quaternion rotation = Quaternion.LookRotation(cannonPos.transform.position - (primaryHand.transform.position - cannonPos.transform.position) * 1000);
+                float handX = Mathf.Clamp(rotation.x, -0.4f, 0.2f);
+                float handY = Mathf.Clamp(rotation.y, -0.4f, 0.4f);
+
+                if ((primaryInput != null && primaryInput.GetButton(VRButton.Trigger)) || Input.GetKey(KeyCode.Q))
+                {
+                    cBase.transform.rotation = Quaternion.Slerp(cBase.transform.rotation, new Quaternion(0, handY, 0, cBase.transform.rotation.w), 0.25f * Time.deltaTime);
+                    cannon.transform.localRotation = Quaternion.Slerp(cannon.transform.localRotation, new Quaternion(handX, 0, 0, cannon.transform.localRotation.w), 0.25f * Time.deltaTime);
+                }
+                else
+                {
+                    cBase.transform.rotation = Quaternion.Slerp(cBase.transform.rotation, new Quaternion(0, handY, 0, cBase.transform.rotation.w), 4 * Time.deltaTime);
+                    cannon.transform.localRotation = Quaternion.Slerp(cannon.transform.localRotation, new Quaternion(handX, 0, 0, cannon.transform.localRotation.w), 4 * Time.deltaTime);
+                }
             }
             else
             {
-                cBase.transform.rotation = Quaternion.Slerp(cBase.transform.rotation, new Quaternion(0, handY, 0, cBase.transform.rotation.w), 4 * Time.deltaTime);
-                cannon.transform.localRotation = Quaternion.Slerp(cannon.transform.localRotation, new Quaternion(handX, 0, 0, cannon.transform.localRotation.w), 4 * Time.deltaTime);
+                // ---------- PC / Editor Mouse Controls ----------
+                float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+                float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
+
+                yaw += mouseX;
+                pitch -= mouseY;
+                pitch = Mathf.Clamp(pitch, -30f, 30f); // restrict up/down
+
+                // Apply rotations
+                cBase.localRotation = Quaternion.Euler(0f, yaw, 0f);   // left/right on base
+                cannon.localRotation = Quaternion.Euler(pitch, 0f, 0f); // up/down on barrel
             }
 
-            if (primaryHand.transform.position.z > handleHand.transform.position.z && cannonPos.transform.localPosition.z <= 0.9814323f)
-            {
-                cannonPos.transform.position += cannonPos.transform.forward * Time.deltaTime;
-            }
-            else if (primaryHand.transform.position.z < handleHand.transform.position.z - 0.075f && cannonPos.transform.localPosition.z >= 0.8814323f)
-            {
-                cannonPos.transform.position -= cannonPos.transform.forward * Time.deltaTime;
-            }
-
-            // Firing logic - unlimited in both VR & Editor
+            // ---------- Fire ----------
             bool firePressed = false;
-
             if (Application.isEditor)
             {
-                // PC / Editor Mode
                 firePressed = Input.GetMouseButtonDown(0);
             }
             else
             {
-                // VR Mode - either controller's trigger
                 if (primaryInput != null && primaryInput.GetButtonDown(VRButton.Trigger))
                     firePressed = true;
                 if (secondaryInput != null && secondaryInput.GetButtonDown(VRButton.Trigger))
@@ -113,6 +124,7 @@ public class Cannon : MonoBehaviour
             }
         }
 
+        // ---------- Release Handle ----------
         if (Input.GetKeyDown(KeyCode.A) || (primaryInput != null && primaryInput.GetButtonDown(VRButton.Three)))
         {
             grabHandle = false;
@@ -140,6 +152,5 @@ public class Cannon : MonoBehaviour
         particleSystem.Play();
         cb.smokeEffect.Play();
         audio.Play();
-        // cannonReload removed from firing restriction
     }
 }
