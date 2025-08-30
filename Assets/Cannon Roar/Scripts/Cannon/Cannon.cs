@@ -60,13 +60,22 @@ public class Cannon : MonoBehaviour
         IVRInputDevice primaryInput = VRDevice.Device != null ? VRDevice.Device.PrimaryInputDevice : null;
         IVRInputDevice secondaryInput = VRDevice.Device != null ? VRDevice.Device.SecondaryInputDevice : null;
 
-        if (!grabHandleComplete)
+        // ---------- PC Editor Grab with "E" ----------
+        if (Application.isEditor && Input.GetKeyDown(KeyCode.E)) // ADDED FOR PC EDITOR
+        {
+            grabHandle = true;
+            grabHandleComplete = true;
+            initialGrab = true;
+            handleHand.GetComponent<MeshRenderer>().enabled = true;
+            hand.GetComponent<MeshRenderer>().enabled = false;
+        }
+
+        if (!grabHandleComplete && grabHandle)
         {
             handleHand.GetComponent<MeshRenderer>().enabled = true;
             hand.GetComponent<MeshRenderer>().enabled = false;
             cannonReload = false;
             grabHandleComplete = true;
-            grabHandle = true;
         }
 
         if (grabHandle)

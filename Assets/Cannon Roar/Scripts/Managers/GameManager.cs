@@ -128,4 +128,30 @@ public class GameManager : MonoBehaviour
     {
         bossShip.SetActive(true);
     }
+
+    public void TriggerVictory()
+    {
+        Debug.Log("All waves complete! Victory!");
+
+        // Example: just fade out after a short delay
+        StartCoroutine(VictorySequence());
+    }
+
+    private IEnumerator VictorySequence()
+    {
+        // Optional: Wait 2 seconds so player sees the "All Waves Complete!" text
+        yield return new WaitForSeconds(2f);
+
+        // Fade out
+        var fader = ScreenFader.Instance;
+        fader.FadeToBlack();
+
+        // Wait for fade to finish
+        yield return new WaitForSeconds(2f);
+
+        // End experience (or load victory scene instead)
+        ExperienceApp.End();
+        // OR: SceneManager.LoadScene("VictoryScene");
+    }
+
 }

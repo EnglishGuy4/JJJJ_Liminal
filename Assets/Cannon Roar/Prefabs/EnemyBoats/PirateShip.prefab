@@ -584,11 +584,6 @@ MonoBehaviour:
   boxCollider: {fileID: 0}
   bossShip: 0
   enemyShip: 1
-  explodeIntoPieces: 1
-  explodesInto: {fileID: 8829255948184301283, guid: 18f64d2e63001ad468e67ad6464990c9,
-    type: 3}
-  spherePart: {fileID: 4231595308977417250}
-  hitMaterial: {fileID: 2100000, guid: 53ea6713c968d0041a677ce2a3d1e451, type: 2}
   cannonBall: {fileID: 0}
   scoreValue: 100
 --- !u!114 &8320729604627551746
@@ -603,7 +598,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d5cbac4f2d904847b12293411b92bcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyWaypointSpeed: 8
+  enemyWaypointSpeed: 25
   enemyWaypointStoppingDistance: 5
   waypoints: []
   isDead: 0
