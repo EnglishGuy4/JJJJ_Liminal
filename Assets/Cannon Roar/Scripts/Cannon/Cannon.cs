@@ -8,42 +8,41 @@ using UnityEngine.Analytics;
 
 public class Cannon : MonoBehaviour
 {
-    // Prefabs
-    [SerializeField]
-    private GameObject cannonBall;
-    [SerializeField]
-    private GameObject barrelEnd;
+    [Header("Prefabs")]
+    [SerializeField] private GameObject cannonBall;
+    [SerializeField] private GameObject barrelEnd;
     public GameObject hand;
     public GameObject handleHand;
     public GameObject primaryHand;
     public GameObject cannonPos;
     private CannonBall cb;
 
-    // Transform information for hand movement
-    [SerializeField]
-    private Transform primaryHandAnchor;
-    [SerializeField]
-    private Transform cannon;
-    [SerializeField]
-    private Transform cBase;
+    [Header("Transforms")]
+    [SerializeField] private Transform primaryHandAnchor;
+    [SerializeField] private Transform cannon;
+    [SerializeField] private Transform cBase;
 
-    // Audio & Particle Effects
+    [Header("Effects")]
     private new ParticleSystem particleSystem;
     private new AudioSource audio;
 
-    // Bools for grabbing the handle on the cannon
-    [HideInInspector]
-    public bool grabHandle;
-    [HideInInspector]
-    public bool grabHandleComplete;
-    [HideInInspector]
-    public bool initialGrab;
-    private bool cannonReload; // no longer used to block firing
+    [Header("Power Up Settings")]
+    public bool isPoweredUp = false;
+    public float powerUpDuration = 8f;
+    private Coroutine powerUpRoutine;
+    private Coroutine autoFireRoutine;
+    public float autoFireRate = 0.25f; // Time between automatic shots
 
-    // Sensitivity for mouse look
+    // Handle interaction
+    [HideInInspector] public bool grabHandle;
+    [HideInInspector] public bool grabHandleComplete;
+    [HideInInspector] public bool initialGrab;
+    private bool cannonReload;
+
+    // Mouse control
     public float mouseSensitivity = 50f;
-    private float pitch = 0f; // up and down
-    private float yaw = 0f;   // left and right
+    private float pitch = 0f;
+    private float yaw = 0f;
 
     void Start()
     {
@@ -60,8 +59,8 @@ public class Cannon : MonoBehaviour
         IVRInputDevice primaryInput = VRDevice.Device != null ? VRDevice.Device.PrimaryInputDevice : null;
         IVRInputDevice secondaryInput = VRDevice.Device != null ? VRDevice.Device.SecondaryInputDevice : null;
 
-        // ---------- PC Editor Grab with "E" ----------
-        if (Application.isEditor && Input.GetKeyDown(KeyCode.E)) // ADDED FOR PC EDITOR
+        // ---------- PC Editor Grab ----------
+        if (Application.isEditor && Input.GetKeyDown(KeyCode.E))
         {
             grabHandle = true;
             grabHandleComplete = true;
@@ -80,7 +79,7 @@ public class Cannon : MonoBehaviour
 
         if (grabHandle)
         {
-            // ---------- VR Controls ----------
+            // VR Controls
             if (!Application.isEditor && VRDevice.Device != null)
             {
                 Quaternion rotation = Quaternion.LookRotation(cannonPos.transform.position - (primaryHand.transform.position - cannonPos.transform.position) * 1000);
@@ -100,20 +99,19 @@ public class Cannon : MonoBehaviour
             }
             else
             {
-                // ---------- PC / Editor Mouse Controls ----------
+                // Mouse Controls (Editor)
                 float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
                 float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
                 yaw += mouseX;
                 pitch -= mouseY;
-                pitch = Mathf.Clamp(pitch, -30f, 30f); // restrict up/down
+                pitch = Mathf.Clamp(pitch, -30f, 30f);
 
-                // Apply rotations
-                cBase.localRotation = Quaternion.Euler(0f, yaw, 0f);   // left/right on base
-                cannon.localRotation = Quaternion.Euler(pitch, 0f, 0f); // up/down on barrel
+                cBase.localRotation = Quaternion.Euler(0f, yaw, 0f);
+                cannon.localRotation = Quaternion.Euler(pitch, 0f, 0f);
             }
 
-            // ---------- Fire ----------
+            // Fire
             bool firePressed = false;
             if (Application.isEditor)
             {
@@ -127,13 +125,11 @@ public class Cannon : MonoBehaviour
                     firePressed = true;
             }
 
-            if (firePressed)
-            {
+            if (firePressed && !isPoweredUp)
                 FireCannon();
-            }
         }
 
-        // ---------- Release Handle ----------
+        // Release handle
         if (Input.GetKeyDown(KeyCode.A) || (primaryInput != null && primaryInput.GetButtonDown(VRButton.Three)))
         {
             grabHandle = false;
@@ -148,18 +144,76 @@ public class Cannon : MonoBehaviour
 
     private void FireCannon()
     {
+        if (isPoweredUp)
+        {
+            // Fire 9 in a spread
+            for (int i = 0; i < 9; i++)
+            {
+                float spreadX = Random.Range(-5f, 5f); // degrees
+                float spreadY = Random.Range(-5f, 5f);
+
+                Quaternion spreadRotation = barrelEnd.transform.rotation * Quaternion.Euler(spreadX, spreadY, 0);
+                SpawnCannonball(barrelEnd.transform.position, spreadRotation);
+            }
+        }
+        else
+        {
+            // Normal single shot
+            SpawnCannonball(barrelEnd.transform.position, barrelEnd.transform.rotation);
+        }
+
+        particleSystem.Play();
+        audio.Play();
+    }
+
+    private void SpawnCannonball(Vector3 pos, Quaternion rot)
+    {
         GameObject returnedGameObject = PoolManager.current.GetPooledObject(cannonBall.name);
         if (returnedGameObject == null) return;
+
         cb = returnedGameObject.GetComponent<CannonBall>();
-        cb.rb.transform.position = barrelEnd.transform.position;
-        cb.rb.transform.rotation = barrelEnd.transform.rotation;
+        cb.firedFrom = this;
+        cb.rb.transform.position = pos;
+        cb.rb.transform.rotation = rot;
         returnedGameObject.SetActive(true);
         cb.rb.isKinematic = false;
         cb.trailRenderer.Clear();
         cb.trailRenderer.enabled = true;
         cb.rb.AddForce(cb.rb.transform.forward * cb.force, ForceMode.Impulse);
-        particleSystem.Play();
         cb.smokeEffect.Play();
-        audio.Play();
+    }
+
+    // Called by PowerUp hit
+    public void ActivatePowerUp()
+    {
+        if (isPoweredUp) return; // ignore if already active
+        isPoweredUp = true;
+
+        // Stop previous routines if any
+        if (powerUpRoutine != null)
+            StopCoroutine(powerUpRoutine);
+        if (autoFireRoutine != null)
+            StopCoroutine(autoFireRoutine);
+
+        powerUpRoutine = StartCoroutine(PowerUpTimer());
+        autoFireRoutine = StartCoroutine(AutoFireCannon());
+    }
+
+    private IEnumerator AutoFireCannon()
+    {
+        while (isPoweredUp && grabHandle)
+        {
+            FireCannon();
+            yield return new WaitForSeconds(autoFireRate);
+        }
+    }
+
+    private IEnumerator PowerUpTimer()
+    {
+        yield return new WaitForSeconds(powerUpDuration);
+        isPoweredUp = false;
+
+        if (autoFireRoutine != null)
+            StopCoroutine(autoFireRoutine);
     }
 }

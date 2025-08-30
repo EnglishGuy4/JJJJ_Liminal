@@ -12,12 +12,10 @@ public class CannonBall : MonoBehaviour
     ParticleSystem shipHit;
     ParticleSystem waterHit;
     ParticleSystem rockHit;
-    [HideInInspector]
-    public ParticleSystem smokeEffect;
-   
+    [HideInInspector] public ParticleSystem smokeEffect;
 
+    [HideInInspector] public Cannon firedFrom; // <-- reference back to cannon that fired it
 
-    // Start is called before the first frame update
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -29,7 +27,6 @@ public class CannonBall : MonoBehaviour
         smokeEffect = transform.GetChild(3).GetComponent<ParticleSystem>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (transform.position.y <= -10)
@@ -40,7 +37,7 @@ public class CannonBall : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Ally"))
+        if (collision.gameObject.CompareTag("Ally"))
         {
             Physics.IgnoreCollision(collision.collider, sphereCollider);
         }
@@ -60,10 +57,21 @@ public class CannonBall : MonoBehaviour
             rockHit.Play();
             rb.velocity = rb.velocity / 2;
         }
-        
+
         if (collision.gameObject.CompareTag("Ground") && transform.position.y < 1)
         {
             Invoke("ResetBall", 2f);
+        }
+
+        // ---------- NEW: PowerUp ----------
+        if (collision.gameObject.CompareTag("PowerUp"))
+        {
+            Debug.Log("Hit PowerUp!");
+            if (firedFrom != null)
+                firedFrom.ActivatePowerUp();
+
+            collision.gameObject.SetActive(false); // deactivate powerup
+            ResetBall(); // also reset this cannonball
         }
     }
 
@@ -75,7 +83,7 @@ public class CannonBall : MonoBehaviour
         }
     }
 
-    void ResetBall() // added for Better Particle Display Lifetime
+    void ResetBall()
     {
         Debug.Log("ResetBall");
         waterHit.Stop();
@@ -85,5 +93,4 @@ public class CannonBall : MonoBehaviour
         trailRenderer.enabled = false;
         gameObject.SetActive(false);
     }
-
 }
