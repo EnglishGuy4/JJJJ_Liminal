@@ -23,6 +23,9 @@ public class EnemyHealth : MonoBehaviour
     [Header("Scoring")]
     public int scoreValue = 100; // How many points this enemy gives when destroyed
 
+    [Header("Shield Damage")]
+    public float shieldDamage = 10f; // How much this enemy reduces the shield when it "gets through"
+
     void Awake()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -48,10 +51,18 @@ public class EnemyHealth : MonoBehaviour
 
     void Update()
     {
+        // Enemy fell out of world (missed by player)
         if (transform.position.y <= -12f)
         {
             if (enemyShip && enemySpawnerScript != null)
                 enemySpawnerScript.enemiesFromThisSpawnerList.Remove(gameObject);
+
+            // Reduce shield since enemy got through
+            if (gameManager != null)
+            {
+                Debug.Log("[EnemyHealth] Enemy fell out of world, reducing shield by " + shieldDamage);
+                gameManager.ModifyShield(-shieldDamage);
+            }
 
             gameObject.SetActive(false);
         }
@@ -88,6 +99,15 @@ public class EnemyHealth : MonoBehaviour
         // Remove from spawner list if needed
         if (enemyShip && enemySpawnerScript != null)
             enemySpawnerScript.enemiesFromThisSpawnerList.Remove(gameObject);
+
+        // Shield penalty on deactivation (optional — if you want killed enemies to also reduce shield, uncomment this)
+        /*
+        if (gameManager != null)
+        {
+            Debug.Log("[EnemyHealth] Enemy died, reducing shield by " + shieldDamage);
+            gameManager.ModifyShield(-shieldDamage);
+        }
+        */
 
         // Deactivate instead of destroying
         gameObject.SetActive(false);

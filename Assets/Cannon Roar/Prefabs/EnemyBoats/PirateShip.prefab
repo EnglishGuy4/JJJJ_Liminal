@@ -601,4 +601,5 @@ MonoBehaviour:
   enemyWaypointSpeed: 25
   enemyWaypointStoppingDistance: 5
   waypoints: []
+  shieldDamage: 10
   isDead: 0

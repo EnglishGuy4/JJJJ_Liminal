@@ -1,157 +1,111 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine.SceneManagement;
-using Liminal.SDK.Core;
-using Liminal.Core.Fader;
+using UnityEngine.UI;
 using TMPro;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    // Settings
-    public List<GameObject> enemies = new List<GameObject>();
-    public List<GameObject> allies = new List<GameObject>();
+    [Header("Shield Settings")]
+    public float currentShield = 100f;
+    public float maxShield = 100f;
+    public float minShield = 0f;
+    public float shieldRegenRate = 2f;
 
-    public bool gameMusic = true;
-    public AudioSource gameMusicAudioSource;
-    public GameObject bossShip;
+    [Header("UI")]
+    public Slider shieldSlider;
+    public TextMeshProUGUI scoreText; // TMP score display
 
-    // Score system
-    private int score = 0;
-    public TextMeshProUGUI scoreText; // Assign in Inspector
+    [Header("Score")]
+    public int score = 0;
+
+    [HideInInspector]
+    public System.Collections.Generic.List<GameObject> enemies = new System.Collections.Generic.List<GameObject>();
 
     [Header("Score Animation Settings")]
-    public float scaleAmount = 1.2f;   // How much bigger the text gets
-    public float animationTime = 0.2f; // Time to scale up and back
+    public float popScale = 1.5f;   // how big it scales up
+    public float popDuration = 0.2f; // time to scale up/down
 
     private Vector3 originalScale;
-    private Coroutine scoreAnimCoroutine;
 
-    private void Awake()
+    private void Start()
     {
-        Invoke("Quit", 150f);
-        Invoke("Fader", 147f);
-        Invoke("BossShip", 60f);
-        enemies.Add(bossShip);
+        if (shieldSlider != null)
+        {
+            shieldSlider.minValue = minShield;
+            shieldSlider.maxValue = maxShield;
+            shieldSlider.value = currentShield;
+        }
 
         if (scoreText != null)
-            originalScale = scoreText.rectTransform.localScale;
+            originalScale = scoreText.transform.localScale;
 
         UpdateScoreUI();
     }
 
-    // Called by enemies when they die
+    private void Update()
+    {
+        if (currentShield < maxShield)
+        {
+            currentShield += shieldRegenRate * Time.deltaTime;
+            currentShield = Mathf.Clamp(currentShield, minShield, maxShield);
+            UpdateShieldUI();
+        }
+    }
+
+    public void ModifyShield(float amount)
+    {
+        currentShield += amount;
+        currentShield = Mathf.Clamp(currentShield, minShield, maxShield);
+        Debug.Log("[GameManager] Shield modified: " + amount + " | Current: " + currentShield);
+        UpdateShieldUI();
+    }
+
+    private void UpdateShieldUI()
+    {
+        if (shieldSlider != null)
+            shieldSlider.value = currentShield;
+    }
+
     public void AddScore(int amount)
     {
         score += amount;
         UpdateScoreUI();
-
-        if (scoreAnimCoroutine != null)
-            StopCoroutine(scoreAnimCoroutine);
-
-        scoreAnimCoroutine = StartCoroutine(AnimateScorePop());
+        StartCoroutine(AnimateScoreText()); // 🔥 trigger animation
     }
 
     private void UpdateScoreUI()
     {
         if (scoreText != null)
-        {
-            scoreText.text = score.ToString(); // ✅ just the number now
-        }
-        else
-        {
-            Debug.LogWarning("No Score Text (TextMeshProUGUI) assigned in GameManager!");
-        }
+            scoreText.text = score.ToString();
     }
 
-    private IEnumerator AnimateScorePop()
+    private IEnumerator AnimateScoreText()
     {
-        float halfTime = animationTime / 2f;
-        Vector3 targetScale = originalScale * scaleAmount;
+        if (scoreText == null) yield break;
 
-        // Scale up
-        float t = 0;
-        while (t < halfTime)
+        // scale up
+        float elapsed = 0f;
+        while (elapsed < popDuration)
         {
-            t += Time.deltaTime;
-            float lerp = t / halfTime;
-            scoreText.rectTransform.localScale = Vector3.Lerp(originalScale, targetScale, lerp);
+            float t = elapsed / popDuration;
+            scoreText.transform.localScale = Vector3.Lerp(originalScale, originalScale * popScale, t);
+            elapsed += Time.deltaTime;
             yield return null;
         }
 
-        // Scale back
-        t = 0;
-        while (t < halfTime)
+        // hold peak
+        scoreText.transform.localScale = originalScale * popScale;
+
+        // scale back down
+        elapsed = 0f;
+        while (elapsed < popDuration)
         {
-            t += Time.deltaTime;
-            float lerp = t / halfTime;
-            scoreText.rectTransform.localScale = Vector3.Lerp(targetScale, originalScale, lerp);
+            float t = elapsed / popDuration;
+            scoreText.transform.localScale = Vector3.Lerp(originalScale * popScale, originalScale, t);
+            elapsed += Time.deltaTime;
             yield return null;
         }
 
-        scoreText.rectTransform.localScale = originalScale;
+        scoreText.transform.localScale = originalScale; // reset
     }
-
-    public bool GameMusicToggle()
-    {
-        if (!gameMusicAudioSource)
-        {
-            Debug.LogWarning("No Audio Source for game music found");
-            return false;
-        }
-        if (gameMusic && gameMusicAudioSource.isPlaying)
-        {
-            gameMusic = false;
-            gameMusicAudioSource.Stop();
-            return false;
-        }
-        else
-        {
-            gameMusic = true;
-            gameMusicAudioSource.Play();
-            return true;
-        }
-    }
-
-    public void Quit()
-    {
-        ExperienceApp.End();
-    }
-
-    public void Fader()
-    {
-        var fader = ScreenFader.Instance;
-        fader.FadeToBlack();
-    }
-
-    private void BossShip()
-    {
-        bossShip.SetActive(true);
-    }
-
-    public void TriggerVictory()
-    {
-        Debug.Log("All waves complete! Victory!");
-
-        // Example: just fade out after a short delay
-        StartCoroutine(VictorySequence());
-    }
-
-    private IEnumerator VictorySequence()
-    {
-        // Optional: Wait 2 seconds so player sees the "All Waves Complete!" text
-        yield return new WaitForSeconds(2f);
-
-        // Fade out
-        var fader = ScreenFader.Instance;
-        fader.FadeToBlack();
-
-        // Wait for fade to finish
-        yield return new WaitForSeconds(2f);
-
-        // End experience (or load victory scene instead)
-        ExperienceApp.End();
-        // OR: SceneManager.LoadScene("VictoryScene");
-    }
-
 }
