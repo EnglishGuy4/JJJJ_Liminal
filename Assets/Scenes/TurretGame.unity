@@ -2670,9 +2670,9 @@ MonoBehaviour:
   waveText: {fileID: 1554826681}
   waveTimerText: {fileID: 2128932371}
   audioSource: {fileID: 745262868}
-  countdownSFX: {fileID: 8300000, guid: 0aca274ac67bcce458926459f0eb8752, type: 3}
+  countdownSFX: {fileID: 8300000, guid: fd7fd1c283b8f6e42b6417b124cae562, type: 3}
   waveStartSFX: {fileID: 8300000, guid: 3510bdbd9fc49bf489bd6fec1cd58ad5, type: 3}
-  waveEndSFX: {fileID: 8300000, guid: ab1494cdb9673254e96d64af7d8adf8b, type: 3}
+  waveEndSFX: {fileID: 8300000, guid: 3510bdbd9fc49bf489bd6fec1cd58ad5, type: 3}
   allWavesCompleteSFX: {fileID: 8300000, guid: 9922b00674c8b4c4d9717398606b1f88, type: 3}
   enemiesFromThisSpawnerList: []
 --- !u!82 &745262868
@@ -2687,7 +2687,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.166
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -9105,7 +9105,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 60d603f3741eb72418e68da51177d5b5, type: 3}
+      objectReference: {fileID: 8300000, guid: 549ef0cd2c8cc434b8db81ff3881f650, type: 3}
+    - target: {fileID: 2381081737574060029, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.846
+      objectReference: {fileID: 0}
     - target: {fileID: 2385523278246194126, guid: ed4d40976a4d723439aa4a65662774f6,
         type: 3}
       propertyPath: m_LocalPosition.z
