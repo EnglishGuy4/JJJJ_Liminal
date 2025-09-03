@@ -1,10 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using Liminal.SDK.VR;
 using Liminal.SDK.VR.Input;
-using UnityEngine.Analytics;
 
 public class Cannon : MonoBehaviour
 {
@@ -37,7 +35,6 @@ public class Cannon : MonoBehaviour
     [HideInInspector] public bool grabHandle;
     [HideInInspector] public bool grabHandleComplete;
     [HideInInspector] public bool initialGrab;
-    private bool cannonReload;
 
     // Mouse control
     public float mouseSensitivity = 50f;
@@ -72,7 +69,6 @@ public class Cannon : MonoBehaviour
         // ---------- VR Grab Handle ----------
         if (!Application.isEditor && VRDevice.Device != null)
         {
-            // Require BOTH hand triggers
             bool leftGrab = OVRInput.Get(OVRInput.Button.PrimaryHandTrigger);
             bool rightGrab = OVRInput.Get(OVRInput.Button.SecondaryHandTrigger);
 
@@ -85,12 +81,10 @@ public class Cannon : MonoBehaviour
                     initialGrab = true;
                     handleHand.GetComponent<MeshRenderer>().enabled = true;
                     hand.GetComponent<MeshRenderer>().enabled = false;
-                    cannonReload = false;
                 }
             }
             else
             {
-                // Release if either trigger is let go
                 if (grabHandle)
                 {
                     grabHandle = false;
@@ -115,7 +109,6 @@ public class Cannon : MonoBehaviour
                 float handX = Mathf.Clamp(rotation.x, -0.4f, 0.2f);
                 float handY = Mathf.Clamp(rotation.y, -0.4f, 0.4f);
 
-                // Index trigger still for aiming/fine adjust
                 if ((primaryInput != null && primaryInput.GetButton(VRButton.Trigger)) || Input.GetKey(KeyCode.Q))
                 {
                     cBase.transform.rotation = Quaternion.Slerp(cBase.transform.rotation,
@@ -133,7 +126,7 @@ public class Cannon : MonoBehaviour
             }
             else
             {
-                // Mouse Controls (Editor)
+                // Mouse Controls
                 float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
                 float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
@@ -148,9 +141,7 @@ public class Cannon : MonoBehaviour
             // Fire
             bool firePressed = false;
             if (Application.isEditor)
-            {
                 firePressed = Input.GetMouseButtonDown(0);
-            }
             else
             {
                 if (primaryInput != null && primaryInput.GetButtonDown(VRButton.Trigger))
@@ -171,7 +162,7 @@ public class Cannon : MonoBehaviour
             // Fire 9 in a spread
             for (int i = 0; i < 9; i++)
             {
-                float spreadX = Random.Range(-5f, 5f); // degrees
+                float spreadX = Random.Range(-5f, 5f);
                 float spreadY = Random.Range(-5f, 5f);
 
                 Quaternion spreadRotation = barrelEnd.transform.rotation * Quaternion.Euler(spreadX, spreadY, 0);
@@ -180,28 +171,22 @@ public class Cannon : MonoBehaviour
         }
         else
         {
-            // Normal single shot
             SpawnCannonball(barrelEnd.transform.position, barrelEnd.transform.rotation);
         }
 
         particleSystem.Play();
         audio.Play();
 
-        // 🔹 Trigger vibration on both controllers (Quest 3)
-        OVRInput.SetControllerVibration(1f, 0.8f, OVRInput.Controller.RTouch);
-        OVRInput.SetControllerVibration(1f, 0.8f, OVRInput.Controller.LTouch);
-
-        // Stop vibration after 0.2s
+        // 🔹 Haptics on both controllers
+        OVRInput.SetControllerVibration(1f, 1f, OVRInput.Controller.RTouch | OVRInput.Controller.LTouch);
         StartCoroutine(StopHaptics(0.2f));
     }
 
-    private IEnumerator StopHaptics(float delay)
+    private IEnumerator StopHaptics(float duration)
     {
-        yield return new WaitForSeconds(delay);
-        OVRInput.SetControllerVibration(0, 0, OVRInput.Controller.RTouch);
-        OVRInput.SetControllerVibration(0, 0, OVRInput.Controller.LTouch);
+        yield return new WaitForSeconds(duration);
+        OVRInput.SetControllerVibration(0, 0, OVRInput.Controller.RTouch | OVRInput.Controller.LTouch);
     }
-
 
     private void SpawnCannonball(Vector3 pos, Quaternion rot)
     {
@@ -223,10 +208,9 @@ public class Cannon : MonoBehaviour
     // Called by PowerUp hit
     public void ActivatePowerUp()
     {
-        if (isPoweredUp) return; // ignore if already active
+        if (isPoweredUp) return;
         isPoweredUp = true;
 
-        // Stop previous routines if any
         if (powerUpRoutine != null)
             StopCoroutine(powerUpRoutine);
         if (autoFireRoutine != null)
@@ -238,7 +222,7 @@ public class Cannon : MonoBehaviour
 
     private IEnumerator AutoFireCannon()
     {
-        while (isPoweredUp && grabHandle)
+        while (isPoweredUp)
         {
             FireCannon();
             yield return new WaitForSeconds(autoFireRate);
