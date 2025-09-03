@@ -69,12 +69,39 @@ public class Cannon : MonoBehaviour
             hand.GetComponent<MeshRenderer>().enabled = false;
         }
 
-        if (!grabHandleComplete && grabHandle)
+        // ---------- VR Grab Handle ----------
+        if (!Application.isEditor && VRDevice.Device != null)
         {
-            handleHand.GetComponent<MeshRenderer>().enabled = true;
-            hand.GetComponent<MeshRenderer>().enabled = false;
-            cannonReload = false;
-            grabHandleComplete = true;
+            // Require BOTH hand triggers
+            bool leftGrab = OVRInput.Get(OVRInput.Button.PrimaryHandTrigger);
+            bool rightGrab = OVRInput.Get(OVRInput.Button.SecondaryHandTrigger);
+
+            if (leftGrab && rightGrab)
+            {
+                if (!grabHandle)
+                {
+                    grabHandle = true;
+                    grabHandleComplete = true;
+                    initialGrab = true;
+                    handleHand.GetComponent<MeshRenderer>().enabled = true;
+                    hand.GetComponent<MeshRenderer>().enabled = false;
+                    cannonReload = false;
+                }
+            }
+            else
+            {
+                // Release if either trigger is let go
+                if (grabHandle)
+                {
+                    grabHandle = false;
+                    grabHandleComplete = false;
+                    handleHand.GetComponent<MeshRenderer>().enabled = false;
+                    hand.GetComponent<MeshRenderer>().enabled = true;
+                    hand.transform.position = primaryHandAnchor.position;
+                    hand.transform.rotation = primaryHandAnchor.rotation;
+                    initialGrab = false;
+                }
+            }
         }
 
         if (grabHandle)
@@ -82,19 +109,26 @@ public class Cannon : MonoBehaviour
             // VR Controls
             if (!Application.isEditor && VRDevice.Device != null)
             {
-                Quaternion rotation = Quaternion.LookRotation(cannonPos.transform.position - (primaryHand.transform.position - cannonPos.transform.position) * 1000);
+                Quaternion rotation = Quaternion.LookRotation(
+                    cannonPos.transform.position - (primaryHand.transform.position - cannonPos.transform.position) * 1000
+                );
                 float handX = Mathf.Clamp(rotation.x, -0.4f, 0.2f);
                 float handY = Mathf.Clamp(rotation.y, -0.4f, 0.4f);
 
+                // Index trigger still for aiming/fine adjust
                 if ((primaryInput != null && primaryInput.GetButton(VRButton.Trigger)) || Input.GetKey(KeyCode.Q))
                 {
-                    cBase.transform.rotation = Quaternion.Slerp(cBase.transform.rotation, new Quaternion(0, handY, 0, cBase.transform.rotation.w), 0.25f * Time.deltaTime);
-                    cannon.transform.localRotation = Quaternion.Slerp(cannon.transform.localRotation, new Quaternion(handX, 0, 0, cannon.transform.localRotation.w), 0.25f * Time.deltaTime);
+                    cBase.transform.rotation = Quaternion.Slerp(cBase.transform.rotation,
+                        new Quaternion(0, handY, 0, cBase.transform.rotation.w), 0.25f * Time.deltaTime);
+                    cannon.transform.localRotation = Quaternion.Slerp(cannon.transform.localRotation,
+                        new Quaternion(handX, 0, 0, cannon.transform.localRotation.w), 0.25f * Time.deltaTime);
                 }
                 else
                 {
-                    cBase.transform.rotation = Quaternion.Slerp(cBase.transform.rotation, new Quaternion(0, handY, 0, cBase.transform.rotation.w), 4 * Time.deltaTime);
-                    cannon.transform.localRotation = Quaternion.Slerp(cannon.transform.localRotation, new Quaternion(handX, 0, 0, cannon.transform.localRotation.w), 4 * Time.deltaTime);
+                    cBase.transform.rotation = Quaternion.Slerp(cBase.transform.rotation,
+                        new Quaternion(0, handY, 0, cBase.transform.rotation.w), 4 * Time.deltaTime);
+                    cannon.transform.localRotation = Quaternion.Slerp(cannon.transform.localRotation,
+                        new Quaternion(handX, 0, 0, cannon.transform.localRotation.w), 4 * Time.deltaTime);
                 }
             }
             else
@@ -128,18 +162,6 @@ public class Cannon : MonoBehaviour
             if (firePressed && !isPoweredUp)
                 FireCannon();
         }
-
-        // Release handle
-        if (Input.GetKeyDown(KeyCode.A) || (primaryInput != null && primaryInput.GetButtonDown(VRButton.Three)))
-        {
-            grabHandle = false;
-            grabHandleComplete = true;
-            handleHand.GetComponent<MeshRenderer>().enabled = false;
-            hand.GetComponent<MeshRenderer>().enabled = true;
-            hand.transform.position = primaryHandAnchor.position;
-            hand.transform.rotation = primaryHandAnchor.rotation;
-            initialGrab = false;
-        }
     }
 
     private void FireCannon()
@@ -164,7 +186,22 @@ public class Cannon : MonoBehaviour
 
         particleSystem.Play();
         audio.Play();
+
+        // 🔹 Trigger vibration on both controllers (Quest 3)
+        OVRInput.SetControllerVibration(1f, 0.8f, OVRInput.Controller.RTouch);
+        OVRInput.SetControllerVibration(1f, 0.8f, OVRInput.Controller.LTouch);
+
+        // Stop vibration after 0.2s
+        StartCoroutine(StopHaptics(0.2f));
     }
+
+    private IEnumerator StopHaptics(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        OVRInput.SetControllerVibration(0, 0, OVRInput.Controller.RTouch);
+        OVRInput.SetControllerVibration(0, 0, OVRInput.Controller.LTouch);
+    }
+
 
     private void SpawnCannonball(Vector3 pos, Quaternion rot)
     {
