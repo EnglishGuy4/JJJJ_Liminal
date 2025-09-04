@@ -106,23 +106,23 @@ public class Cannon : MonoBehaviour
                 Quaternion rotation = Quaternion.LookRotation(
                     cannonPos.transform.position - (primaryHand.transform.position - cannonPos.transform.position) * 1000
                 );
+
                 float handX = Mathf.Clamp(rotation.x, -0.4f, 0.2f);
                 float handY = Mathf.Clamp(rotation.y, -0.4f, 0.4f);
 
-                if ((primaryInput != null && primaryInput.GetButton(VRButton.Trigger)) || Input.GetKey(KeyCode.Q))
-                {
-                    cBase.transform.rotation = Quaternion.Slerp(cBase.transform.rotation,
-                        new Quaternion(0, handY, 0, cBase.transform.rotation.w), 0.25f * Time.deltaTime);
-                    cannon.transform.localRotation = Quaternion.Slerp(cannon.transform.localRotation,
-                        new Quaternion(handX, 0, 0, cannon.transform.localRotation.w), 0.25f * Time.deltaTime);
-                }
-                else
-                {
-                    cBase.transform.rotation = Quaternion.Slerp(cBase.transform.rotation,
-                        new Quaternion(0, handY, 0, cBase.transform.rotation.w), 4 * Time.deltaTime);
-                    cannon.transform.localRotation = Quaternion.Slerp(cannon.transform.localRotation,
-                        new Quaternion(handX, 0, 0, cannon.transform.localRotation.w), 4 * Time.deltaTime);
-                }
+                // Instead of slow slerp, directly apply with a bit of smoothing
+                float rotationSpeed = 15f; // 🔹 Increase this for more responsiveness
+                cBase.transform.rotation = Quaternion.Lerp(
+                    cBase.transform.rotation,
+                    new Quaternion(0, handY, 0, cBase.transform.rotation.w),
+                    rotationSpeed * Time.deltaTime
+                );
+
+                cannon.transform.localRotation = Quaternion.Lerp(
+                    cannon.transform.localRotation,
+                    new Quaternion(handX, 0, 0, cannon.transform.localRotation.w),
+                    rotationSpeed * Time.deltaTime
+                );
             }
             else
             {
