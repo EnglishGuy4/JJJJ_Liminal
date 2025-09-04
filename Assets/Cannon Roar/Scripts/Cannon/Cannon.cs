@@ -41,6 +41,12 @@ public class Cannon : MonoBehaviour
     private float pitch = 0f;
     private float yaw = 0f;
 
+    // Recoil Settings
+    [Header("Recoil Settings")]
+    public float recoilAngle = 5f;      // How far the cannon kicks upward
+    public float recoilRecovery = 10f;  // How fast it recovers back
+    private float currentRecoil = 0f;
+
     void Start()
     {
         initialGrab = false;
@@ -110,19 +116,25 @@ public class Cannon : MonoBehaviour
                 float handX = Mathf.Clamp(rotation.x, -0.4f, 0.2f);
                 float handY = Mathf.Clamp(rotation.y, -0.4f, 0.4f);
 
-                // Instead of slow slerp, directly apply with a bit of smoothing
-                float rotationSpeed = 15f; // 🔹 Increase this for more responsiveness
+                float rotationSpeed = 15f; // 🔹 higher = snappier
                 cBase.transform.rotation = Quaternion.Lerp(
                     cBase.transform.rotation,
                     new Quaternion(0, handY, 0, cBase.transform.rotation.w),
                     rotationSpeed * Time.deltaTime
                 );
 
-                cannon.transform.localRotation = Quaternion.Lerp(
+                Quaternion baseCannonRotation = Quaternion.Lerp(
                     cannon.transform.localRotation,
                     new Quaternion(handX, 0, 0, cannon.transform.localRotation.w),
                     rotationSpeed * Time.deltaTime
                 );
+
+                // Apply recoil offset
+                Quaternion recoilRotation = Quaternion.Euler(-currentRecoil, 0, 0);
+                cannon.transform.localRotation = baseCannonRotation * recoilRotation;
+
+                // Smooth recoil recovery
+                currentRecoil = Mathf.Lerp(currentRecoil, 0f, recoilRecovery * Time.deltaTime);
             }
             else
             {
@@ -135,7 +147,12 @@ public class Cannon : MonoBehaviour
                 pitch = Mathf.Clamp(pitch, -30f, 30f);
 
                 cBase.localRotation = Quaternion.Euler(0f, yaw, 0f);
-                cannon.localRotation = Quaternion.Euler(pitch, 0f, 0f);
+
+                Quaternion baseCannonRotation = Quaternion.Euler(pitch, 0f, 0f);
+                Quaternion recoilRotation = Quaternion.Euler(-currentRecoil, 0, 0);
+                cannon.localRotation = baseCannonRotation * recoilRotation;
+
+                currentRecoil = Mathf.Lerp(currentRecoil, 0f, recoilRecovery * Time.deltaTime);
             }
 
             // Fire
@@ -176,6 +193,10 @@ public class Cannon : MonoBehaviour
 
         particleSystem.Play();
         audio.Play();
+
+        // 🔹 Apply recoil
+        currentRecoil += recoilAngle;
+        currentRecoil = Mathf.Clamp(currentRecoil, 0, recoilAngle * 2f); // Prevent stacking forever
 
         // 🔹 Haptics on both controllers
         OVRInput.SetControllerVibration(1f, 1f, OVRInput.Controller.RTouch | OVRInput.Controller.LTouch);
