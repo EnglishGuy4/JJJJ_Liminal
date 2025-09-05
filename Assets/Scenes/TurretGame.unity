@@ -862,7 +862,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1332192531}
-  m_RootOrder: 5
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!154 &157905596
 TerrainCollider:
@@ -1644,7 +1644,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 301097333}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -45.06, y: 6.24, z: 13.56}
+  m_LocalPosition: {x: -45.06, y: -5, z: 13.56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1199940412}
@@ -1667,8 +1667,8 @@ Transform:
   - {fileID: 691751357}
   - {fileID: 1757658572}
   - {fileID: 2120803555}
-  m_Father: {fileID: 1332192531}
-  m_RootOrder: 3
+  m_Father: {fileID: 677566633}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &304235434
 PrefabInstance:
@@ -4207,6 +4207,39 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 673836964}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &677566632
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 677566633}
+  m_Layer: 0
+  m_Name: Buildings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &677566633
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 677566632}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1118813726}
+  - {fileID: 301097334}
+  - {fileID: 2130342755}
+  m_Father: {fileID: 1332192531}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &682449743
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7000,7 +7033,7 @@ PrefabInstance:
     - target: {fileID: 1444824986367519755, guid: 6b53973a6e3880c428d3e2bf1c04aa92,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -148.5
+      value: -132.3
       objectReference: {fileID: 0}
     - target: {fileID: 1444824986367519755, guid: 6b53973a6e3880c428d3e2bf1c04aa92,
         type: 3}
@@ -8014,7 +8047,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1118813726}
   m_Layer: 0
-  m_Name: Building1
+  m_Name: Buildings1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8028,7 +8061,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1118813725}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -31.123, y: 2.51, z: -5.067}
+  m_LocalPosition: {x: -31.123, y: -5.4000015, z: -5.067}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 495339730}
@@ -8068,8 +8101,8 @@ Transform:
   - {fileID: 1828921248}
   - {fileID: 30800215}
   - {fileID: 212479927}
-  m_Father: {fileID: 1332192531}
-  m_RootOrder: 2
+  m_Father: {fileID: 677566633}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1129298828
 PrefabInstance:
@@ -9904,7 +9937,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1332192531}
   m_Layer: 0
-  m_Name: Greybox
+  m_Name: Environment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9922,11 +9955,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1490020629}
-  - {fileID: 2130342755}
-  - {fileID: 1118813726}
-  - {fileID: 301097334}
   - {fileID: 323841412}
   - {fileID: 157905595}
+  - {fileID: 677566633}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -15221,8 +15252,8 @@ Transform:
   - {fileID: 1993541128}
   - {fileID: 1236369319}
   - {fileID: 809323997}
-  m_Father: {fileID: 1332192531}
-  m_RootOrder: 1
+  m_Father: {fileID: 677566633}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2130867784
 PrefabInstance:
@@ -16736,6 +16767,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: VRAvatar
       objectReference: {fileID: 0}
+    - target: {fileID: 2290499974065583150, guid: 9c5ed4a9de3e35a47a8a4ffe045bf637,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2290499974784231895, guid: 9c5ed4a9de3e35a47a8a4ffe045bf637,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -16790,6 +16826,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2290499973158806430, guid: 9c5ed4a9de3e35a47a8a4ffe045bf637,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2290499974865964636, guid: 9c5ed4a9de3e35a47a8a4ffe045bf637,
         type: 3}
