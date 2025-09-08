@@ -26,6 +26,17 @@ public class EnemyHealth : MonoBehaviour
     [Header("Shield Damage")]
     public float shieldDamage = 10f; // How much this enemy reduces the shield when it "gets through"
 
+    [Header("Effects")]
+    [SerializeField] private GameObject explosionPrefab;
+    [SerializeField] private float explosionLifetime = 3f; // Auto-destroy explosion VFX
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip explosionSound;
+    [SerializeField, Range(0f, 1f)] private float explosionVolume = 1f;
+    [SerializeField] private bool explosionSound2D = false; // true = 2D (always audible), false = 3D spatial
+    [SerializeField] private float explosionMinDistance = 1f;   // 3D only
+    [SerializeField] private float explosionMaxDistance = 50f;  // 3D only
+
     void Awake()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -100,14 +111,37 @@ public class EnemyHealth : MonoBehaviour
         if (enemyShip && enemySpawnerScript != null)
             enemySpawnerScript.enemiesFromThisSpawnerList.Remove(gameObject);
 
-        // Shield penalty on deactivation (optional — if you want killed enemies to also reduce shield, uncomment this)
-        /*
-        if (gameManager != null)
+        // 🔥 Instantiate explosion effect (no scaling)
+        if (explosionPrefab != null)
         {
-            Debug.Log("[EnemyHealth] Enemy died, reducing shield by " + shieldDamage);
-            gameManager.ModifyShield(-shieldDamage);
+            GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+            if (explosionLifetime > 0f)
+            {
+                Destroy(explosion, explosionLifetime);
+            }
         }
-        */
+
+        // 💥 Robust explosion audio (independent object, survives deactivation)
+        if (explosionSound != null)
+        {
+            GameObject audioGO = new GameObject("ExplosionAudio");
+            audioGO.transform.position = transform.position;
+            var src = audioGO.AddComponent<AudioSource>();
+
+            // Configure source
+            src.spatialBlend = explosionSound2D ? 0f : 1f; // 0 = 2D, 1 = 3D
+            src.rolloffMode = AudioRolloffMode.Linear;
+            src.minDistance = explosionMinDistance;
+            src.maxDistance = Mathf.Max(explosionMaxDistance, explosionMinDistance + 0.01f);
+            src.playOnAwake = false;
+
+            // If you're using a spatializer plugin (e.g., Oculus), uncomment:
+            // src.spatialize = !explosionSound2D;
+
+            // Play and clean up
+            src.PlayOneShot(explosionSound, explosionVolume);
+            Destroy(audioGO, explosionSound.length + 0.1f);
+        }
 
         // Deactivate instead of destroying
         gameObject.SetActive(false);
