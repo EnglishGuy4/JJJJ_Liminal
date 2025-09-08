@@ -235,8 +235,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.7
-  m_Center: {x: 3.83, y: -0.19, z: -0.02041948}
+  m_Radius: 5.6
+  m_Center: {x: 0, y: -0.19, z: -0.02041948}
 --- !u!1 &4231595308977417250
 GameObject:
   m_ObjectHideFlags: 0
@@ -254,7 +254,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8940071467275869563
 Transform:
   m_ObjectHideFlags: 0
@@ -679,17 +679,17 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 96b953ba1b28fa34f9defe81c454ee7e,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.069621
+      value: -0.058445
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 96b953ba1b28fa34f9defe81c454ee7e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.7364
+      value: 4.8783
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 96b953ba1b28fa34f9defe81c454ee7e,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.34665
+      value: 0.35486
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 96b953ba1b28fa34f9defe81c454ee7e,
         type: 3}
@@ -734,17 +734,17 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 96b953ba1b28fa34f9defe81c454ee7e,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.2376451
+      value: 0.95731854
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 96b953ba1b28fa34f9defe81c454ee7e,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 4.5216665
+      value: 3.4975092
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 96b953ba1b28fa34f9defe81c454ee7e,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.7627134
+      value: 1.3634589
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96b953ba1b28fa34f9defe81c454ee7e, type: 3}
