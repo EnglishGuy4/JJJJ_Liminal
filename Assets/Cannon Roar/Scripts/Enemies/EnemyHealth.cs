@@ -21,21 +21,34 @@ public class EnemyHealth : MonoBehaviour
     public GameObject cannonBall;
 
     [Header("Scoring")]
-    public int scoreValue = 100; // How many points this enemy gives when destroyed
+    public int scoreValue = 100;
 
     [Header("Shield Damage")]
-    public float shieldDamage = 10f; // How much this enemy reduces the shield when it "gets through"
+    public float shieldDamage = 10f;
 
     [Header("Effects")]
     [SerializeField] private GameObject explosionPrefab;
-    [SerializeField] private float explosionLifetime = 3f; // Auto-destroy explosion VFX
+    [SerializeField] private float explosionLifetime = 3f;
+
+    [Header("Portal Spawn Effects")]
+    [SerializeField] private GameObject portalPrefab;
+    [SerializeField] private float portalLifetime = 3f;
 
     [Header("Audio")]
     [SerializeField] private AudioClip explosionSound;
     [SerializeField, Range(0f, 1f)] private float explosionVolume = 1f;
-    [SerializeField] private bool explosionSound2D = false; // true = 2D (always audible), false = 3D spatial
-    [SerializeField] private float explosionMinDistance = 1f;   // 3D only
-    [SerializeField] private float explosionMaxDistance = 50f;  // 3D only
+    [SerializeField] private bool explosionSound2D = false;
+    [SerializeField] private float explosionMinDistance = 1f;
+    [SerializeField] private float explosionMaxDistance = 50f;
+
+    [Header("Portal Audio")]
+    [SerializeField] private AudioClip portalSound;
+    [SerializeField, Range(0f, 1f)] private float portalVolume = 1f;
+    [SerializeField] private bool portalSound2D = false;
+    [SerializeField] private float portalMinDistance = 1f;
+    [SerializeField] private float portalMaxDistance = 50f;
+
+    private bool hasSpawnedOnce = false; // ✅ prevents portal at pool init
 
     void Awake()
     {
@@ -60,15 +73,54 @@ public class EnemyHealth : MonoBehaviour
         enemyMovement = GetComponent<EnemyMovement>();
     }
 
+    private void OnEnable()
+    {
+        // Skip very first activation (pool setup)
+        if (!hasSpawnedOnce)
+        {
+            hasSpawnedOnce = true;
+            return;
+        }
+
+        // ✅ Only runs when spawned into play
+        SpawnPortalEffect();
+    }
+
+    private void SpawnPortalEffect()
+    {
+        if (portalPrefab != null)
+        {
+            GameObject portal = Instantiate(portalPrefab, transform.position, Quaternion.identity);
+            if (portalLifetime > 0f)
+            {
+                Destroy(portal, portalLifetime);
+            }
+        }
+
+        if (portalSound != null)
+        {
+            GameObject audioGO = new GameObject("PortalAudio");
+            audioGO.transform.position = transform.position;
+            var src = audioGO.AddComponent<AudioSource>();
+
+            src.spatialBlend = portalSound2D ? 0f : 1f;
+            src.rolloffMode = AudioRolloffMode.Linear;
+            src.minDistance = portalMinDistance;
+            src.maxDistance = Mathf.Max(portalMaxDistance, portalMinDistance + 0.01f);
+            src.playOnAwake = false;
+
+            src.PlayOneShot(portalSound, portalVolume);
+            Destroy(audioGO, portalSound.length + 0.1f);
+        }
+    }
+
     void Update()
     {
-        // Enemy fell out of world (missed by player)
         if (transform.position.y <= -12f)
         {
             if (enemyShip && enemySpawnerScript != null)
                 enemySpawnerScript.enemiesFromThisSpawnerList.Remove(gameObject);
 
-            // Reduce shield since enemy got through
             if (gameManager != null)
             {
                 Debug.Log("[EnemyHealth] Enemy fell out of world, reducing shield by " + shieldDamage);
@@ -90,7 +142,6 @@ public class EnemyHealth : MonoBehaviour
 
     public void Death()
     {
-        // ✅ Add score to GameManager
         if (gameManager != null)
         {
             gameManager.AddScore(scoreValue);
@@ -107,11 +158,9 @@ public class EnemyHealth : MonoBehaviour
         if (enemyShoot != null)
             enemyShoot.enabled = false;
 
-        // Remove from spawner list if needed
         if (enemyShip && enemySpawnerScript != null)
             enemySpawnerScript.enemiesFromThisSpawnerList.Remove(gameObject);
 
-        // 🔥 Instantiate explosion effect (no scaling)
         if (explosionPrefab != null)
         {
             GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
@@ -121,29 +170,22 @@ public class EnemyHealth : MonoBehaviour
             }
         }
 
-        // 💥 Robust explosion audio (independent object, survives deactivation)
         if (explosionSound != null)
         {
             GameObject audioGO = new GameObject("ExplosionAudio");
             audioGO.transform.position = transform.position;
             var src = audioGO.AddComponent<AudioSource>();
 
-            // Configure source
-            src.spatialBlend = explosionSound2D ? 0f : 1f; // 0 = 2D, 1 = 3D
+            src.spatialBlend = explosionSound2D ? 0f : 1f;
             src.rolloffMode = AudioRolloffMode.Linear;
             src.minDistance = explosionMinDistance;
             src.maxDistance = Mathf.Max(explosionMaxDistance, explosionMinDistance + 0.01f);
             src.playOnAwake = false;
 
-            // If you're using a spatializer plugin (e.g., Oculus), uncomment:
-            // src.spatialize = !explosionSound2D;
-
-            // Play and clean up
             src.PlayOneShot(explosionSound, explosionVolume);
             Destroy(audioGO, explosionSound.length + 0.1f);
         }
 
-        // Deactivate instead of destroying
         gameObject.SetActive(false);
     }
 }

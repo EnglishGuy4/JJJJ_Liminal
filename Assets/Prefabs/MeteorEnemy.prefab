@@ -638,11 +638,19 @@ MonoBehaviour:
   shieldDamage: 10
   explosionPrefab: {fileID: 141070, guid: 5bb09f328cde38248a9eb17356387795, type: 3}
   explosionLifetime: 3
+  portalPrefab: {fileID: 5607819269926399345, guid: 45e0f06c750176947862c10346226439,
+    type: 3}
+  portalLifetime: 3
   explosionSound: {fileID: 8300000, guid: 9c9d047b2dfc91a4a8efaf0e4c995205, type: 3}
   explosionVolume: 1
   explosionSound2D: 0
   explosionMinDistance: 1
   explosionMaxDistance: 10000
+  portalSound: {fileID: 8300000, guid: 1f6253d887a171340b571ccd5f1f9238, type: 3}
+  portalVolume: 0.6
+  portalSound2D: 0
+  portalMinDistance: 1
+  portalMaxDistance: 10000
 --- !u!114 &8320729604627551746
 MonoBehaviour:
   m_ObjectHideFlags: 0
