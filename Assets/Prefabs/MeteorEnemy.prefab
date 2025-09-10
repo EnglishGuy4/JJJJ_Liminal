@@ -490,7 +490,7 @@ LensFlare:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8076039891444877597}
   m_Enabled: 1
-  m_Flare: {fileID: 12100000, guid: 09ebe82dbd1113c3d000dc0b8d76c639, type: 2}
+  m_Flare: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_Brightness: 0.95
   m_FadeSpeed: 3
@@ -746,6 +746,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.3634589
       objectReference: {fileID: 0}
+    - target: {fileID: -2416733968201007103, guid: 96b953ba1b28fa34f9defe81c454ee7e,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: bdc5d894da18cb4459fb7f024738ae00, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96b953ba1b28fa34f9defe81c454ee7e, type: 3}
 --- !u!4 &9127374465275150995 stripped
