@@ -5,20 +5,16 @@ using UnityEngine.AI;
 
 public class EnemyHealth : MonoBehaviour
 {
-    [HideInInspector]
-    public NavMeshAgent agent;
+    [HideInInspector] public NavMeshAgent agent;
     public int health = 1;
     private EnemyShoot enemyShoot;
-    [HideInInspector]
-    public SpawnerManager enemySpawnerScript;
-    [HideInInspector]
-    public BoxCollider boxCollider;
+    [HideInInspector] public SpawnerManager enemySpawnerScript;
+    [HideInInspector] public BoxCollider boxCollider;
     private GameManager gameManager;
     private EnemyMovement enemyMovement;
     public bool bossShip;
     public bool enemyShip;
-    [HideInInspector]
-    public GameObject cannonBall;
+    [HideInInspector] public GameObject cannonBall;
 
     [Header("Scoring")]
     public int scoreValue = 100;
@@ -125,6 +121,9 @@ public class EnemyHealth : MonoBehaviour
             {
                 Debug.Log("[EnemyHealth] Enemy fell out of world, reducing shield by " + shieldDamage);
                 gameManager.ModifyShield(-shieldDamage);
+
+                // ✅ Play explosion when shield is damaged
+                PlayExplosionEffect();
             }
 
             gameObject.SetActive(false);
@@ -161,6 +160,17 @@ public class EnemyHealth : MonoBehaviour
         if (enemyShip && enemySpawnerScript != null)
             enemySpawnerScript.enemiesFromThisSpawnerList.Remove(gameObject);
 
+        // ✅ Explosion on death
+        PlayExplosionEffect();
+
+        gameObject.SetActive(false);
+    }
+
+    /// <summary>
+    /// Handles instantiating explosion VFX + SFX
+    /// </summary>
+    private void PlayExplosionEffect()
+    {
         if (explosionPrefab != null)
         {
             GameObject explosion = Instantiate(explosionPrefab, transform.position, Quaternion.identity);
@@ -185,7 +195,5 @@ public class EnemyHealth : MonoBehaviour
             src.PlayOneShot(explosionSound, explosionVolume);
             Destroy(audioGO, explosionSound.length + 0.1f);
         }
-
-        gameObject.SetActive(false);
     }
 }
