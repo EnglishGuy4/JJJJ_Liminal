@@ -14,6 +14,8 @@ public class Wave
 
 public class SpawnerManager : MonoBehaviour
 {
+    public event System.Action BeginSpawningEvent;
+
     [Header("Spawner Settings")]
     public GameObject enemyPrefab;
     public List<Transform> spawnPoints = new List<Transform>();
@@ -21,18 +23,20 @@ public class SpawnerManager : MonoBehaviour
 
     [Header("Wave Settings")]
     public List<Wave> waves = new List<Wave>();
-    public float timeBetweenWaves = 5f; // Countdown before next wave starts (applies to first too)
+    public float timeBetweenWaves = 5f;
 
     [Header("UI")]
     public TextMeshProUGUI waveText;
-    public TextMeshProUGUI waveTimerText;  // Timer display
+    public TextMeshProUGUI waveTimerText;
 
     [Header("Audio")]
-    public AudioSource audioSource;
+    public AudioSource audioSource; // For SFX
+    public AudioSource musicSource; // 🔹 New dedicated source for wave music
     public AudioClip countdownSFX;
     public AudioClip waveStartSFX;
     public AudioClip waveEndSFX;
     public AudioClip allWavesCompleteSFX;
+    public AudioClip waveMusic;     // 🔹 Background track for waves
 
     private int currentWaveIndex = 0;
     private float waveTimer = 0f;
@@ -41,12 +45,12 @@ public class SpawnerManager : MonoBehaviour
 
     private bool inIntermission = false;
     private bool allWavesComplete = false;
+    private bool wavesStarted = false;   // 🔹 New flag
 
     [HideInInspector]
     public List<GameObject> enemiesFromThisSpawnerList = new List<GameObject>();
 
     private GameManager gameManager;
-
     public event System.Action OnAllWavesComplete;
 
     private void Awake()
@@ -57,13 +61,16 @@ public class SpawnerManager : MonoBehaviour
 
     private void Start()
     {
-        // Start with an intermission countdown before wave 1
-        BeginIntermission(startingWave: true);
+        // 🔹 Show "Get Ready" message until cannon is grabbed
+        if (waveText != null)
+            waveText.text = "Man the turret, they're coming...";
+        if (waveTimerText != null)
+            waveTimerText.text = "";
     }
 
     private void Update()
     {
-        if (allWavesComplete) return; // Stop everything once all waves are done
+        if (!wavesStarted || allWavesComplete) return; // 🔹 Wait until cannon grabbed
 
         if (inIntermission)
         {
@@ -77,7 +84,7 @@ public class SpawnerManager : MonoBehaviour
             return;
         }
 
-        if (currentWaveIndex >= waves.Count) return; // Safety check
+        if (currentWaveIndex >= waves.Count) return;
 
         Wave currentWave = waves[currentWaveIndex];
         waveTimer += Time.deltaTime;
@@ -87,7 +94,6 @@ public class SpawnerManager : MonoBehaviour
 
         if (waveTimer >= currentWave.waveTime)
         {
-            // When a wave finishes, increment index and start intermission
             currentWaveIndex++;
             PlaySFX(waveEndSFX);
             BeginIntermission();
@@ -98,6 +104,24 @@ public class SpawnerManager : MonoBehaviour
         {
             SpawnEnemy();
             spawnTimer = 0f;
+        }
+    }
+
+    // 🔹 Public method for Cannon to trigger waves
+    public void BeginSpawning()
+    {
+        BeginSpawningEvent?.Invoke();
+
+        if (wavesStarted) return; // Prevent duplicate start
+        wavesStarted = true;
+        BeginIntermission(startingWave: true);
+
+        // 🔹 Start the background music when waves begin
+        if (musicSource != null && waveMusic != null)
+        {
+            musicSource.clip = waveMusic;
+            musicSource.loop = true;
+            musicSource.Play();
         }
     }
 
@@ -211,6 +235,12 @@ public class SpawnerManager : MonoBehaviour
             waveTimerText.text = "";
 
         PlaySFX(allWavesCompleteSFX);
+
+        // 🔹 Stop the background music when waves finish
+        if (musicSource != null && musicSource.isPlaying)
+        {
+            musicSource.Stop();
+        }
 
         OnAllWavesComplete?.Invoke();
     }

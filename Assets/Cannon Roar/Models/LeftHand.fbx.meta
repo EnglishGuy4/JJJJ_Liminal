@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: gradient1
+    second: {fileID: 2100000, guid: 59d43e577818f564abcc88fda948d331, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: lambert1
     second: {fileID: 2100000, guid: dc2751b3634bc49729dabb855484664b, type: 2}
   - first:
@@ -84,7 +89,7 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 60
+    normalSmoothAngle: 85
     normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
