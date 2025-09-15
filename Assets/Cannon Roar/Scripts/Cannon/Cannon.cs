@@ -12,6 +12,7 @@ public class Cannon : MonoBehaviour
     public GameObject hand;
     public GameObject handleHand;
     public GameObject primaryHand;
+    public GameObject secondaryHand; // 🔹 Added reference for secondary hand
     public GameObject cannonPos;
     private CannonBall cb;
 
@@ -29,7 +30,10 @@ public class Cannon : MonoBehaviour
     public float powerUpDuration = 8f;
     private Coroutine powerUpRoutine;
     private Coroutine autoFireRoutine;
-    public float autoFireRate = 0.25f; // Time between automatic shots
+    public float autoFireRate = 0.25f;
+
+    [Header("Spawner Manager")]
+    public SpawnerManager spawnerManager; // 🔹 Reference to SpawnerManager
 
     // Handle interaction
     [HideInInspector] public bool grabHandle;
@@ -43,8 +47,8 @@ public class Cannon : MonoBehaviour
 
     // Recoil Settings
     [Header("Recoil Settings")]
-    public float recoilAngle = 5f;      // How far the cannon kicks upward
-    public float recoilRecovery = 10f;  // How fast it recovers back
+    public float recoilAngle = 5f;
+    public float recoilRecovery = 10f;
     private float currentRecoil = 0f;
 
     void Start()
@@ -70,6 +74,11 @@ public class Cannon : MonoBehaviour
             initialGrab = true;
             handleHand.GetComponent<MeshRenderer>().enabled = true;
             hand.GetComponent<MeshRenderer>().enabled = false;
+            if (secondaryHand != null) secondaryHand.SetActive(false);
+
+            // 🔹 Tell SpawnerManager to begin waves
+            if (spawnerManager != null)
+                spawnerManager.BeginSpawning();
         }
 
         // ---------- VR Grab Handle ----------
@@ -87,6 +96,11 @@ public class Cannon : MonoBehaviour
                     initialGrab = true;
                     handleHand.GetComponent<MeshRenderer>().enabled = true;
                     hand.GetComponent<MeshRenderer>().enabled = false;
+                    if (secondaryHand != null) secondaryHand.SetActive(false);
+
+                    // 🔹 Trigger waves when cannon is first grabbed
+                    if (spawnerManager != null)
+                        spawnerManager.BeginSpawning();
                 }
             }
             else
@@ -100,6 +114,7 @@ public class Cannon : MonoBehaviour
                     hand.transform.position = primaryHandAnchor.position;
                     hand.transform.rotation = primaryHandAnchor.rotation;
                     initialGrab = false;
+                    if (secondaryHand != null) secondaryHand.SetActive(true);
                 }
             }
         }
@@ -116,7 +131,7 @@ public class Cannon : MonoBehaviour
                 float handX = Mathf.Clamp(rotation.x, -0.4f, 0.2f);
                 float handY = Mathf.Clamp(rotation.y, -0.4f, 0.4f);
 
-                float rotationSpeed = 15f; // 🔹 higher = snappier
+                float rotationSpeed = 15f;
                 cBase.transform.rotation = Quaternion.Lerp(
                     cBase.transform.rotation,
                     new Quaternion(0, handY, 0, cBase.transform.rotation.w),
@@ -129,11 +144,9 @@ public class Cannon : MonoBehaviour
                     rotationSpeed * Time.deltaTime
                 );
 
-                // Apply recoil offset
                 Quaternion recoilRotation = Quaternion.Euler(-currentRecoil, 0, 0);
                 cannon.transform.localRotation = baseCannonRotation * recoilRotation;
 
-                // Smooth recoil recovery
                 currentRecoil = Mathf.Lerp(currentRecoil, 0f, recoilRecovery * Time.deltaTime);
             }
             else
@@ -176,7 +189,6 @@ public class Cannon : MonoBehaviour
     {
         if (isPoweredUp)
         {
-            // Fire 9 in a spread
             for (int i = 0; i < 9; i++)
             {
                 float spreadX = Random.Range(-5f, 5f);
@@ -194,11 +206,9 @@ public class Cannon : MonoBehaviour
         particleSystem.Play();
         audio.Play();
 
-        // 🔹 Apply recoil
         currentRecoil += recoilAngle;
-        currentRecoil = Mathf.Clamp(currentRecoil, 0, recoilAngle * 2f); // Prevent stacking forever
+        currentRecoil = Mathf.Clamp(currentRecoil, 0, recoilAngle * 2f);
 
-        // 🔹 Haptics on both controllers
         OVRInput.SetControllerVibration(1f, 1f, OVRInput.Controller.RTouch | OVRInput.Controller.LTouch);
         StartCoroutine(StopHaptics(0.2f));
     }
@@ -226,7 +236,6 @@ public class Cannon : MonoBehaviour
         cb.smokeEffect.Play();
     }
 
-    // Called by PowerUp hit
     public void ActivatePowerUp()
     {
         if (isPoweredUp) return;

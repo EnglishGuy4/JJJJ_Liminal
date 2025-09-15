@@ -1,4 +1,4 @@
-# Turret Game: City Defense - Shooting Asteroids to Save the World (name subject to change)
+# Sentinel
 Team JJJJ and Team ANO collaborate for the most groundbreaking VR experience in history!  
 I mean that literally, the ground WILL break, there are asteroids coming towards us.
 

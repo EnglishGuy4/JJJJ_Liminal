@@ -586,6 +586,7 @@ MonoBehaviour:
   enemyShip: 1
   cannonBall: {fileID: 0}
   scoreValue: 100
+  shieldDamage: 10
 --- !u!114 &8320729604627551746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -601,5 +602,4 @@ MonoBehaviour:
   enemyWaypointSpeed: 25
   enemyWaypointStoppingDistance: 5
   waypoints: []
-  shieldDamage: 10
   isDead: 0
