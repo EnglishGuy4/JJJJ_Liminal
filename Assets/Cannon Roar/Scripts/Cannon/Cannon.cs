@@ -203,7 +203,17 @@ public class Cannon : MonoBehaviour
             SpawnCannonball(barrelEnd.transform.position, barrelEnd.transform.rotation);
         }
 
-        particleSystem.Play();
+
+        // 🎇 Randomize muzzle flash Z rotation
+        if (particleSystem != null)
+        {
+            var main = particleSystem.main;
+            main.startRotation = Random.Range(0f, Mathf.PI * 2f); // radians
+            particleSystem.Play();
+        }
+
+        
+        //particleSystem.Play();
         audio.Play();
 
         currentRecoil += recoilAngle;
