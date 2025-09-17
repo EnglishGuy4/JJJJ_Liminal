@@ -12,6 +12,12 @@ public class Wave
     public int maxEnemies = 10;         // Maximum enemies for this wave
 }
 
+public enum WaveMode
+{
+    Timed,
+    Endless
+}
+
 public class SpawnerManager : MonoBehaviour
 {
     public event System.Action BeginSpawningEvent;
@@ -22,21 +28,28 @@ public class SpawnerManager : MonoBehaviour
     public List<Transform> waypoints = new List<Transform>();
 
     [Header("Wave Settings")]
+    public WaveMode waveMode = WaveMode.Timed;  // 🔹 Choose Timed or Endless
     public List<Wave> waves = new List<Wave>();
     public float timeBetweenWaves = 5f;
+
+    [Header("Endless Settings")]
+    public float spawnRateDecrease = 0.1f;   // 🔹 How much faster enemies spawn each wave
+    public int maxEnemiesIncrease = 2;       // 🔹 How many more enemies per wave
+    public float minSpawnRate = 0.5f;        // 🔹 Clamp so it doesn’t get too fast
+    public int maxEnemiesCap = 200;          // 🔹 Clamp max enemies
 
     [Header("UI")]
     public TextMeshProUGUI waveText;
     public TextMeshProUGUI waveTimerText;
 
     [Header("Audio")]
-    public AudioSource audioSource; // For SFX
-    public AudioSource musicSource; // 🔹 New dedicated source for wave music
+    public AudioSource audioSource;
+    public AudioSource musicSource;
     public AudioClip countdownSFX;
     public AudioClip waveStartSFX;
     public AudioClip waveEndSFX;
     public AudioClip allWavesCompleteSFX;
-    public AudioClip waveMusic;     // 🔹 Background track for waves
+    public AudioClip waveMusic;
 
     private int currentWaveIndex = 0;
     private float waveTimer = 0f;
@@ -45,13 +58,15 @@ public class SpawnerManager : MonoBehaviour
 
     private bool inIntermission = false;
     private bool allWavesComplete = false;
-    private bool wavesStarted = false;   // 🔹 New flag
+    private bool wavesStarted = false;
 
     [HideInInspector]
     public List<GameObject> enemiesFromThisSpawnerList = new List<GameObject>();
 
     private GameManager gameManager;
     public event System.Action OnAllWavesComplete;
+
+    private Wave endlessCurrentWave = new Wave(); // 🔹 Track the "current" endless wave
 
     private void Awake()
     {
@@ -61,7 +76,6 @@ public class SpawnerManager : MonoBehaviour
 
     private void Start()
     {
-        // 🔹 Show "Get Ready" message until cannon is grabbed
         if (waveText != null)
             waveText.text = "Man the turret, they're coming...";
         if (waveTimerText != null)
@@ -70,7 +84,7 @@ public class SpawnerManager : MonoBehaviour
 
     private void Update()
     {
-        if (!wavesStarted || allWavesComplete) return; // 🔹 Wait until cannon grabbed
+        if (!wavesStarted || allWavesComplete) return;
 
         if (inIntermission)
         {
@@ -84,9 +98,17 @@ public class SpawnerManager : MonoBehaviour
             return;
         }
 
-        if (currentWaveIndex >= waves.Count) return;
+        Wave currentWave;
+        if (waveMode == WaveMode.Timed)
+        {
+            if (currentWaveIndex >= waves.Count) return;
+            currentWave = waves[currentWaveIndex];
+        }
+        else
+        {
+            currentWave = endlessCurrentWave;
+        }
 
-        Wave currentWave = waves[currentWaveIndex];
         waveTimer += Time.deltaTime;
         spawnTimer += Time.deltaTime;
 
@@ -94,9 +116,23 @@ public class SpawnerManager : MonoBehaviour
 
         if (waveTimer >= currentWave.waveTime)
         {
-            currentWaveIndex++;
-            PlaySFX(waveEndSFX);
-            BeginIntermission();
+            if (waveMode == WaveMode.Timed)
+            {
+                currentWaveIndex++;
+                PlaySFX(waveEndSFX);
+                BeginIntermission();
+            }
+            else
+            {
+                // Endless mode: increase difficulty
+                endlessCurrentWave.waveTime = endlessCurrentWave.waveTime; // keep user-defined time
+                endlessCurrentWave.spawnRate = Mathf.Max(minSpawnRate, endlessCurrentWave.spawnRate - spawnRateDecrease);
+                endlessCurrentWave.maxEnemies = Mathf.Min(maxEnemiesCap, endlessCurrentWave.maxEnemies + maxEnemiesIncrease);
+
+                currentWaveIndex++; // 🔹 Increment wave counter for Endless mode
+                PlaySFX(waveEndSFX);
+                BeginIntermission();
+            }
             return;
         }
 
@@ -107,16 +143,22 @@ public class SpawnerManager : MonoBehaviour
         }
     }
 
-    // 🔹 Public method for Cannon to trigger waves
     public void BeginSpawning()
     {
         BeginSpawningEvent?.Invoke();
 
-        if (wavesStarted) return; // Prevent duplicate start
+        if (wavesStarted) return;
         wavesStarted = true;
         BeginIntermission(startingWave: true);
 
-        // 🔹 Start the background music when waves begin
+        if (waveMode == WaveMode.Endless)
+        {
+            // Initialize endless mode with values from Wave[0] in Inspector
+            endlessCurrentWave.waveTime = (waves.Count > 0 ? waves[0].waveTime : 30f);
+            endlessCurrentWave.spawnRate = (waves.Count > 0 ? waves[0].spawnRate : 2f);
+            endlessCurrentWave.maxEnemies = (waves.Count > 0 ? waves[0].maxEnemies : 10);
+        }
+
         if (musicSource != null && waveMusic != null)
         {
             musicSource.clip = waveMusic;
@@ -124,6 +166,8 @@ public class SpawnerManager : MonoBehaviour
             musicSource.Play();
         }
     }
+
+
 
     private void SetUpChildObjects()
     {
@@ -167,8 +211,7 @@ public class SpawnerManager : MonoBehaviour
 
     private void BeginIntermission(bool startingWave = false)
     {
-        // If no more waves are left, stop and show completion
-        if (currentWaveIndex >= waves.Count)
+        if (waveMode == WaveMode.Timed && currentWaveIndex >= waves.Count)
         {
             EndAllWaves();
             return;
@@ -183,10 +226,12 @@ public class SpawnerManager : MonoBehaviour
         }
         else
         {
-            waveText.text = "Next Wave Incoming...";
+            if (waveMode == WaveMode.Timed)
+                waveText.text = "Next Wave Incoming...";
+            else
+                waveText.text = "Endless Wave Incoming...";
         }
 
-        // Play countdown SFX
         PlaySFX(countdownSFX);
     }
 
@@ -196,24 +241,25 @@ public class SpawnerManager : MonoBehaviour
         waveTimer = 0f;
         spawnTimer = 0f;
 
-        if (currentWaveIndex < waves.Count)
+        if (waveMode == WaveMode.Timed && currentWaveIndex >= waves.Count)
         {
-            UpdateWaveText();
-            PlaySFX(waveStartSFX);
+            EndAllWaves();
         }
         else
         {
-            EndAllWaves();
+            UpdateWaveText();
+            PlaySFX(waveStartSFX);
         }
     }
 
     private void UpdateWaveText()
     {
-        if (waveText != null && currentWaveIndex < waves.Count)
+        if (waveText != null)
         {
-            waveText.text = "Wave: " + (currentWaveIndex + 1);
+            waveText.text = "Wave: " + (currentWaveIndex + 1); // 🔹 Same UI for both modes
         }
     }
+
 
     private void UpdateWaveTimerText(float timeRemaining)
     {
@@ -236,7 +282,6 @@ public class SpawnerManager : MonoBehaviour
 
         PlaySFX(allWavesCompleteSFX);
 
-        // 🔹 Stop the background music when waves finish
         if (musicSource != null && musicSource.isPlaying)
         {
             musicSource.Stop();

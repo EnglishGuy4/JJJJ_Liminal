@@ -2,9 +2,17 @@
 using UnityEngine.UI;
 using TMPro;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Fade Settings")]
+    public Renderer fadePlaneRenderer; // Assign the plane in front of the VR camera
+    public float fadeDuration = 1f;    // How long the fade takes
+    private Material fadeMaterial;
+    private string fadeColorProperty;
+
+
     [Header("Shield Settings")]
     public float currentShield = 100f;
     public float maxShield = 100f;
@@ -12,39 +20,62 @@ public class GameManager : MonoBehaviour
     public float shieldRegenRate = 2f;
 
     [Header("Shield Visuals")]
-    public Material shieldMaterial;          // Plug shield material here
-    public string shieldColorProperty = "_Color"; // Name of the color property (default "_Color")
-    public Color hitColor = Color.red;       // Color when hit
-    public Color normalColor = Color.cyan;   // Default/idle shield color
-    public float colorFlashDuration = 0.5f;  // Total time for hit flash
-    public float pulseSpeed = 2f;            // Speed of pulsing
-    public float pulseIntensity = 0.2f;      // How much it shifts from normalColor
+    public Material shieldMaterial;
+    public string shieldColorProperty = "_Color";
+    public Color hitColor = Color.red;
+    public Color normalColor = Color.cyan;
+    public float colorFlashDuration = 0.5f;
+    public float pulseSpeed = 2f;
+    public float pulseIntensity = 0.2f;
 
     [Header("Shield Audio")]
-    public AudioClip shieldHitClip;          // Sound when shield is hit
-    public float shieldHitVolume = 1f;       // Volume of hit sound
+    public AudioClip shieldHitClip;
+    public float shieldHitVolume = 1f;
     private AudioSource audioSource;
 
     [Header("UI")]
     public Slider shieldSlider;
-    public TextMeshProUGUI scoreText; // TMP score display
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI waveText;
+    public TextMeshProUGUI waveTimerText;
+    public GameObject gameOverPanel;
+    public TextMeshProUGUI gameOverTimerText; // 🔹 optional countdown display
 
     [Header("Score")]
     public int score = 0;
+
+    [Header("Game Over Settings")]
+    public bool gameOverOnShieldBreak = true;
+    public string menuSceneName = "MainMenu"; // 🔹 set via inspector
+    public float returnToMenuDelay = 5f;      // 🔹 countdown in seconds
 
     [HideInInspector]
     public System.Collections.Generic.List<GameObject> enemies = new System.Collections.Generic.List<GameObject>();
 
     [Header("Score Animation Settings")]
-    public float popScale = 1.5f;   // how big it scales up
-    public float popDuration = 0.2f; // time to scale up/down
+    public float popScale = 1.5f;
+    public float popDuration = 0.2f;
 
     private Vector3 originalScale;
     private Coroutine flashRoutine;
     private bool isFlashing = false;
+    private bool isGameOver = false;
+
+    private SpawnerManager spawnerManager;
 
     private void Start()
     {
+        // Prepare fade material
+        if (fadePlaneRenderer != null)
+        {
+            fadeMaterial = fadePlaneRenderer.material;
+            DetectFadeColorProperty();
+            ForceMaterialTransparent(fadeMaterial);
+            SetFadeAlpha(0f); // Start fully transparent
+        }
+
+        spawnerManager = FindObjectOfType<SpawnerManager>();
+
         if (shieldSlider != null)
         {
             shieldSlider.minValue = minShield;
@@ -57,22 +88,26 @@ public class GameManager : MonoBehaviour
 
         UpdateScoreUI();
 
-        // Ensure shield starts at normal color
         if (shieldMaterial != null && shieldMaterial.HasProperty(shieldColorProperty))
-        {
             shieldMaterial.SetColor(shieldColorProperty, normalColor);
-        }
 
-        // Setup AudioSource if not already attached
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
             audioSource = gameObject.AddComponent<AudioSource>();
 
         audioSource.playOnAwake = false;
+
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(false);
+
+        if (gameOverTimerText != null)
+            gameOverTimerText.text = "";
     }
 
     private void Update()
     {
+        if (isGameOver) return;
+
         if (currentShield < maxShield)
         {
             currentShield += shieldRegenRate * Time.deltaTime;
@@ -80,23 +115,28 @@ public class GameManager : MonoBehaviour
             UpdateShieldUI();
         }
 
-        // Idle pulsing (only if not in flash effect)
         if (!isFlashing && shieldMaterial != null && shieldMaterial.HasProperty(shieldColorProperty))
         {
             float pulse = (Mathf.Sin(Time.time * pulseSpeed) * 0.5f + 0.5f) * pulseIntensity;
             Color pulsedColor = Color.Lerp(normalColor * (1f - pulseIntensity), normalColor, 1f - pulse);
             shieldMaterial.SetColor(shieldColorProperty, pulsedColor);
         }
+
+        if (gameOverOnShieldBreak && currentShield <= minShield)
+        {
+            TriggerGameOver();
+        }
     }
 
     public void ModifyShield(float amount)
     {
+        if (isGameOver) return;
+
         currentShield += amount;
         currentShield = Mathf.Clamp(currentShield, minShield, maxShield);
         Debug.Log("[GameManager] Shield modified: " + amount + " | Current: " + currentShield);
         UpdateShieldUI();
 
-        // Trigger shield flash & sound if it took damage
         if (amount < 0)
         {
             if (shieldMaterial != null)
@@ -112,6 +152,11 @@ public class GameManager : MonoBehaviour
                 audioSource.PlayOneShot(shieldHitClip, shieldHitVolume);
             }
         }
+
+        if (gameOverOnShieldBreak && currentShield <= minShield)
+        {
+            TriggerGameOver();
+        }
     }
 
     private void UpdateShieldUI()
@@ -120,11 +165,67 @@ public class GameManager : MonoBehaviour
             shieldSlider.value = currentShield;
     }
 
+    private void TriggerGameOver()
+    {
+        if (isGameOver) return;
+        isGameOver = true;
+
+        Debug.Log("[GameManager] Game Over Triggered!");
+
+        // Stop waves
+        if (spawnerManager != null)
+        {
+            spawnerManager.StopAllCoroutines();
+            spawnerManager.enabled = false;
+        }
+
+        // Disable UI
+        if (waveText != null) waveText.gameObject.SetActive(false);
+        if (waveTimerText != null) waveTimerText.gameObject.SetActive(false);
+        if (shieldSlider != null) shieldSlider.gameObject.SetActive(false);
+
+        // Show Game Over UI
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(true);
+
+        // Start return-to-menu countdown
+        StartCoroutine(ReturnToMenuCountdown());
+    }
+
+    private IEnumerator ReturnToMenuCountdown()
+    {
+        float timer = returnToMenuDelay;
+
+        // Countdown loop — no fade yet
+        while (timer > 0)
+        {
+            if (gameOverTimerText != null)
+                gameOverTimerText.text = "Returning to Menu in " + Mathf.Ceil(timer).ToString() + "...";
+
+            yield return new WaitForSeconds(1f);
+            timer -= 1f;
+        }
+
+        // Countdown finished — now fade to black
+        if (fadeMaterial != null)
+            yield return StartCoroutine(Fade(0f, 1f));
+
+        // Finally load the menu scene
+        if (!string.IsNullOrEmpty(menuSceneName))
+            UnityEngine.SceneManagement.SceneManager.LoadScene(menuSceneName);
+        else
+            Debug.LogError("[GameManager] Menu scene name is not set!");
+    }
+
+
+
     public void AddScore(int amount)
     {
+        if (isGameOver) return;
+
         score += amount;
         UpdateScoreUI();
-        StartCoroutine(AnimateScoreText()); // 🔥 trigger animation
+        StartCoroutine(AnimateScoreText());
     }
 
     private void UpdateScoreUI()
@@ -137,7 +238,6 @@ public class GameManager : MonoBehaviour
     {
         if (scoreText == null) yield break;
 
-        // scale up
         float elapsed = 0f;
         while (elapsed < popDuration)
         {
@@ -147,10 +247,8 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        // hold peak
         scoreText.transform.localScale = originalScale * popScale;
 
-        // scale back down
         elapsed = 0f;
         while (elapsed < popDuration)
         {
@@ -160,7 +258,7 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
-        scoreText.transform.localScale = originalScale; // reset
+        scoreText.transform.localScale = originalScale;
     }
 
     private IEnumerator FlashShieldColor()
@@ -172,7 +270,6 @@ public class GameManager : MonoBehaviour
         float halfDuration = colorFlashDuration / 2f;
         float elapsed = 0f;
 
-        // Transition to hitColor
         while (elapsed < halfDuration)
         {
             float t = elapsed / halfDuration;
@@ -182,7 +279,6 @@ public class GameManager : MonoBehaviour
         }
         shieldMaterial.SetColor(shieldColorProperty, hitColor);
 
-        // Transition back to normalColor
         elapsed = 0f;
         while (elapsed < halfDuration)
         {
@@ -195,4 +291,57 @@ public class GameManager : MonoBehaviour
 
         isFlashing = false;
     }
+
+    private void DetectFadeColorProperty()
+    {
+        if (fadeMaterial == null) return;
+
+        if (fadeMaterial.HasProperty("_Color")) fadeColorProperty = "_Color";
+        else if (fadeMaterial.HasProperty("_BaseColor")) fadeColorProperty = "_BaseColor";
+        else fadeColorProperty = null;
+    }
+
+    private void ForceMaterialTransparent(Material m)
+    {
+        if (m == null) return;
+
+        m.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+        m.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+        m.SetInt("_ZWrite", 0);
+        m.DisableKeyword("_ALPHATEST_ON");
+        m.EnableKeyword("_ALPHABLEND_ON");
+        m.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+        m.renderQueue = 3000;
+    }
+
+    private void SetFadeAlpha(float alpha)
+    {
+        if (fadeMaterial == null) return;
+
+        Color c = Color.black;
+        c.a = Mathf.Clamp01(alpha);
+
+        if (!string.IsNullOrEmpty(fadeColorProperty) && fadeMaterial.HasProperty(fadeColorProperty))
+            fadeMaterial.SetColor(fadeColorProperty, c);
+        else
+        {
+            Color cur = fadeMaterial.color;
+            cur.r = 0f; cur.g = 0f; cur.b = 0f; cur.a = c.a;
+            fadeMaterial.color = cur;
+        }
+    }
+
+    private IEnumerator Fade(float startAlpha, float endAlpha)
+    {
+        float elapsed = 0f;
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / fadeDuration);
+            SetFadeAlpha(Mathf.Lerp(startAlpha, endAlpha, t));
+            yield return null;
+        }
+        SetFadeAlpha(endAlpha);
+    }
+
 }
