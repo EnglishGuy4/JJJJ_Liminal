@@ -7,11 +7,14 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [Header("Game Over Effects")]
-    public GameObject explosionPrefab;        // Particle system prefab
-    public Transform explosionSpawnPoint;     // Where to spawn the explosion (e.g., player, shield)
-    public AudioClip explosionClip;           // Explosion sound
+    public GameObject explosionPrefab;              // Start explosion particle
+    public GameObject loopExplosionPrefab;          // Looping explosion particle
+    public Transform explosionSpawnPoint;           // Where to spawn explosions
+    public AudioClip explosionClip;                 // Explosion sound
     public float explosionVolume = 1f;
-    public float resultsDelay = 2f;           // Delay before fade/transition
+    public float resultsDelay = 2f;                 // Delay before fade/transition
+    public float loopExplosionDelay = 1f;           // Delay before the loop explosion starts
+
 
 
 
@@ -183,11 +186,15 @@ public class GameManager : MonoBehaviour
         if (waveTimerText != null) waveTimerText.gameObject.SetActive(false);
         if (shieldSlider != null) shieldSlider.gameObject.SetActive(false);
 
-        // 🔥 Play explosion effect
+        // 🔥 Play start explosion effect
         if (explosionPrefab != null)
         {
             Transform spawnPoint = explosionSpawnPoint != null ? explosionSpawnPoint : transform;
             Instantiate(explosionPrefab, spawnPoint.position, spawnPoint.rotation);
+
+            // Start coroutine for loop explosion
+            if (loopExplosionPrefab != null)
+                StartCoroutine(PlayLoopExplosion(spawnPoint));
         }
 
         // 🔊 Play explosion sound
@@ -203,7 +210,20 @@ public class GameManager : MonoBehaviour
         StartCoroutine(FadeAndLoadResults());
     }
 
+    private IEnumerator PlayLoopExplosion(Transform spawnPoint)
+    {
+        yield return new WaitForSeconds(loopExplosionDelay);
 
+        GameObject loopExplosion = Instantiate(loopExplosionPrefab, spawnPoint.position, spawnPoint.rotation);
+
+        // Optional: make sure it keeps looping if prefab has looping particles
+        ParticleSystem ps = loopExplosion.GetComponent<ParticleSystem>();
+        if (ps != null)
+        {
+            var main = ps.main;
+            main.loop = true; // Force loop if needed
+        }
+    }
 
     private IEnumerator FadeAndLoadResults()
     {
