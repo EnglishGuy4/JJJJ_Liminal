@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TurretGame.unity
     guid: f8cb97f87adc1a34096b1a16f50bb1fc
+  - enabled: 1
+    path: Assets/Scenes/TurretGame_Results.unity
+    guid: 70799d96ef62c3f4f99bf1e588760c55
   m_configObjects: {}

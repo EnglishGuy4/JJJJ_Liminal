@@ -6,12 +6,20 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Game Over Effects")]
+    public GameObject explosionPrefab;        // Particle system prefab
+    public Transform explosionSpawnPoint;     // Where to spawn the explosion (e.g., player, shield)
+    public AudioClip explosionClip;           // Explosion sound
+    public float explosionVolume = 1f;
+    public float resultsDelay = 2f;           // Delay before fade/transition
+
+
+
     [Header("Fade Settings")]
     public Renderer fadePlaneRenderer; // Assign the plane in front of the VR camera
     public float fadeDuration = 1f;    // How long the fade takes
     private Material fadeMaterial;
     private string fadeColorProperty;
-
 
     [Header("Shield Settings")]
     public float currentShield = 100f;
@@ -38,16 +46,13 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI waveText;
     public TextMeshProUGUI waveTimerText;
-    public GameObject gameOverPanel;
-    public TextMeshProUGUI gameOverTimerText; // 🔹 optional countdown display
 
     [Header("Score")]
     public int score = 0;
 
-    [Header("Game Over Settings")]
+    [Header("Game Over / Results Settings")]
     public bool gameOverOnShieldBreak = true;
-    public string menuSceneName = "MainMenu"; // 🔹 set via inspector
-    public float returnToMenuDelay = 5f;      // 🔹 countdown in seconds
+    public string resultsSceneName = "Results"; // set via inspector
 
     [HideInInspector]
     public System.Collections.Generic.List<GameObject> enemies = new System.Collections.Generic.List<GameObject>();
@@ -96,12 +101,6 @@ public class GameManager : MonoBehaviour
             audioSource = gameObject.AddComponent<AudioSource>();
 
         audioSource.playOnAwake = false;
-
-        if (gameOverPanel != null)
-            gameOverPanel.SetActive(false);
-
-        if (gameOverTimerText != null)
-            gameOverTimerText.text = "";
     }
 
     private void Update()
@@ -184,39 +183,40 @@ public class GameManager : MonoBehaviour
         if (waveTimerText != null) waveTimerText.gameObject.SetActive(false);
         if (shieldSlider != null) shieldSlider.gameObject.SetActive(false);
 
-        // Show Game Over UI
-        if (gameOverPanel != null)
-            gameOverPanel.SetActive(true);
-
-        // Start return-to-menu countdown
-        StartCoroutine(ReturnToMenuCountdown());
-    }
-
-    private IEnumerator ReturnToMenuCountdown()
-    {
-        float timer = returnToMenuDelay;
-
-        // Countdown loop — no fade yet
-        while (timer > 0)
+        // 🔥 Play explosion effect
+        if (explosionPrefab != null)
         {
-            if (gameOverTimerText != null)
-                gameOverTimerText.text = "Returning to Menu in " + Mathf.Ceil(timer).ToString() + "...";
-
-            yield return new WaitForSeconds(1f);
-            timer -= 1f;
+            Transform spawnPoint = explosionSpawnPoint != null ? explosionSpawnPoint : transform;
+            Instantiate(explosionPrefab, spawnPoint.position, spawnPoint.rotation);
         }
 
-        // Countdown finished — now fade to black
+        // 🔊 Play explosion sound
+        if (explosionClip != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(explosionClip, explosionVolume);
+        }
+
+        // Start coroutine that waits, fades, then loads Results
+        StartCoroutine(FadeAndLoadResults());
+    }
+
+
+    private IEnumerator FadeAndLoadResults()
+    {
+        // ⏳ Wait before fading
+        if (resultsDelay > 0f)
+            yield return new WaitForSeconds(resultsDelay);
+
+        // Fade out
         if (fadeMaterial != null)
             yield return StartCoroutine(Fade(0f, 1f));
 
-        // Finally load the menu scene
-        if (!string.IsNullOrEmpty(menuSceneName))
-            UnityEngine.SceneManagement.SceneManager.LoadScene(menuSceneName);
+        // Load Results scene
+        if (!string.IsNullOrEmpty(resultsSceneName))
+            UnityEngine.SceneManagement.SceneManager.LoadScene(resultsSceneName);
         else
-            Debug.LogError("[GameManager] Menu scene name is not set!");
+            Debug.LogError("[GameManager] Results scene name is not set!");
     }
-
 
 
     public void AddScore(int amount)
@@ -311,8 +311,11 @@ public class GameManager : MonoBehaviour
         m.DisableKeyword("_ALPHATEST_ON");
         m.EnableKeyword("_ALPHABLEND_ON");
         m.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        m.renderQueue = 3000;
+
+        // 🔥 Force render order above everything (4000+ = Overlay)
+        m.renderQueue = 4000;
     }
+
 
     private void SetFadeAlpha(float alpha)
     {
@@ -343,5 +346,4 @@ public class GameManager : MonoBehaviour
         }
         SetFadeAlpha(endAlpha);
     }
-
 }
