@@ -196,9 +196,13 @@ public class GameManager : MonoBehaviour
             audioSource.PlayOneShot(explosionClip, explosionVolume);
         }
 
+        // ✅ Save score & update high score
+        ScoreManager.SubmitScore(score);
+
         // Start coroutine that waits, fades, then loads Results
         StartCoroutine(FadeAndLoadResults());
     }
+
 
 
     private IEnumerator FadeAndLoadResults()
