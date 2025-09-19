@@ -12,7 +12,14 @@ public class AllyTurret : MonoBehaviour
 
     [Header("Targeting")]
     private Transform currentTarget;
+    public Transform turretHead; // Assign this in the Inspector
+    public Transform turretCannon; // Assign this in the Inspector
 
+    [Header("Recoil Settings")]
+    public float recoilDistance = 0.5f;
+    public float recoilReturnSpeed = 8f;
+    private Vector3 cannonOriginalLocalPos;
+    private bool isRecoiling = false;
     private float fireTimer;
     private ParticleSystem[] muzzleFlashes;
 
@@ -25,6 +32,10 @@ public class AllyTurret : MonoBehaviour
             if (firePoints[i] != null)
                 muzzleFlashes[i] = firePoints[i].GetComponentInChildren<ParticleSystem>();
         }
+
+        // Store original local position for recoil
+        if (turretCannon != null)
+            cannonOriginalLocalPos = turretCannon.localPosition;
     }
 
     void Update()
@@ -36,7 +47,25 @@ public class AllyTurret : MonoBehaviour
 
         Vector3 dir = (currentTarget.position - transform.position).normalized;
         Quaternion lookRot = Quaternion.LookRotation(dir);
-        transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 2f);
+
+        if (turretHead != null)
+            turretHead.rotation = Quaternion.Slerp(turretHead.rotation, lookRot, Time.deltaTime * 2f);
+
+        // Recoil return logic
+        if (turretCannon != null)
+        {
+            if (isRecoiling)
+            {
+                // Lerp back to original position
+                turretCannon.localPosition = Vector3.Lerp(turretCannon.localPosition, cannonOriginalLocalPos, Time.deltaTime * recoilReturnSpeed);
+                // Stop lerping if close enough
+                if (Vector3.Distance(turretCannon.localPosition, cannonOriginalLocalPos) < 0.01f)
+                {
+                    turretCannon.localPosition = cannonOriginalLocalPos;
+                    isRecoiling = false;
+                }
+            }
+        }
 
         fireTimer += Time.deltaTime;
         if (fireTimer >= fireRate)
@@ -74,6 +103,13 @@ public class AllyTurret : MonoBehaviour
                 main.startRotation = Random.Range(0f, Mathf.PI * 2f);
                 muzzleFlashes[i].Play();
             }
+        }
+
+        // Trigger recoil
+        if (turretCannon != null)
+        {
+            turretCannon.localPosition = cannonOriginalLocalPos - Vector3.forward * recoilDistance;
+            isRecoiling = true;
         }
     }
 
