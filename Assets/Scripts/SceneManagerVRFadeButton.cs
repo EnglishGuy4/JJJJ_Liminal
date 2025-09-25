@@ -28,12 +28,12 @@ public class SceneManagerVRFadeButton : MonoBehaviour
         {
             Renderer r = fadeObject.GetComponent<Renderer>();
             if (r != null)
-                fadeMaterial = r.material;
+                fadeMaterial = r.material;  // runtime instance
         }
 
         if (fadeMaterial != null)
         {
-            // Start black
+            // Start fully black
             Color color = fadeMaterial.color;
             color.a = 1f;
             fadeMaterial.color = color;
@@ -41,15 +41,8 @@ public class SceneManagerVRFadeButton : MonoBehaviour
             // Fade into scene
             StartCoroutine(FadeIn());
         }
-
-        if (fadeObject != null)
-        {
-            fadeMaterial = fadeObject.GetComponent<Renderer>().material;
-            Color color = fadeMaterial.color;
-            color.a = 0f;
-            fadeMaterial.color = color;
-        }
     }
+
 
     /// <summary>
     /// Call this from a UI Button or script to fade out and load the default scene.
@@ -125,4 +118,33 @@ public class SceneManagerVRFadeButton : MonoBehaviour
         }
         isFading = false;
     }
+
+    // 🔹 NEW FUNCTION FOR UI BUTTON
+    public void LoadSceneFromUIButton(string sceneName)
+    {
+        LoadSceneWithFade(sceneName);
+    }
+
+    private void OnDisable()
+    {
+        ResetFadeMaterial();
+    }
+
+    private void OnApplicationQuit()
+    {
+        ResetFadeMaterial();
+    }
+
+    private void ResetFadeMaterial()
+    {
+        if (fadeMaterial != null && fadeMaterial.HasProperty("_Color"))
+        {
+            Color c = fadeMaterial.color;
+            c.a = 0f; // fully transparent
+            fadeMaterial.color = c;
+            Debug.Log("[SceneManagerVRFadeButton] Reset fade material to alpha=0");
+        }
+    }
+
+
 }

@@ -340,25 +340,51 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator FadeOut()
     {
+        if (fadeObject != null)
+            fadeObject.SetActive(true); // Ensure it's visible
+
         if (fadeMaterial != null)
         {
-            float timer = 0f;
-            Color color = fadeMaterial.color;
-            color.a = 0f;
-
-            while (timer < fadeDuration)
+            // Make sure the shader is transparent-capable
+            if (fadeMaterial.HasProperty("_Color"))
             {
-                timer += Time.deltaTime;
-                color.a = Mathf.Lerp(0f, 1f, timer / fadeDuration);
+                float timer = 0f;
+                Color color = fadeMaterial.color;
+                color.a = 0f; // start clear
                 fadeMaterial.color = color;
-                yield return null;
-            }
 
-            color.a = 1f;
-            fadeMaterial.color = color;
+                // Force render on top (useful if quad is world-space)
+                Renderer r = fadeObject != null ? fadeObject.GetComponent<Renderer>() : null;
+                if (r != null)
+                {
+                    r.sortingOrder = 999; // ensures it's always on top
+                }
+
+                while (timer < fadeDuration)
+                {
+                    timer += Time.deltaTime;
+                    color.a = Mathf.Lerp(0f, 1f, timer / fadeDuration);
+                    fadeMaterial.color = color;
+                    yield return null;
+                }
+
+                // Fully black at end
+                color.a = 1f;
+                fadeMaterial.color = color;
+            }
+            else
+            {
+                Debug.LogWarning("[GameManager] Fade material has no _Color property!");
+            }
         }
+        else
+        {
+            Debug.LogWarning("[GameManager] No fade material assigned!");
+        }
+
         isFading = false;
     }
+
 
     private IEnumerator FadeIn()
     {
@@ -381,5 +407,28 @@ public class GameManager : MonoBehaviour
         }
         isFading = false;
     }
+
+    private void OnDisable()
+    {
+        ResetFadeMaterial();
+    }
+
+    private void OnApplicationQuit()
+    {
+        ResetFadeMaterial();
+    }
+
+    private void ResetFadeMaterial()
+    {
+        if (fadeMaterial != null && fadeMaterial.HasProperty("_Color"))
+        {
+            Color c = fadeMaterial.color;
+            c.a = 0f; // fully transparent
+            fadeMaterial.color = c;
+            Debug.Log("[SceneManagerVRFadeButton] Reset fade material to alpha=0");
+        }
+    }
+
+
 
 }
