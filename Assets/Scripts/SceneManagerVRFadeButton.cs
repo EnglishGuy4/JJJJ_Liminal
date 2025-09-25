@@ -9,34 +9,50 @@ public class SceneManagerVRFadeButton : MonoBehaviour
     public string defaultSceneToLoad;
 
     [Header("Fade Settings")]
-    [Tooltip("Renderer of the fade plane (with a transparent-capable material)")]
-    public Renderer fadePlaneRenderer;
+    [Tooltip("Fade object with a Renderer (plane, quad, etc.)")]
+    public GameObject fadeObject;
+    [Tooltip("Optional override for fade material")]
+    public Material fadeMaterial;
     [Tooltip("Seconds it takes to fade in/out")]
     public float fadeDuration = 1f;
 
     [Header("Audio")]
     public AudioSource clickSound;
 
-    private Material fadeMaterial;
-    private string colorPropertyName;
     private bool isFading = false;
 
     private void Start()
     {
-        if (fadePlaneRenderer != null)
+        // If no material assigned manually, get it from fadeObject
+        if (fadeMaterial == null && fadeObject != null)
         {
-            fadeMaterial = fadePlaneRenderer.material;
-            DetectColorProperty();
-            ForceMaterialTransparent(fadeMaterial);
+            Renderer r = fadeObject.GetComponent<Renderer>();
+            if (r != null)
+                fadeMaterial = r.material;
+        }
 
-            // Start black and fade in
-            SetAlpha(1f);
-            StartCoroutine(Fade(1f, 0f));
+        if (fadeMaterial != null)
+        {
+            // Start black
+            Color color = fadeMaterial.color;
+            color.a = 1f;
+            fadeMaterial.color = color;
+
+            // Fade into scene
+            StartCoroutine(FadeIn());
+        }
+
+        if (fadeObject != null)
+        {
+            fadeMaterial = fadeObject.GetComponent<Renderer>().material;
+            Color color = fadeMaterial.color;
+            color.a = 0f;
+            fadeMaterial.color = color;
         }
     }
 
     /// <summary>
-    /// Call this from a UI Button or script to fade out and load a scene.
+    /// Call this from a UI Button or script to fade out and load the default scene.
     /// </summary>
     public void LoadSceneWithFade()
     {
@@ -59,61 +75,54 @@ public class SceneManagerVRFadeButton : MonoBehaviour
         if (clickSound != null && !clickSound.isPlaying)
             clickSound.Play();
 
-        yield return StartCoroutine(Fade(0f, 1f));
+        // Fade to black
+        yield return StartCoroutine(FadeOut());
 
+        // Load next scene after fade
         SceneManager.LoadScene(sceneName);
     }
 
-    private IEnumerator Fade(float startAlpha, float endAlpha)
+    private IEnumerator FadeOut()
     {
-        float elapsed = 0f;
-        while (elapsed < fadeDuration)
+        if (fadeMaterial != null)
         {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / fadeDuration);
-            float a = Mathf.Lerp(startAlpha, endAlpha, t);
-            SetAlpha(a);
-            yield return null;
+            float timer = 0f;
+            Color color = fadeMaterial.color;
+            color.a = 0f;
+
+            while (timer < fadeDuration)
+            {
+                timer += Time.deltaTime;
+                color.a = Mathf.Lerp(0f, 1f, timer / fadeDuration);
+                fadeMaterial.color = color;
+                yield return null;
+            }
+
+            color.a = 1f;
+            fadeMaterial.color = color;
         }
-        SetAlpha(endAlpha);
+        isFading = false;
     }
 
-    private void SetAlpha(float alpha)
+    private IEnumerator FadeIn()
     {
-        if (fadeMaterial == null) return;
-
-        Color c = Color.black;
-        c.a = Mathf.Clamp01(alpha);
-
-        if (!string.IsNullOrEmpty(colorPropertyName) && fadeMaterial.HasProperty(colorPropertyName))
-            fadeMaterial.SetColor(colorPropertyName, c);
-        else
+        if (fadeMaterial != null)
         {
-            Color cur = fadeMaterial.color;
-            cur.r = 0f; cur.g = 0f; cur.b = 0f; cur.a = c.a;
-            fadeMaterial.color = cur;
+            float timer = 0f;
+            Color color = fadeMaterial.color;
+            color.a = 1f;
+
+            while (timer < fadeDuration)
+            {
+                timer += Time.deltaTime;
+                color.a = Mathf.Lerp(1f, 0f, timer / fadeDuration);
+                fadeMaterial.color = color;
+                yield return null;
+            }
+
+            color.a = 0f;
+            fadeMaterial.color = color;
         }
-    }
-
-    private void DetectColorProperty()
-    {
-        if (fadeMaterial == null) return;
-
-        if (fadeMaterial.HasProperty("_Color")) colorPropertyName = "_Color";
-        else if (fadeMaterial.HasProperty("_BaseColor")) colorPropertyName = "_BaseColor";
-        else colorPropertyName = null;
-    }
-
-    private void ForceMaterialTransparent(Material m)
-    {
-        if (m == null) return;
-
-        m.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-        m.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-        m.SetInt("_ZWrite", 0);
-        m.DisableKeyword("_ALPHATEST_ON");
-        m.EnableKeyword("_ALPHABLEND_ON");
-        m.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        m.renderQueue = 3000;
+        isFading = false;
     }
 }

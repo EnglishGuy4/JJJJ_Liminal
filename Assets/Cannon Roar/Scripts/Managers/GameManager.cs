@@ -16,13 +16,16 @@ public class GameManager : MonoBehaviour
     public float loopExplosionDelay = 1f;           // Delay before the loop explosion starts
 
 
-
-
     [Header("Fade Settings")]
-    public Renderer fadePlaneRenderer; // Assign the plane in front of the VR camera
-    public float fadeDuration = 1f;    // How long the fade takes
-    private Material fadeMaterial;
-    private string fadeColorProperty;
+    [Tooltip("Optional: assign a GameObject (Quad/Plane) with Renderer")]
+    public GameObject fadeObject;
+    [Tooltip("Optional: assign fade material directly (overrides fadeObject)")]
+    public Material fadeMaterial;
+    [Tooltip("Seconds it takes to fade in/out")]
+    public float fadeDuration = 1f;
+
+    private bool isFading = false;
+
 
     [Header("Shield Settings")]
     public float currentShield = 100f;
@@ -73,13 +76,31 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // Prepare fade material
-        if (fadePlaneRenderer != null)
+      // If no material assigned manually, get it from fadeObject
+        if (fadeMaterial == null && fadeObject != null)
         {
-            fadeMaterial = fadePlaneRenderer.material;
-            DetectFadeColorProperty();
-            ForceMaterialTransparent(fadeMaterial);
-            SetFadeAlpha(0f); // Start fully transparent
+            Renderer r = fadeObject.GetComponent<Renderer>();
+            if (r != null)
+                fadeMaterial = r.material;
+        }
+
+        if (fadeMaterial != null)
+        {
+            // Start black
+            Color color = fadeMaterial.color;
+            color.a = 1f;
+            fadeMaterial.color = color;
+
+            // Fade into scene
+            StartCoroutine(FadeIn());
+        }
+
+        if (fadeObject != null)
+        {
+            fadeMaterial = fadeObject.GetComponent<Renderer>().material;
+            Color color = fadeMaterial.color;
+            color.a = 0f;
+            fadeMaterial.color = color;
         }
 
         spawnerManager = FindObjectOfType<SpawnerManager>();
@@ -233,14 +254,15 @@ public class GameManager : MonoBehaviour
 
         // Fade out
         if (fadeMaterial != null)
-            yield return StartCoroutine(Fade(0f, 1f));
+            yield return StartCoroutine(FadeOut());
 
         // Load Results scene
         if (!string.IsNullOrEmpty(resultsSceneName))
-            UnityEngine.SceneManagement.SceneManager.LoadScene(resultsSceneName);
+            SceneManager.LoadScene(resultsSceneName);
         else
             Debug.LogError("[GameManager] Results scene name is not set!");
     }
+
 
 
     public void AddScore(int amount)
@@ -316,58 +338,48 @@ public class GameManager : MonoBehaviour
         isFlashing = false;
     }
 
-    private void DetectFadeColorProperty()
+    private IEnumerator FadeOut()
     {
-        if (fadeMaterial == null) return;
-
-        if (fadeMaterial.HasProperty("_Color")) fadeColorProperty = "_Color";
-        else if (fadeMaterial.HasProperty("_BaseColor")) fadeColorProperty = "_BaseColor";
-        else fadeColorProperty = null;
-    }
-
-    private void ForceMaterialTransparent(Material m)
-    {
-        if (m == null) return;
-
-        m.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-        m.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-        m.SetInt("_ZWrite", 0);
-        m.DisableKeyword("_ALPHATEST_ON");
-        m.EnableKeyword("_ALPHABLEND_ON");
-        m.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-
-        // 🔥 Force render order above everything (4000+ = Overlay)
-        m.renderQueue = 4000;
-    }
-
-
-    private void SetFadeAlpha(float alpha)
-    {
-        if (fadeMaterial == null) return;
-
-        Color c = Color.black;
-        c.a = Mathf.Clamp01(alpha);
-
-        if (!string.IsNullOrEmpty(fadeColorProperty) && fadeMaterial.HasProperty(fadeColorProperty))
-            fadeMaterial.SetColor(fadeColorProperty, c);
-        else
+        if (fadeMaterial != null)
         {
-            Color cur = fadeMaterial.color;
-            cur.r = 0f; cur.g = 0f; cur.b = 0f; cur.a = c.a;
-            fadeMaterial.color = cur;
+            float timer = 0f;
+            Color color = fadeMaterial.color;
+            color.a = 0f;
+
+            while (timer < fadeDuration)
+            {
+                timer += Time.deltaTime;
+                color.a = Mathf.Lerp(0f, 1f, timer / fadeDuration);
+                fadeMaterial.color = color;
+                yield return null;
+            }
+
+            color.a = 1f;
+            fadeMaterial.color = color;
         }
+        isFading = false;
     }
 
-    private IEnumerator Fade(float startAlpha, float endAlpha)
+    private IEnumerator FadeIn()
     {
-        float elapsed = 0f;
-        while (elapsed < fadeDuration)
+        if (fadeMaterial != null)
         {
-            elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / fadeDuration);
-            SetFadeAlpha(Mathf.Lerp(startAlpha, endAlpha, t));
-            yield return null;
+            float timer = 0f;
+            Color color = fadeMaterial.color;
+            color.a = 1f;
+
+            while (timer < fadeDuration)
+            {
+                timer += Time.deltaTime;
+                color.a = Mathf.Lerp(1f, 0f, timer / fadeDuration);
+                fadeMaterial.color = color;
+                yield return null;
+            }
+
+            color.a = 0f;
+            fadeMaterial.color = color;
         }
-        SetFadeAlpha(endAlpha);
+        isFading = false;
     }
+
 }

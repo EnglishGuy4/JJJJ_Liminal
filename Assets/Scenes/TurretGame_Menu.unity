@@ -425,7 +425,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultSceneToLoad: 
-  fadePlaneRenderer: {fileID: 469581538}
+  fadeObject: {fileID: 0}
+  fadeMaterial: {fileID: 0}
   fadeDuration: 1
   clickSound: {fileID: 1816153644}
 --- !u!1 &50629258
@@ -1332,11 +1333,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 469581537}
   m_LocalRotation: {x: -0.70710707, y: -0, z: -0, w: 0.70710653}
-  m_LocalPosition: {x: 0, y: 0, z: 1.18}
+  m_LocalPosition: {x: 0, y: -1.7, z: 1.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 2100632398}
-  m_RootOrder: 3
+  m_Father: {fileID: 1719290936}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -90.00001, y: 0, z: 0}
 --- !u!1 &556497714
 GameObject:
@@ -8364,6 +8365,7 @@ Transform:
   m_Children:
   - {fileID: 2105762258}
   - {fileID: 1612905284}
+  - {fileID: 469581541}
   m_Father: {fileID: 1543626565}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8697,7 +8699,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   defaultSceneToLoad: TurretGame
-  fadePlaneRenderer: {fileID: 469581538}
+  fadeObject: {fileID: 469581537}
+  fadeMaterial: {fileID: 2100000, guid: 22ddda2e26461f941a6bbe13b8a49840, type: 2}
   fadeDuration: 1
   clickSound: {fileID: 1816153644}
 --- !u!1 &1816153643
@@ -9188,7 +9191,7 @@ RectTransform:
   m_GameObject: {fileID: 2033454279}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 322}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.75, y: 0.75, z: 0.75}
   m_Children:
   - {fileID: 2079667766}
   - {fileID: 178350918}
@@ -9201,7 +9204,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 24.7}
   m_SizeDelta: {x: 857, y: 429}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2033454284
@@ -9623,7 +9626,6 @@ Transform:
   - {fileID: 1062681292}
   - {fileID: 1909889246}
   - {fileID: 1256353452}
-  - {fileID: 469581541}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

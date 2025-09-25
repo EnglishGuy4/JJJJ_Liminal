@@ -33614,6 +33614,16 @@ PrefabInstance:
       propertyPath: gameOverOnShieldBreak
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 366280909880016177, guid: a3a99bb0dfb98e14aa71935281e1e3d7,
+        type: 3}
+      propertyPath: fadeObject
+      value: 
+      objectReference: {fileID: 1688409}
+    - target: {fileID: 366280909880016177, guid: a3a99bb0dfb98e14aa71935281e1e3d7,
+        type: 3}
+      propertyPath: fadeMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 22ddda2e26461f941a6bbe13b8a49840, type: 2}
     - target: {fileID: 1211485396, guid: a3a99bb0dfb98e14aa71935281e1e3d7, type: 3}
       propertyPath: m_Volume
       value: 0.26
@@ -34724,6 +34734,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4339765078659809338, guid: 828b27dc2e2a94e4bb1ca2e248316825,
+        type: 3}
+      propertyPath: m_Name
+      value: Turret Tower Pivot Change
+      objectReference: {fileID: 0}
     - target: {fileID: -6686062165462341500, guid: 828b27dc2e2a94e4bb1ca2e248316825,
         type: 3}
       propertyPath: turretHead
@@ -34734,11 +34749,6 @@ PrefabInstance:
       propertyPath: turretCannon
       value: 
       objectReference: {fileID: 373712899377380970}
-    - target: {fileID: 4339765078659809338, guid: 828b27dc2e2a94e4bb1ca2e248316825,
-        type: 3}
-      propertyPath: m_Name
-      value: Turret Tower Pivot Change
-      objectReference: {fileID: 0}
     - target: {fileID: 748345757915886121, guid: 828b27dc2e2a94e4bb1ca2e248316825,
         type: 3}
       propertyPath: m_LocalPosition.x
