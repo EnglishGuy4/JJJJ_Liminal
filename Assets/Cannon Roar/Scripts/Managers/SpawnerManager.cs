@@ -77,7 +77,7 @@ public class SpawnerManager : MonoBehaviour
     private void Start()
     {
         if (waveText != null)
-            waveText.text = "Man the turret, they're coming...";
+            waveText.text = "GET READY, THEY'RE COMING...";
         if (waveTimerText != null)
             waveTimerText.text = "";
     }
@@ -222,14 +222,14 @@ public class SpawnerManager : MonoBehaviour
 
         if (startingWave)
         {
-            waveText.text = "Wave 1 starting soon...";
+            waveText.text = "WAVE 1 STARTING SOON...";
         }
         else
         {
             if (waveMode == WaveMode.Timed)
-                waveText.text = "Next Wave Incoming...";
+                waveText.text = "NEXT WAVE INCOMING...";
             else
-                waveText.text = "Endless Wave Incoming...";
+                waveText.text = "ANOTHER WAVE INCOMING...";
         }
 
         PlaySFX(countdownSFX);
@@ -256,7 +256,7 @@ public class SpawnerManager : MonoBehaviour
     {
         if (waveText != null)
         {
-            waveText.text = "Wave: " + (currentWaveIndex + 1); // 🔹 Same UI for both modes
+            waveText.text = "WAVE: " + (currentWaveIndex + 1); // 🔹 Same UI for both modes
         }
     }
 
@@ -276,7 +276,7 @@ public class SpawnerManager : MonoBehaviour
     {
         allWavesComplete = true;
         inIntermission = false;
-        waveText.text = "All Waves Complete!";
+        waveText.text = "ALL WAVES COMPLETE!";
         if (waveTimerText != null)
             waveTimerText.text = "";
 
