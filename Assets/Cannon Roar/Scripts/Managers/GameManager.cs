@@ -425,10 +425,20 @@ public class GameManager : MonoBehaviour
             Color c = fadeMaterial.color;
             c.a = 0f; // fully transparent
             fadeMaterial.color = c;
-            Debug.Log("[SceneManagerVRFadeButton] Reset fade material to alpha=0");
+#if UNITY_EDITOR
+            UnityEditor.EditorUtility.SetDirty(fadeMaterial); // ensures editor saves this reset
+#endif
+            Debug.Log("[GameManager] Reset fade material to alpha=0");
         }
     }
 
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        ResetFadeMaterial();
+    }
+#endif
 
 
 }
