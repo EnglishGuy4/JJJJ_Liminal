@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/TurretGame_Menu.unity
     guid: a245e72fcb7d7e043932d803004cc5c6
   - enabled: 1
-    path: Assets/Scenes/TurretGame.unity
+    path: Assets/Scenes/DroneTesting.unity
     guid: f8cb97f87adc1a34096b1a16f50bb1fc
   - enabled: 1
     path: Assets/Scenes/TurretGame_Results.unity

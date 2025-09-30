@@ -11,6 +11,7 @@ TagManager:
   - Ally
   - SpawnPoint
   - Border
+  - DroneShot
   layers:
   - Default
   - TransparentFX
