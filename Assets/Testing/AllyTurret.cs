@@ -5,7 +5,7 @@ using UnityEngine;
 public class AllyTurret : MonoBehaviour
 {
     [Header("Shooting Settings")]
-    public GameObject cannonBall;        
+    public GameObject cannonBall;
     public Transform[] firePoints;       // Only need firepoints now
     public float fireRate = 2f;
     public float targetingRange = 100f;
@@ -21,7 +21,10 @@ public class AllyTurret : MonoBehaviour
     private Vector3 cannonOriginalLocalPos;
     private bool isRecoiling = false;
     private float fireTimer;
+
+    [Header("Effects")]
     private ParticleSystem[] muzzleFlashes;
+    private AudioSource audio; // 🔊 Fire sound
 
     void Start()
     {
@@ -36,6 +39,9 @@ public class AllyTurret : MonoBehaviour
         // Store original local position for recoil
         if (turretCannon != null)
             cannonOriginalLocalPos = turretCannon.localPosition;
+
+        // Grab audio component
+        audio = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -52,18 +58,18 @@ public class AllyTurret : MonoBehaviour
             turretHead.rotation = Quaternion.Slerp(turretHead.rotation, lookRot, Time.deltaTime * 2f);
 
         // Recoil return logic
-        if (turretCannon != null)
+        if (turretCannon != null && isRecoiling)
         {
-            if (isRecoiling)
+            turretCannon.localPosition = Vector3.Lerp(
+                turretCannon.localPosition,
+                cannonOriginalLocalPos,
+                Time.deltaTime * recoilReturnSpeed
+            );
+
+            if (Vector3.Distance(turretCannon.localPosition, cannonOriginalLocalPos) < 0.01f)
             {
-                // Lerp back to original position
-                turretCannon.localPosition = Vector3.Lerp(turretCannon.localPosition, cannonOriginalLocalPos, Time.deltaTime * recoilReturnSpeed);
-                // Stop lerping if close enough
-                if (Vector3.Distance(turretCannon.localPosition, cannonOriginalLocalPos) < 0.01f)
-                {
-                    turretCannon.localPosition = cannonOriginalLocalPos;
-                    isRecoiling = false;
-                }
+                turretCannon.localPosition = cannonOriginalLocalPos;
+                isRecoiling = false;
             }
         }
 
@@ -96,14 +102,18 @@ public class AllyTurret : MonoBehaviour
             cb.rb.AddForce(cb.rb.transform.forward * cb.force, ForceMode.Impulse);
             cb.smokeEffect.Play();
 
-            // 🎇 Play muzzle flash if it exists
+            // 🎇 Play muzzle flash with randomized Z rotation
             if (muzzleFlashes[i] != null)
             {
                 var main = muzzleFlashes[i].main;
-                main.startRotation = Random.Range(0f, Mathf.PI * 2f);
+                main.startRotation = Random.Range(0f, Mathf.PI * 2f); // radians
                 muzzleFlashes[i].Play();
             }
         }
+
+        // 🔊 Play fire sound
+        if (audio != null)
+            audio.Play();
 
         // Trigger recoil
         if (turretCannon != null)
@@ -119,22 +129,4 @@ public class AllyTurret : MonoBehaviour
         if (enemies.Length == 0) return null;
         return enemies[Random.Range(0, enemies.Length)].transform;
     }
-
-        // Option B: pick closest enemy (if you want smarter allies)
-        /*
-        Transform closest = null;
-        float minDist = Mathf.Infinity;
-        foreach (var e in enemies)
-        {
-            float dist = Vector3.Distance(transform.position, e.transform.position);
-            if (dist < minDist && dist <= targetingRange)
-            {
-                minDist = dist;
-                closest = e.transform;
-            }
-        }
-        return closest;
-    }
-        */
-    
 }

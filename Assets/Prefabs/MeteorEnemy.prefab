@@ -138,7 +138,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36ea7742e77d5c34aae9e6f758713254, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: {x: 0, y: 0, z: 500}
+  rotationSpeed: {x: 0, y: 0, z: 25}
 --- !u!1 &3647117096156599903
 GameObject:
   m_ObjectHideFlags: 0
@@ -717,10 +717,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4407734449912597694}
     m_Modifications:
-    - target: {fileID: 103382, guid: 0bb13cc303ac86348ae819a2d91aacb0, type: 3}
-      propertyPath: m_Name
-      value: pf_vfx-inf_psys_demo_loop_flameThrower (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 406954, guid: 0bb13cc303ac86348ae819a2d91aacb0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.36185429
@@ -776,6 +772,10 @@ PrefabInstance:
     - target: {fileID: 406954, guid: 0bb13cc303ac86348ae819a2d91aacb0, type: 3}
       propertyPath: m_LocalScale.z
       value: 0.9804131
+      objectReference: {fileID: 0}
+    - target: {fileID: 103382, guid: 0bb13cc303ac86348ae819a2d91aacb0, type: 3}
+      propertyPath: m_Name
+      value: pf_vfx-inf_psys_demo_loop_flameThrower (1)
       objectReference: {fileID: 0}
     - target: {fileID: 460832, guid: 0bb13cc303ac86348ae819a2d91aacb0, type: 3}
       propertyPath: m_LocalPosition.z
@@ -841,14 +841,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4407734449912597694}
     m_Modifications:
-    - target: {fileID: 105832, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
-      propertyPath: m_Name
-      value: pf_vfx-inf_psys_demo_loop_vulcore
-      objectReference: {fileID: 0}
-    - target: {fileID: 105832, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 452966, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.08
@@ -904,6 +896,14 @@ PrefabInstance:
     - target: {fileID: 452966, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
       propertyPath: m_LocalScale.z
       value: 4.3096585
+      objectReference: {fileID: 0}
+    - target: {fileID: 105832, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
+      propertyPath: m_Name
+      value: pf_vfx-inf_psys_demo_loop_vulcore
+      objectReference: {fileID: 0}
+    - target: {fileID: 105832, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 449200, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
       propertyPath: m_LocalPosition.x

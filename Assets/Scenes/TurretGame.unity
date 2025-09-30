@@ -4473,7 +4473,7 @@ MonoBehaviour:
   waveTimerText: {fileID: 2128932371}
   audioSource: {fileID: 745262868}
   musicSource: {fileID: 1538424675}
-  countdownSFX: {fileID: 8300000, guid: fd7fd1c283b8f6e42b6417b124cae562, type: 3}
+  countdownSFX: {fileID: 8300000, guid: 0aca274ac67bcce458926459f0eb8752, type: 3}
   waveStartSFX: {fileID: 8300000, guid: 3510bdbd9fc49bf489bd6fec1cd58ad5, type: 3}
   waveEndSFX: {fileID: 8300000, guid: 3510bdbd9fc49bf489bd6fec1cd58ad5, type: 3}
   allWavesCompleteSFX: {fileID: 8300000, guid: 9922b00674c8b4c4d9717398606b1f88, type: 3}
@@ -4491,7 +4491,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.166
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
