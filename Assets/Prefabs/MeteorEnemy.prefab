@@ -578,8 +578,8 @@ MonoBehaviour:
   portalPrefab: {fileID: 5607819269926399345, guid: 45e0f06c750176947862c10346226439,
     type: 3}
   portalLifetime: 3
-  explosionSound: {fileID: 8300000, guid: ed0d09256e50cfc45ad99565f0863c2c, type: 3}
-  explosionVolume: 1
+  explosionSound: {fileID: 8300000, guid: 9c9d047b2dfc91a4a8efaf0e4c995205, type: 3}
+  explosionVolume: 0.75
   explosionSound2D: 0
   explosionMinDistance: 1
   explosionMaxDistance: 10000
