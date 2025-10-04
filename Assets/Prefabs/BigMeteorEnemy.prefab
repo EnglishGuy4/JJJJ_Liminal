@@ -477,7 +477,7 @@ GameObject:
   - component: {fileID: 2122034443036215323}
   - component: {fileID: 8320729604627551746}
   m_Layer: 0
-  m_Name: MeteorEnemy
+  m_Name: BigMeteorEnemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -491,8 +491,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8829255948184301283}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5.9687033, y: 1.8418946, z: 6.1421366}
+  m_LocalPosition: {x: 0.014287, y: -7.2674, z: -1.6009}
+  m_LocalScale: {x: 10.26617, y: 3.1680589, z: 10.564475}
   m_Children:
   - {fileID: 8808442054071122345}
   - {fileID: 9127374465275150995}
@@ -565,14 +565,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 0}
-  health: 2
+  health: 2147483647
   enemySpawnerScript: {fileID: 0}
   boxCollider: {fileID: 0}
-  bossShip: 0
+  bossShip: 1
   enemyShip: 1
   cannonBall: {fileID: 0}
-  scoreValue: 100
-  shieldDamage: 10
+  scoreValue: 200
+  shieldDamage: 50
   explosionPrefab: {fileID: 141070, guid: 5bb09f328cde38248a9eb17356387795, type: 3}
   explosionLifetime: 3
   portalPrefab: {fileID: 5607819269926399345, guid: 45e0f06c750176947862c10346226439,
@@ -600,7 +600,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d5cbac4f2d904847b12293411b92bcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyWaypointSpeed: 40
+  enemyWaypointSpeed: 25
   enemyWaypointStoppingDistance: 5
   waypoints: []
   isDead: 0
@@ -695,7 +695,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: bdc5d894da18cb4459fb7f024738ae00, type: 2}
+      objectReference: {fileID: 2100000, guid: c9635cb3270693b45967ac0fb56368d9, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96b953ba1b28fa34f9defe81c454ee7e, type: 3}
 --- !u!4 &9127374465275150995 stripped

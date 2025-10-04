@@ -285,8 +285,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5020729354345493076}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0.0000027418137}
+  m_LocalPosition: {x: 1.0623093, y: 0.31274414, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2005956367640638443}
@@ -300,7 +300,7 @@ Transform:
   - {fileID: 846011125322697368}
   m_Father: {fileID: 6451589109465938899}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180.00002}
 --- !u!65 &1694867383360461491
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -711,6 +711,8 @@ GameObject:
   - component: {fileID: 1585283274}
   - component: {fileID: 4698739800432523861}
   - component: {fileID: 1585283279}
+  - component: {fileID: 3384611394071990631}
+  - component: {fileID: 6152431755015632809}
   m_Layer: 0
   m_Name: Drone A
   m_TagString: Enemy
@@ -805,3 +807,43 @@ MonoBehaviour:
   barrelEnd: {fileID: 4898548318402026727}
   timeBetweenShots: 5
   target: {fileID: 0}
+--- !u!114 &3384611394071990631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8058065376076368320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54318028d8e5a6c4ebe77bf0a300dd0c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  forwardSpeed: 0
+  areaSize: {x: 100, y: 100}
+  targetChangeDistance: 50
+  horizontalRange: 2
+  verticalRange: 1
+  wobbleSpeed: 2
+--- !u!195 &6152431755015632809
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8058065376076368320}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 6
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 4
+  m_BaseOffset: -2.19
+  m_WalkableMask: 1
+  m_ObstacleAvoidanceType: 4

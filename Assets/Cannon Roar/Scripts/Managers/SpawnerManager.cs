@@ -10,7 +10,11 @@ public class Wave
     public float waveTime = 30f;        // Duration of this wave
     public float spawnRate = 2f;        // How often enemies spawn
     public int maxEnemies = 10;         // Maximum enemies for this wave
+
+    [Header("Enemy Variations")]
+    public List<GameObject> enemyPrefabs = new List<GameObject>();  // Different enemy types
 }
+
 
 public enum WaveMode
 {
@@ -23,7 +27,6 @@ public class SpawnerManager : MonoBehaviour
     public event System.Action BeginSpawningEvent;
 
     [Header("Spawner Settings")]
-    public GameObject enemyPrefab;
     public List<Transform> spawnPoints = new List<Transform>();
     public List<Transform> waypoints = new List<Transform>();
 
@@ -153,11 +156,12 @@ public class SpawnerManager : MonoBehaviour
 
         if (waveMode == WaveMode.Endless)
         {
-            // Initialize endless mode with values from Wave[0] in Inspector
             endlessCurrentWave.waveTime = (waves.Count > 0 ? waves[0].waveTime : 30f);
             endlessCurrentWave.spawnRate = (waves.Count > 0 ? waves[0].spawnRate : 2f);
             endlessCurrentWave.maxEnemies = (waves.Count > 0 ? waves[0].maxEnemies : 10);
+            endlessCurrentWave.enemyPrefabs = new List<GameObject>(waves[0].enemyPrefabs); // 🔹 copy enemy list
         }
+
 
         if (musicSource != null && waveMusic != null)
         {
@@ -187,8 +191,17 @@ public class SpawnerManager : MonoBehaviour
     {
         if (spawnPoints.Count == 0) return;
 
+        Wave currentWave = (waveMode == WaveMode.Timed && currentWaveIndex < waves.Count)
+            ? waves[currentWaveIndex]
+            : endlessCurrentWave;
+
+        if (currentWave.enemyPrefabs == null || currentWave.enemyPrefabs.Count == 0) return;
+
+        // 🔹 Pick a random enemy prefab from the wave’s list
+        GameObject chosenPrefab = currentWave.enemyPrefabs[UnityEngine.Random.Range(0, currentWave.enemyPrefabs.Count)];
+
         int spawnIndex = UnityEngine.Random.Range(0, spawnPoints.Count);
-        GameObject enemy = PoolManager.current.GetPooledObject(enemyPrefab.name);
+        GameObject enemy = PoolManager.current.GetPooledObject(chosenPrefab.name);
         if (enemy == null) return;
 
         enemy.transform.position = spawnPoints[spawnIndex].position;
@@ -208,6 +221,7 @@ public class SpawnerManager : MonoBehaviour
         enemiesFromThisSpawnerList.Add(enemy);
         gameManager.enemies.Add(enemy);
     }
+
 
     private void BeginIntermission(bool startingWave = false)
     {
