@@ -1,30 +1,29 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AllyTurret : MonoBehaviour
 {
     [Header("Shooting Settings")]
-    public GameObject cannonBall;
+    public GameObject cannonBall;        
     public Transform[] firePoints;       // Only need firepoints now
     public float fireRate = 2f;
     public float targetingRange = 100f;
+    
 
     [Header("Targeting")]
     private Transform currentTarget;
-    public Transform turretHead; // Assign this in the Inspector
-    public Transform turretCannon; // Assign this in the Inspector
+    public Transform turretBase; // Assign this in the Inspector
+    public Transform turretCannonBarrel; // Assign this in the Inspector
 
+    
     [Header("Recoil Settings")]
     public float recoilDistance = 0.5f;
     public float recoilReturnSpeed = 8f;
     private Vector3 cannonOriginalLocalPos;
     private bool isRecoiling = false;
     private float fireTimer;
-
-    [Header("Effects")]
     private ParticleSystem[] muzzleFlashes;
-    private AudioSource audio; // 🔊 Fire sound
 
     void Start()
     {
@@ -37,11 +36,8 @@ public class AllyTurret : MonoBehaviour
         }
 
         // Store original local position for recoil
-        if (turretCannon != null)
-            cannonOriginalLocalPos = turretCannon.localPosition;
-
-        // Grab audio component
-        audio = GetComponent<AudioSource>();
+        if (turretCannonBarrel != null)
+            cannonOriginalLocalPos = turretCannonBarrel.localPosition;
     }
 
     void Update()
@@ -54,22 +50,22 @@ public class AllyTurret : MonoBehaviour
         Vector3 dir = (currentTarget.position - transform.position).normalized;
         Quaternion lookRot = Quaternion.LookRotation(dir);
 
-        if (turretHead != null)
-            turretHead.rotation = Quaternion.Slerp(turretHead.rotation, lookRot, Time.deltaTime * 2f);
+        if (turretBase != null)
+            turretBase.rotation = Quaternion.Slerp(turretBase.rotation, lookRot, Time.deltaTime * 2f);
 
         // Recoil return logic
-        if (turretCannon != null && isRecoiling)
+        if (turretCannonBarrel != null)
         {
-            turretCannon.localPosition = Vector3.Lerp(
-                turretCannon.localPosition,
-                cannonOriginalLocalPos,
-                Time.deltaTime * recoilReturnSpeed
-            );
-
-            if (Vector3.Distance(turretCannon.localPosition, cannonOriginalLocalPos) < 0.01f)
+            if (isRecoiling)
             {
-                turretCannon.localPosition = cannonOriginalLocalPos;
-                isRecoiling = false;
+                // Lerp back to original position
+                turretCannonBarrel.localPosition = Vector3.Lerp(turretCannonBarrel.localPosition, cannonOriginalLocalPos, Time.deltaTime * recoilReturnSpeed);
+                // Stop lerping if close enough
+                if (Vector3.Distance(turretCannonBarrel.localPosition, cannonOriginalLocalPos) < 0.01f)
+                {
+                    turretCannonBarrel.localPosition = cannonOriginalLocalPos;
+                    isRecoiling = false;
+                }
             }
         }
 
@@ -88,37 +84,54 @@ public class AllyTurret : MonoBehaviour
             Transform firePoint = firePoints[i];
             if (firePoint == null) continue;
 
-            GameObject pooledBall = PoolManager.current.GetPooledObject(cannonBall.name);
-            if (pooledBall == null) return;
+            GameObject pooledBolt = PoolManager.current.GetPooledObject(cannonBall.name);
+            if (pooledBolt == null) return;
 
-            CannonBall cb = pooledBall.GetComponent<CannonBall>();
-            cb.firedFrom = null;
-            cb.rb.transform.position = firePoint.position;
-            cb.rb.transform.rotation = firePoint.rotation;
-            pooledBall.SetActive(true);
-            cb.rb.isKinematic = false;
-            cb.trailRenderer.Clear();
-            cb.trailRenderer.enabled = true;
-            cb.rb.AddForce(cb.rb.transform.forward * cb.force, ForceMode.Impulse);
-            cb.smokeEffect.Play();
+            // Try CannonBall logic first
+            var cb = pooledBolt.GetComponent<CannonBall>();
+            if (cb != null)
+            {
+                cb.firedFrom = null;
+                cb.rb.transform.position = firePoint.position;
+                cb.rb.transform.rotation = firePoint.rotation;
+                pooledBolt.SetActive(true);
+                cb.rb.isKinematic = false;
+                cb.trailRenderer.Clear();
+                cb.trailRenderer.enabled = true;
+                cb.rb.AddForce(cb.rb.transform.forward * cb.force, ForceMode.Impulse);
+                if (cb.smokeEffect != null)
+                    cb.smokeEffect.Play();
+            }
+            else
+            {
+                // Try LazerShot logic
+                var lb = pooledBolt.GetComponent<LazerShot>();
+                if (lb != null)
+                {
+                    lb.rb.transform.position = firePoint.position;
+                    lb.rb.transform.rotation = firePoint.rotation;
+                    pooledBolt.SetActive(true);
+                    lb.rb.isKinematic = false;
+                    lb.trailRenderer.Clear();
+                    lb.trailRenderer.enabled = true;
+                    lb.rb.AddForce(lb.rb.transform.forward * lb.force, ForceMode.Impulse);
+                    // Add any LazerShot-specific effects here if needed
+                }
+            }
 
-            // 🎇 Play muzzle flash with randomized Z rotation
+            // 🎇 Play muzzle flash if it exists
             if (muzzleFlashes[i] != null)
             {
                 var main = muzzleFlashes[i].main;
-                main.startRotation = Random.Range(0f, Mathf.PI * 2f); // radians
+                main.startRotation = Random.Range(0f, Mathf.PI * 2f);
                 muzzleFlashes[i].Play();
             }
         }
 
-        // 🔊 Play fire sound
-        if (audio != null)
-            audio.Play();
-
         // Trigger recoil
-        if (turretCannon != null)
+        if (turretCannonBarrel != null)
         {
-            turretCannon.localPosition = cannonOriginalLocalPos - Vector3.forward * recoilDistance;
+            turretCannonBarrel.localPosition = cannonOriginalLocalPos - Vector3.forward * recoilDistance;
             isRecoiling = true;
         }
     }
@@ -129,4 +142,22 @@ public class AllyTurret : MonoBehaviour
         if (enemies.Length == 0) return null;
         return enemies[Random.Range(0, enemies.Length)].transform;
     }
+
+        // Option B: pick closest enemy (if you want smarter allies)
+        /*
+        Transform closest = null;
+        float minDist = Mathf.Infinity;
+        foreach (var e in enemies)
+        {
+            float dist = Vector3.Distance(transform.position, e.transform.position);
+            if (dist < minDist && dist <= targetingRange)
+            {
+                minDist = dist;
+                closest = e.transform;
+            }
+        }
+        return closest;
+    }
+        */
+    
 }

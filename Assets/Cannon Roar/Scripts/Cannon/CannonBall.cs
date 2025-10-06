@@ -77,7 +77,7 @@ public class CannonBall : MonoBehaviour
                     droneHealth.TakeDamage(damage);
                     ResetBall();
                 }
-                else
+                //else
                 {
                     Debug.Log("NO EnemyHealth or DroneHealth found on: " + collision.gameObject.name);
                 }
@@ -86,7 +86,7 @@ public class CannonBall : MonoBehaviour
             rb.velocity = rb.velocity / 2;
         }
 
-        if (collision.gameObject.CompareTag("Ground") && transform.position.y >= 10)
+        /*if (collision.gameObject.CompareTag("Ground") && transform.position.y >= 10)
         {
             Debug.Log("Cliff Collided");
             rockHit.Play();
@@ -96,7 +96,7 @@ public class CannonBall : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground") && transform.position.y < 1)
         {
             Invoke("ResetBall", 2f);
-        }
+        }*/
 
         // ---------- NEW: PowerUp ----------
         if (collision.gameObject.CompareTag("PowerUp"))
@@ -125,10 +125,10 @@ public class CannonBall : MonoBehaviour
 
     private void OnTriggerEnter(Collider trigger)
     {
-        if (trigger.CompareTag("Water"))
+        /*if (trigger.CompareTag("Water"))
         {
             waterHit.Play();
-        }
+        }*/
     }
 
     void ResetBall()
