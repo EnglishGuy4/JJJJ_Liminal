@@ -29096,9 +29096,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8198551084500448613}
-  m_LocalRotation: {x: -0.7071068, y: 0.00000897795, z: 0.00000897795, w: 0.7071068}
+  m_LocalRotation: {x: -0.70710677, y: 0.000006156983, z: 0.000006156983, w: 0.70710677}
   m_LocalPosition: {x: -46.2, y: -2.8, z: 13.1}
-  m_LocalScale: {x: 2.8280592, y: 2.8280609, z: 2.8280609}
+  m_LocalScale: {x: 2.8280592, y: 2.8280628, z: 2.8280628}
   m_Children:
   - {fileID: 5039122466722427682}
   m_Father: {fileID: 0}
@@ -29202,17 +29202,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 503477b693be05b4e9e66fb4010c0dfa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cannonBall: {fileID: 3924472261470737640, guid: 21d89cbdd88d3eb44bad38615be0d4ce,
+  cannonBall: {fileID: 4383604371159646071, guid: f046a4fd7cda0ea449ca7953f53f5cef,
     type: 3}
   firePoints:
   - {fileID: 6848778803226602998}
   - {fileID: 7626967437551580143}
-  fireRate: 2
-  targetingRange: 100
-  turretHead: {fileID: 5039122466722427682}
-  turretCannon: {fileID: 8631687366528471233}
+  fireRate: 0.5
+  targetingRange: 1000
+  minFireRate: 0.5
+  maxFireRate: 2
+  requiredAimTime: 1
+  turretBase: {fileID: 5039122466722427682}
+  turretCannonBarrel: {fileID: 3926468127060868935}
   recoilDistance: 0.5
   recoilReturnSpeed: 8
+  explosionSound: {fileID: 8300000, guid: abf6edbfb3188c148ad6f3e2442e9836, type: 3}
+  explosionVolume: 1
+  explosionSound2D: 0
+  explosionMinDistance: 1
+  explosionMaxDistance: 1000
 --- !u!82 &7594301601873755616
 AudioSource:
   m_ObjectHideFlags: 0

@@ -5353,43 +5353,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
-        type: 3}
-      propertyPath: collectionOfObjectsToBePooled.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
-        type: 3}
-      propertyPath: pooledAmountForEachObject.Array.size
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
-        type: 3}
-      propertyPath: pooledAmountForEachObject.Array.data[0]
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
-        type: 3}
-      propertyPath: collectionOfObjectsToBePooled.Array.data[4]
-      value: 
-      objectReference: {fileID: 8829255948184301283, guid: 7890881c590669f4ea70d052d6a9eebb,
-        type: 3}
-    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
-        type: 3}
-      propertyPath: pooledAmountForEachObject.Array.data[4]
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
-        type: 3}
-      propertyPath: collectionOfObjectsToBePooled.Array.data[5]
-      value: 
-      objectReference: {fileID: 5568970986509601867, guid: bfe1a5a5ea86f15419c4ef9b71769a1b,
-        type: 3}
-    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
-        type: 3}
-      propertyPath: pooledAmountForEachObject.Array.data[5]
-      value: 15
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c040cae17da156f4fb01180d27946c27, type: 3}
 --- !u!1001 &581447395
@@ -12189,11 +12152,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Ally Turret (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8198551084500448613, guid: 10a4a6680fc2bc24b99af8cd373cd28a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5160073073065199478, guid: 10a4a6680fc2bc24b99af8cd373cd28a,
         type: 3}

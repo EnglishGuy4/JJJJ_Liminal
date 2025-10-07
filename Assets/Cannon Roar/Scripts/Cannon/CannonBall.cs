@@ -109,8 +109,8 @@ public class CannonBall : MonoBehaviour
             ResetBall(); // also reset this cannonball
         }
 
-        // Add this block for drone shots
-        if (collision.gameObject.CompareTag("DroneShot")) // or "DroneShot"
+        
+        if (collision.gameObject.CompareTag("DroneShot"))
         {
             var projHealth = collision.gameObject.GetComponentInParent<ProjectileHealth>();
             if (projHealth != null)
@@ -118,7 +118,7 @@ public class CannonBall : MonoBehaviour
                 projHealth.TakeDamage(damage); // or just projHealth.Death() if you want instant destruction
             }
             // Optionally, play a hit effect here
-            ResetBall(); // Destroy/deactivate the player's cannonball as well
+            ResetBall(); 
             return;
         }
     }

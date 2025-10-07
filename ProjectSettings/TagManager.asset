@@ -12,6 +12,8 @@ TagManager:
   - SpawnPoint
   - Border
   - DroneShot
+  - PowerUp
+  - PlayerShot
   layers:
   - Default
   - TransparentFX

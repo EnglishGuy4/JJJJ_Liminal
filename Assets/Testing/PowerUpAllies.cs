@@ -13,12 +13,14 @@ public class PowerUpAllies : MonoBehaviour
             allyTurretGroup.SetActive(false); // Set allyTurretGroup inactive on Awake
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision collision)
     {
-        if (other.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("PlayerShot"))
+        {
             if (allyTurretGroup != null)
                 allyTurretGroup.SetActive(true); // Activate allyTurretGroup on powerup trigger
 
             gameObject.SetActive(false); // Disable the powerup
+        }
     }
 }

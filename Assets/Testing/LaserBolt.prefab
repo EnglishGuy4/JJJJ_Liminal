@@ -128,10 +128,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
-  force: 12000
+  force: 50000
   damage: 1
   trailRenderer: {fileID: 0}
-  lifeTime: 5
+  lifeTime: 4
 --- !u!96 &-587477003321740437
 TrailRenderer:
   serializedVersion: 2

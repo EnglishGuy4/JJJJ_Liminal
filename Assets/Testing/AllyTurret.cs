@@ -9,6 +9,11 @@ public class AllyTurret : MonoBehaviour
     public Transform[] firePoints;       // Only need firepoints now
     public float fireRate = 2f;
     public float targetingRange = 100f;
+    public float minFireRate = 1f;
+    public float maxFireRate = 3f;
+    private float myFireRate;
+    private float aimTimer = 0f;
+    public float requiredAimTime = 1.5f;
     
 
     [Header("Targeting")]
@@ -25,6 +30,13 @@ public class AllyTurret : MonoBehaviour
     private float fireTimer;
     private ParticleSystem[] muzzleFlashes;
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip explosionSound;
+    [SerializeField, Range(0f, 1f)] private float explosionVolume = 1f;
+    [SerializeField] private bool explosionSound2D = false;
+    [SerializeField] private float explosionMinDistance = 1f;
+    [SerializeField] private float explosionMaxDistance = 50f;
+
     void Start()
     {
         // Auto-grab muzzle flashes from firepoints
@@ -38,6 +50,8 @@ public class AllyTurret : MonoBehaviour
         // Store original local position for recoil
         if (turretCannonBarrel != null)
             cannonOriginalLocalPos = turretCannonBarrel.localPosition;
+
+        myFireRate = Random.Range(minFireRate, maxFireRate);
     }
 
     void Update()
@@ -47,11 +61,27 @@ public class AllyTurret : MonoBehaviour
 
         if (currentTarget == null) return;
 
+        // Aiming logic
         Vector3 dir = (currentTarget.position - transform.position).normalized;
         Quaternion lookRot = Quaternion.LookRotation(dir);
 
         if (turretBase != null)
             turretBase.rotation = Quaternion.Slerp(turretBase.rotation, lookRot, Time.deltaTime * 2f);
+
+        float angle = Quaternion.Angle(turretBase.rotation, lookRot);
+        if (angle < 10f) // within 10 degrees
+            aimTimer += Time.deltaTime;
+        else
+            aimTimer = 0f;
+
+        fireTimer += Time.deltaTime;
+        if (fireTimer >= myFireRate && aimTimer >= requiredAimTime)
+        {
+            FireCannonballs();
+            fireTimer = 0f;
+            aimTimer = 0f;
+            myFireRate = Random.Range(minFireRate, maxFireRate); // randomize for next shot
+        }
 
         // Recoil return logic
         if (turretCannonBarrel != null)
@@ -67,13 +97,6 @@ public class AllyTurret : MonoBehaviour
                     isRecoiling = false;
                 }
             }
-        }
-
-        fireTimer += Time.deltaTime;
-        if (fireTimer >= fireRate)
-        {
-            FireCannonballs();
-            fireTimer = 0f;
         }
     }
 
@@ -101,6 +124,8 @@ public class AllyTurret : MonoBehaviour
                 cb.rb.AddForce(cb.rb.transform.forward * cb.force, ForceMode.Impulse);
                 if (cb.smokeEffect != null)
                     cb.smokeEffect.Play();
+
+                PlayAllyShootingAudio();
             }
             else
             {
@@ -116,6 +141,7 @@ public class AllyTurret : MonoBehaviour
                     lb.trailRenderer.enabled = true;
                     lb.rb.AddForce(lb.rb.transform.forward * lb.force, ForceMode.Impulse);
                     // Add any LazerShot-specific effects here if needed
+                    PlayAllyShootingAudio();
                 }
             }
 
@@ -159,5 +185,24 @@ public class AllyTurret : MonoBehaviour
         return closest;
     }
         */
+
+    private void PlayAllyShootingAudio()
+    {
+        if (explosionSound != null)
+        {
+            GameObject audioGO = new GameObject("ExplosionAudio");
+            audioGO.transform.position = transform.position;
+            var src = audioGO.AddComponent<AudioSource>();
+
+            src.spatialBlend = explosionSound2D ? 0f : 1f;
+            src.rolloffMode = AudioRolloffMode.Linear;
+            src.minDistance = explosionMinDistance;
+            src.maxDistance = Mathf.Max(explosionMaxDistance, explosionMinDistance + 0.01f);
+            src.playOnAwake = false;
+
+            src.PlayOneShot(explosionSound, explosionVolume);
+            Destroy(audioGO, explosionSound.length + 0.1f);
+        }
+    }    
     
 }
