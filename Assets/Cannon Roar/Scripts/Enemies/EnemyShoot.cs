@@ -42,6 +42,10 @@ public class EnemyShoot : MonoBehaviour
         timer += Time.deltaTime;
         if (!bossShip)
         {
+            // Prevent errors if barrellEnd is not assigned or empty
+            if (barrellEnd == null || barrellEnd.Length == 0)
+                return;
+
             if (timer >= timeBetweenShots)
             {
                 barrelPicker = GetRandom(0, barrellEnd.Length);
@@ -49,6 +53,9 @@ public class EnemyShoot : MonoBehaviour
                 if (currentNumber != barrelPicker)
                 {
                     currentNumber = barrelPicker;
+
+                    if (barrellEnd[currentNumber] == null)
+                        return;
 
                     if (Physics.Raycast(barrellEnd[currentNumber].transform.position, player.transform.position - barrellEnd[currentNumber].transform.position, out hit, 500f))
                     {

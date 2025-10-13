@@ -473,7 +473,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4407734449912597694}
   - component: {fileID: 5848188393874631970}
-  - component: {fileID: 3209058177746295581}
   - component: {fileID: 2122034443036215323}
   - component: {fileID: 8320729604627551746}
   m_Layer: 0
@@ -524,34 +523,6 @@ NavMeshAgent:
   m_BaseOffset: -2.19
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
---- !u!114 &3209058177746295581
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8829255948184301283}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a662c05c9b25dac4995af1710eb75a63, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cannonball: {fileID: 8998764143647382430, guid: 7b5807ce637cb484cb4cc21252e28c20,
-    type: 3}
-  barrellEnd:
-  - {fileID: 4453298003267480339}
-  - {fileID: 8107113383950350158}
-  - {fileID: 1516589855033636320}
-  - {fileID: 1746050985065237684}
-  - {fileID: 5563718229576758744}
-  - {fileID: 1218352633154780952}
-  timeBetweenShots: 1.5
-  player: {fileID: 0}
-  targetManager: {fileID: 0}
-  targets: []
-  currentNumber: 0
-  bossShip: 0
-  reverseShot: 0
 --- !u!114 &2122034443036215323
 MonoBehaviour:
   m_ObjectHideFlags: 0
