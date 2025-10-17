@@ -121,6 +121,16 @@ public class CannonBall : MonoBehaviour
             ResetBall(); 
             return;
         }
+
+        if (collision.gameObject.CompareTag("UFO"))
+        {
+            var ufoShield = collision.gameObject.GetComponentInParent<UFOShield>();
+            if (ufoShield != null)
+            {
+                ufoShield.OnHit();
+            }
+        }
+
     }
 
     private void OnTriggerEnter(Collider trigger)
