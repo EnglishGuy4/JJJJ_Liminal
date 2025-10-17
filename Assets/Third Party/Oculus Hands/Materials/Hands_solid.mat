@@ -21,8 +21,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Hands_solid
-  m_Shader: {fileID: 7, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: 
+  m_Shader: {fileID: 208, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: _SPECULARHIGHLIGHTS_OFF
   m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -111,7 +111,7 @@ Material:
     - _FresnelPower: 0.47
     - _FresnelScale: -0.08
     - _GlossMapScale: 1
-    - _Glossiness: 0.5
+    - _Glossiness: 0.632
     - _GlossinessSource: 0
     - _GlossyReflections: 1
     - _Intensity: 0.5
@@ -139,11 +139,12 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 0.75}
-    - _Color: {r: 0.092515126, g: 0.17560129, b: 0.254717, a: 0.75}
+    - _Color: {r: 0, g: 0.5121951, b: 1, a: 0.75}
+    - _EmisColor: {r: 0, g: 0.6460881, b: 1, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FresnelColor: {r: 0.25342646, g: 0.6856558, b: 0.8018868, a: 1}
     - _MyColor: {r: 0.87058824, g: 0.87058824, b: 0.87058824, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectColor: {r: 1, g: 0, b: 0, a: 0.5019608}
     - _SpecColor: {r: 0.50735295, g: 0.50735295, b: 0.50735295, a: 1}
-    - _TintColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.5}
+    - _TintColor: {r: 0.08784264, g: 0.22943203, b: 0.8867924, a: 0.5}
