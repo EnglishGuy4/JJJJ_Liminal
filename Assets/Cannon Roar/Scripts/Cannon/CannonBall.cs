@@ -7,12 +7,12 @@ public class CannonBall : MonoBehaviour
     [HideInInspector] public Rigidbody rb;
     public float force = 1;
     public int damage = 1;
-    [HideInInspector] public TrailRenderer trailRenderer;
+    //[HideInInspector] public TrailRenderer trailRenderer;
     private SphereCollider sphereCollider;
-    ParticleSystem shipHit;
-    ParticleSystem waterHit;
-    ParticleSystem rockHit;
-    [HideInInspector] public ParticleSystem smokeEffect;
+    public GameObject standerdHitPrefab;
+    public GameObject powerupHitPrefab;
+    public GameObject droneHitPrefab;
+    
 
     [HideInInspector] public Cannon firedFrom; // <-- reference back to cannon that fired it
 
@@ -22,12 +22,12 @@ public class CannonBall : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-        trailRenderer = GetComponent<TrailRenderer>();
+        //trailRenderer = GetComponent<TrailRenderer>();
         sphereCollider = GetComponent<SphereCollider>();
-        shipHit = transform.GetChild(0).GetComponent<ParticleSystem>();
+        /*shipHit = transform.GetChild(0).GetComponent<ParticleSystem>();
         waterHit = transform.GetChild(1).GetComponent<ParticleSystem>();
-        rockHit = transform.GetChild(2).GetComponent<ParticleSystem>();
-        smokeEffect = transform.GetChild(3).GetComponent<ParticleSystem>();
+        rockHit = transform.GetChild(2).GetComponent<ParticleSystem>();*/
+        
     }
 
     void OnEnable()
@@ -63,6 +63,7 @@ public class CannonBall : MonoBehaviour
             if (enemyHealth != null)
             {
                 //Debug.Log("Found EnemyHealth!");
+                Instantiate(standerdHitPrefab, transform.position, Quaternion.identity);
                 enemyHealth.cannonBall = gameObject;
                 enemyHealth.TakeDamage(damage);
                 ResetBall();
@@ -73,6 +74,7 @@ public class CannonBall : MonoBehaviour
                 if (droneHealth != null)
                 {
                     //Debug.Log("Found DroneHealth!");
+                    Instantiate(droneHitPrefab, transform.position, Quaternion.identity);
                     droneHealth.cannonBall = gameObject;
                     droneHealth.TakeDamage(damage);
                     ResetBall();
@@ -82,7 +84,7 @@ public class CannonBall : MonoBehaviour
                     Debug.Log("NO EnemyHealth or DroneHealth found on: " + collision.gameObject.name);
                 }
             }
-            shipHit.Play();
+            Instantiate(standerdHitPrefab, transform.position, Quaternion.identity);
             rb.velocity = rb.velocity / 2;
         }
 
@@ -105,6 +107,7 @@ public class CannonBall : MonoBehaviour
             if (firedFrom != null)
                 firedFrom.ActivatePowerUp();
 
+            Instantiate(powerupHitPrefab, transform.position, Quaternion.identity);
             collision.gameObject.SetActive(false); // deactivate powerup
             ResetBall(); // also reset this cannonball
         }
@@ -144,11 +147,11 @@ public class CannonBall : MonoBehaviour
     void ResetBall()
     {
         //Debug.Log("ResetBall");
-        waterHit.Stop();
-        rockHit.Stop();
-        shipHit.Stop();
+        //waterHit.Stop();
+       // rockHit.Stop();
+        //shipHit.Stop();
         rb.isKinematic = true;
-        trailRenderer.enabled = false;
+        //trailRenderer.enabled = false;
         gameObject.SetActive(false);
     }
 }

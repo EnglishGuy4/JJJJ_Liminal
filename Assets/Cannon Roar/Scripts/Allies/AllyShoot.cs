@@ -43,8 +43,8 @@ public class AllyShoot : MonoBehaviour
                         cb.rb.transform.rotation = barrellEnd[barrelPicker].transform.rotation;
                         returnedGameObject.SetActive(true);
                         cb.rb.isKinematic = false;
-                        cb.trailRenderer.Clear();
-                        cb.trailRenderer.enabled = true;
+                        //cb.trailRenderer.Clear();
+                        //cb.trailRenderer.enabled = true;
                         cb.rb.AddForce(cb.rb.transform.up * 300, ForceMode.Impulse);
                         cb.rb.AddForce(cb.rb.transform.forward * cb.force, ForceMode.Impulse);
                         timer = 0;

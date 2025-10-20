@@ -119,12 +119,10 @@ public class AllyTurret : MonoBehaviour
                 cb.rb.transform.rotation = firePoint.rotation;
                 pooledBolt.SetActive(true);
                 cb.rb.isKinematic = false;
-                cb.trailRenderer.Clear();
-                cb.trailRenderer.enabled = true;
+                //cb.trailRenderer.Clear();
+                //cb.trailRenderer.enabled = true;
                 cb.rb.AddForce(cb.rb.transform.forward * cb.force, ForceMode.Impulse);
-                if (cb.smokeEffect != null)
-                    cb.smokeEffect.Play();
-
+                
                 PlayAllyShootingAudio();
             }
             else

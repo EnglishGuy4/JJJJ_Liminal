@@ -240,10 +240,10 @@ public class Cannon : MonoBehaviour
         cb.rb.transform.rotation = rot;
         returnedGameObject.SetActive(true);
         cb.rb.isKinematic = false;
-        cb.trailRenderer.Clear();
-        cb.trailRenderer.enabled = true;
+        //cb.trailRenderer.Clear();
+        //cb.trailRenderer.enabled = true;
         cb.rb.AddForce(cb.rb.transform.forward * cb.force, ForceMode.Impulse);
-        cb.smokeEffect.Play();
+        
     }
 
     public void ActivatePowerUp()

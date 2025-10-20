@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3989178107089599181}
   m_Layer: 0
   m_Name: PowerUp
-  m_TagString: Untagged
+  m_TagString: PowerUp
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -117,6 +117,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 74082356465617116}
     m_Modifications:
+    - target: {fileID: -927199367670048503, guid: 6432bd84bd89efd4db3148220db12b37,
+        type: 3}
+      propertyPath: m_Name
+      value: Strength_Up_FBX
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 6432bd84bd89efd4db3148220db12b37,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -171,11 +176,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: 6432bd84bd89efd4db3148220db12b37,
-        type: 3}
-      propertyPath: m_Name
-      value: Strength_Up_FBX
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6432bd84bd89efd4db3148220db12b37, type: 3}
