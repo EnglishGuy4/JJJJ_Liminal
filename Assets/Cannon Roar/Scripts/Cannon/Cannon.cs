@@ -84,8 +84,10 @@ public class Cannon : MonoBehaviour
             if (spawnerManager != null)
                 spawnerManager.BeginSpawning();
 
+            // 🔹 Turn off Tutorial Hands when turret grabbed
             if (tutorialHands != null)
                 tutorialHands.SetActive(false);
+
         }
 
         // ---------- VR Grab Handle ----------
@@ -104,6 +106,11 @@ public class Cannon : MonoBehaviour
                     handleHand.GetComponent<MeshRenderer>().enabled = true;
                     hand.GetComponent<MeshRenderer>().enabled = false;
                     if (secondaryHand != null) secondaryHand.SetActive(false);
+
+                    // 🔹 Turn off Tutorial Hands when turret grabbed
+                    if (tutorialHands != null)
+                        tutorialHands.SetActive(false);
+
 
                     // 🔹 Trigger waves when cannon is first grabbed
                     if (spawnerManager != null)
@@ -124,10 +131,6 @@ public class Cannon : MonoBehaviour
                     if (secondaryHand != null) secondaryHand.SetActive(true);
                 }
             }
-
-            if (tutorialHands != null)
-                tutorialHands.SetActive(false);
-
         }
 
         if (grabHandle)
