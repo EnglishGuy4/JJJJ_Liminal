@@ -51,6 +51,10 @@ public class Cannon : MonoBehaviour
     public float recoilRecovery = 10f;
     private float currentRecoil = 0f;
 
+    // Tutorial Hands
+    [Header("Tutorial Hands")]
+    [SerializeField] private GameObject tutorialHands;
+
     void Start()
     {
         initialGrab = false;
@@ -79,6 +83,9 @@ public class Cannon : MonoBehaviour
             // 🔹 Tell SpawnerManager to begin waves
             if (spawnerManager != null)
                 spawnerManager.BeginSpawning();
+
+            if (tutorialHands != null)
+                tutorialHands.SetActive(false);
         }
 
         // ---------- VR Grab Handle ----------
@@ -117,6 +124,10 @@ public class Cannon : MonoBehaviour
                     if (secondaryHand != null) secondaryHand.SetActive(true);
                 }
             }
+
+            if (tutorialHands != null)
+                tutorialHands.SetActive(false);
+
         }
 
         if (grabHandle)
