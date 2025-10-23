@@ -62,6 +62,14 @@ public class Cannon : MonoBehaviour
     [Header("Tutorial Hands")]
     [SerializeField] private GameObject tutorialHands;
 
+    // Tutorial Dialogue
+    [Header("Tutorial Dialogue")]
+    [SerializeField] private GameObject tutorialDialogue;
+
+    // Game Start Dialogue
+    [Header("Game Start Dialogue")]
+    [SerializeField] private GameObject gameStartDialogue;
+
     void Start()
     {
         initialGrab = false;
@@ -95,6 +103,14 @@ public class Cannon : MonoBehaviour
             if (tutorialHands != null)
                 tutorialHands.SetActive(false);
 
+            // 🔹 Turn off Tutorial Dialogue when turret grabbed
+            if (tutorialDialogue != null)
+                tutorialDialogue.SetActive(false);
+
+            // 🔹 Turn on Game Start Dialogue when turret grabbed
+            if (gameStartDialogue != null)
+                gameStartDialogue.SetActive(true);
+
         }
 
         // ---------- VR Grab Handle ----------
@@ -118,6 +134,13 @@ public class Cannon : MonoBehaviour
                     if (tutorialHands != null)
                         tutorialHands.SetActive(false);
 
+                    // 🔹 Turn off Tutorial Dialogue when turret grabbed
+                    if (tutorialDialogue != null)
+                        tutorialDialogue.SetActive(false);
+
+                    // 🔹 Turn on Game Start Dialogue when turret grabbed
+                    if (gameStartDialogue != null)
+                        gameStartDialogue.SetActive(true);
 
                     // 🔹 Trigger waves when cannon is first grabbed
                     if (spawnerManager != null)
