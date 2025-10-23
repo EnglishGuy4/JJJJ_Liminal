@@ -41,9 +41,16 @@ public class Cannon : MonoBehaviour
     [HideInInspector] public bool initialGrab;
 
     // Mouse control
+    [Header("Rotation Settings")]
+    [Tooltip("Mouse sensitivity for Editor mode")]
     public float mouseSensitivity = 50f;
+
+    [Tooltip("Rotation speed for VR mode")]
+    public float vrRotationSpeed = 15f;
+
     private float pitch = 0f;
     private float yaw = 0f;
+
 
     // Recoil Settings
     [Header("Recoil Settings")]
@@ -145,7 +152,7 @@ public class Cannon : MonoBehaviour
                 float handX = Mathf.Clamp(rotation.x, -0.4f, 0.2f);
                 float handY = Mathf.Clamp(rotation.y, -0.4f, 0.4f);
 
-                float rotationSpeed = 15f;
+                float rotationSpeed = vrRotationSpeed;
                 cBase.transform.rotation = Quaternion.Lerp(
                     cBase.transform.rotation,
                     new Quaternion(0, handY, 0, cBase.transform.rotation.w),

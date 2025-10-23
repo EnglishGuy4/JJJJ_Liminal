@@ -13265,8 +13265,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206929210}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.12, y: 1.98, z: 3.87}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.12, y: 0.761, z: 3.87}
+  m_LocalScale: {x: 0.5073729, y: 0.5073729, z: 0.5073729}
   m_Children: []
   m_Father: {fileID: 923302818}
   m_RootOrder: 2
@@ -23403,6 +23403,11 @@ PrefabInstance:
       propertyPath: tutorialHands
       value: 
       objectReference: {fileID: 923302817}
+    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: vrRotationSpeed
+      value: 22.5
+      objectReference: {fileID: 0}
     - target: {fileID: 376891949510447137, guid: ed4d40976a4d723439aa4a65662774f6,
         type: 3}
       propertyPath: m_Enabled
