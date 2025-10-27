@@ -45,6 +45,12 @@ public class SpawnerManager : MonoBehaviour
     public TextMeshProUGUI waveText;
     public TextMeshProUGUI waveTimerText;
 
+    [Header("PowerUp Settings")]
+    [Tooltip("Wave number (1-based) that grants the cannon its shotgun powerup when that wave starts. Set 0 to disable.")]
+    public int shotgunPowerupWaveNumber = 2;
+    [Tooltip("Assign the cannon to grant the powerup to (drag the Cannon GameObject here).")]
+    public Cannon cannonToPowerUp;
+
     [Header("Audio")]
     public AudioSource audioSource;
     public AudioSource musicSource;
@@ -127,8 +133,7 @@ public class SpawnerManager : MonoBehaviour
             }
             else
             {
-                // Endless mode: increase difficulty
-                endlessCurrentWave.waveTime = endlessCurrentWave.waveTime; // keep user-defined time
+                // Endless mode: increase difficulty (keep waveTime as configured)
                 endlessCurrentWave.spawnRate = Mathf.Max(minSpawnRate, endlessCurrentWave.spawnRate - spawnRateDecrease);
                 endlessCurrentWave.maxEnemies = Mathf.Min(maxEnemiesCap, endlessCurrentWave.maxEnemies + maxEnemiesIncrease);
 
@@ -263,6 +268,16 @@ public class SpawnerManager : MonoBehaviour
         {
             UpdateWaveText();
             PlaySFX(waveStartSFX);
+
+            // If configured, grant the cannon a powerup when this wave starts
+            if (shotgunPowerupWaveNumber > 0 && cannonToPowerUp != null)
+            {
+                // currentWaveIndex is zero-based; shotgunPowerupWaveNumber is 1-based
+                if ((currentWaveIndex + 1) == shotgunPowerupWaveNumber)
+                {
+                    cannonToPowerUp.ActivatePowerUp();
+                }
+            }
         }
     }
 

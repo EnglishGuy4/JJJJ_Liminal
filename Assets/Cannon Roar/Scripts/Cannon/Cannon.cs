@@ -54,6 +54,7 @@ public class Cannon : MonoBehaviour
 
     // Recoil Settings
     [Header("Recoil Settings")]
+    public int shotgunSpread = 4;
     public float recoilAngle = 5f;
     public float recoilRecovery = 10f;
     private float currentRecoil = 0f;
@@ -224,7 +225,7 @@ public class Cannon : MonoBehaviour
                     firePressed = true;
             }
 
-            if (firePressed && !isPoweredUp)
+            if (firePressed)
                 FireCannon();
         }
     }
@@ -233,12 +234,26 @@ public class Cannon : MonoBehaviour
     {
         if (isPoweredUp)
         {
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < shotgunSpread; i++)
             {
-                float spreadX = Random.Range(-5f, 5f);
-                float spreadY = Random.Range(-5f, 5f);
+                // Exact uniform sampling over a cone (no axis bias):
+                // pick cos(theta) uniformly between cos(maxAngle) and 1.
+                float maxAngle = 1f; // degrees
+                float maxAngleRad = maxAngle * Mathf.Deg2Rad;
 
-                Quaternion spreadRotation = barrelEnd.transform.rotation * Quaternion.Euler(spreadX, spreadY, 0);
+                // Sample uniformly on the spherical cap/cone
+                float u = Random.value; // [0,1)
+                float cosTheta = Mathf.Lerp(Mathf.Cos(maxAngleRad), 1f, u);
+                float sinTheta = Mathf.Sqrt(1f - cosTheta * cosTheta);
+                float phi = Random.Range(0f, Mathf.PI * 2f);
+
+                // Direction in barrel's local space (z-forward)
+                Vector3 localDir = new Vector3(sinTheta * Mathf.Cos(phi), sinTheta * Mathf.Sin(phi), cosTheta);
+
+                // Convert to world space and get rotation
+                Vector3 worldDir = barrelEnd.transform.TransformDirection(localDir).normalized;
+                Quaternion spreadRotation = Quaternion.LookRotation(worldDir, barrelEnd.transform.up);
+
                 SpawnCannonball(barrelEnd.transform.position, spreadRotation);
             }
         }
@@ -246,7 +261,6 @@ public class Cannon : MonoBehaviour
         {
             SpawnCannonball(barrelEnd.transform.position, barrelEnd.transform.rotation);
         }
-
 
         // 🎇 Randomize muzzle flash Z rotation
         if (particleSystem != null)
@@ -256,8 +270,6 @@ public class Cannon : MonoBehaviour
             particleSystem.Play();
         }
 
-        
-        //particleSystem.Play();
         audio.Play();
 
         currentRecoil += recoilAngle;
@@ -277,17 +289,37 @@ public class Cannon : MonoBehaviour
     {
         GameObject returnedGameObject = PoolManager.current.GetPooledObject(cannonBall.name);
         if (returnedGameObject == null) return;
+        // Use a local reference to avoid cross-iteration state when spawning multiple pooled objects
+        CannonBall localCb = returnedGameObject.GetComponent<CannonBall>();
+        localCb.firedFrom = this;
 
-        cb = returnedGameObject.GetComponent<CannonBall>();
-        cb.firedFrom = this;
-        cb.rb.transform.position = pos;
-        cb.rb.transform.rotation = rot;
+        // Small forward offset to reduce immediate collider overlap when multiple shots spawn simultaneously
+        float spawnOffset = 0.2f;
+        Vector3 forward = rot * Vector3.forward;
+        localCb.rb.transform.position = pos + forward * spawnOffset;
+        localCb.rb.transform.rotation = rot;
+
         returnedGameObject.SetActive(true);
-        cb.rb.isKinematic = false;
-        //cb.trailRenderer.Clear();
-        //cb.trailRenderer.enabled = true;
-        cb.rb.AddForce(cb.rb.transform.forward * cb.force, ForceMode.Impulse);
-        
+
+        // Make kinematic for a single physics step, then enable and apply impulse to avoid overlap resolution pushing them aside
+        localCb.rb.isKinematic = true;
+        // Clear any previous velocity
+        localCb.rb.velocity = Vector3.zero;
+
+        // Start coroutine to enable physics and apply force on next FixedUpdate
+        StartCoroutine(EnablePhysicsNextFixed(localCb));
+    }
+
+    private IEnumerator EnablePhysicsNextFixed(CannonBall cbLocal)
+    {
+        // Wait for the next physics step so the spawned object isn't immediately resolved against nearby colliders
+        yield return new WaitForFixedUpdate();
+
+        if (cbLocal == null || cbLocal.rb == null) yield break;
+
+        cbLocal.rb.isKinematic = false;
+        cbLocal.rb.velocity = Vector3.zero;
+        cbLocal.rb.AddForce(cbLocal.rb.transform.forward * cbLocal.force, ForceMode.Impulse);
     }
 
     public void ActivatePowerUp()
@@ -295,16 +327,16 @@ public class Cannon : MonoBehaviour
         if (isPoweredUp) return;
         isPoweredUp = true;
 
-        if (powerUpRoutine != null)
-            StopCoroutine(powerUpRoutine);
-        if (autoFireRoutine != null)
-            StopCoroutine(autoFireRoutine);
+        //if (powerUpRoutine != null)
+            //StopCoroutine(powerUpRoutine);
+        //if (autoFireRoutine != null)
+            //StopCoroutine(autoFireRoutine);
 
-        powerUpRoutine = StartCoroutine(PowerUpTimer());
-        autoFireRoutine = StartCoroutine(AutoFireCannon());
+        //powerUpRoutine = StartCoroutine(PowerUpTimer());
+        //autoFireRoutine = StartCoroutine(AutoFireCannon());
     }
 
-    private IEnumerator AutoFireCannon()
+    /*private IEnumerator AutoFireCannon()
     {
         while (isPoweredUp)
         {
@@ -320,5 +352,5 @@ public class Cannon : MonoBehaviour
 
         if (autoFireRoutine != null)
             StopCoroutine(autoFireRoutine);
-    }
+    }*/
 }
