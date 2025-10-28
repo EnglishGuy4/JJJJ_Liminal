@@ -26,11 +26,11 @@ public class Cannon : MonoBehaviour
     private new AudioSource audio;
 
     [Header("Power Up Settings")]
-    public bool isPoweredUp = false;
-    public float powerUpDuration = 8f;
+    public bool isScatterShot = false;
+    public bool isFullAutoShot = false;
     private Coroutine powerUpRoutine;
-    private Coroutine autoFireRoutine;
-    public float autoFireRate = 0.25f;
+    private Coroutine autoFireRoutine; // ensure this exists (you already have autoFireRoutine field)
+    public float fullAutoFireRate = 0.25f;
 
     [Header("Spawner Manager")]
     public SpawnerManager spawnerManager; // 🔹 Reference to SpawnerManager
@@ -44,6 +44,7 @@ public class Cannon : MonoBehaviour
     [Header("Rotation Settings")]
     [Tooltip("Mouse sensitivity for Editor mode")]
     public float mouseSensitivity = 50f;
+    bool firePressed = false;
 
     [Tooltip("Rotation speed for VR mode")]
     public float vrRotationSpeed = 15f;
@@ -214,25 +215,59 @@ public class Cannon : MonoBehaviour
             }
 
             // Fire
-            bool firePressed = false;
-            if (Application.isEditor)
-                firePressed = Input.GetMouseButtonDown(0);
-            else
+            //bool firePressed = false;
             {
-                if (primaryInput != null && primaryInput.GetButtonDown(VRButton.Trigger))
-                    firePressed = true;
-                if (secondaryInput != null && secondaryInput.GetButtonDown(VRButton.Trigger))
-                    firePressed = true;
-            }
+                // Fire input handling: detect both "down" (single) and "hold" (continuous)
+                bool holdFire = false;
+                bool downFire = false;
 
-            if (firePressed)
-                FireCannon();
+                if (Application.isEditor)
+                {
+                    holdFire = Input.GetMouseButton(0);       // held
+                    downFire = Input.GetMouseButtonDown(0);   // single-frame press
+                }
+                else
+                {
+                    if (primaryInput != null)
+                    {
+                        holdFire |= primaryInput.GetButton(VRButton.Trigger);
+                        downFire |= primaryInput.GetButtonDown(VRButton.Trigger);
+                    }
+                    if (secondaryInput != null)
+                    {
+                        holdFire |= secondaryInput.GetButton(VRButton.Trigger);
+                        downFire |= secondaryInput.GetButtonDown(VRButton.Trigger);
+                    }
+                }
+
+                // Use holdFire for full-auto, downFire for single-shot
+                if (isFullAutoShot)
+                    firePressed = holdFire;
+                else
+                    firePressed = downFire;
+
+                if (!isFullAutoShot && firePressed)
+                    FireCannon();
+                else if (isFullAutoShot && firePressed)
+                {
+                    if (autoFireRoutine == null)
+                        autoFireRoutine = StartCoroutine(FullAutoFireCannon());
+                }
+                else
+                {
+                    if (autoFireRoutine != null)
+                    {
+                        StopCoroutine(autoFireRoutine);
+                        autoFireRoutine = null;
+                    }
+                }
+            }
         }
     }
 
     private void FireCannon()
     {
-        if (isPoweredUp)
+        if (isScatterShot)
         {
             for (int i = 0; i < shotgunSpread; i++)
             {
@@ -322,29 +357,65 @@ public class Cannon : MonoBehaviour
         cbLocal.rb.AddForce(cbLocal.rb.transform.forward * cbLocal.force, ForceMode.Impulse);
     }
 
-    public void ActivatePowerUp()
+    public void ActivateScatterShot()
     {
-        if (isPoweredUp) return;
-        isPoweredUp = true;
+        //if (isScatterShot) return;
+        isScatterShot = true;
 
         //if (powerUpRoutine != null)
-            //StopCoroutine(powerUpRoutine);
+        //StopCoroutine(powerUpRoutine);
         //if (autoFireRoutine != null)
-            //StopCoroutine(autoFireRoutine);
+        //StopCoroutine(autoFireRoutine);
 
         //powerUpRoutine = StartCoroutine(PowerUpTimer());
         //autoFireRoutine = StartCoroutine(AutoFireCannon());
     }
 
-    /*private IEnumerator AutoFireCannon()
+    public void DeactivateScatterShot()
     {
-        while (isPoweredUp)
+        isScatterShot = false;
+
+        //if (powerUpRoutine != null)
+        //StopCoroutine(powerUpRoutine);
+        //if (autoFireRoutine != null)
+        //StopCoroutine(autoFireRoutine);
+    }
+    
+    public void ActivateFullAutoShot()
+    {
+        //if (isScatterShot) return;
+        isFullAutoShot = true;
+
+        //if (powerUpRoutine != null)
+        //StopCoroutine(powerUpRoutine);
+        //if (autoFireRoutine != null)
+        //StopCoroutine(autoFireRoutine);
+
+        //powerUpRoutine = StartCoroutine(PowerUpTimer());
+        //autoFireRoutine = StartCoroutine(AutoFireCannon());
+    }
+    
+    public void DeactivateFullAutoShot()
+    {
+        isFullAutoShot = false;
+        if (autoFireRoutine != null)
         {
-            FireCannon();
-            yield return new WaitForSeconds(autoFireRate);
+            StopCoroutine(autoFireRoutine);
+            autoFireRoutine = null;
         }
     }
 
+
+    private IEnumerator FullAutoFireCannon()
+    {
+        while (isFullAutoShot)
+        {
+            FireCannon();
+            yield return new WaitForSeconds(fullAutoFireRate);
+        }
+        autoFireRoutine = null;
+    }
+    /*
     private IEnumerator PowerUpTimer()
     {
         yield return new WaitForSeconds(powerUpDuration);
