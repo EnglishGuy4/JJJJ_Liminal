@@ -98,7 +98,7 @@ public class CannonBall : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground") && transform.position.y < 1)
         {
             Invoke("ResetBall", 2f);
-        }*/
+        }
 
         // ---------- NEW: PowerUp ----------
         if (collision.gameObject.CompareTag("PowerUp"))
@@ -110,7 +110,7 @@ public class CannonBall : MonoBehaviour
             Instantiate(powerupHitPrefab, transform.position, Quaternion.identity);
             collision.gameObject.SetActive(false); // deactivate powerup
             ResetBall(); // also reset this cannonball
-        }
+        }*/
 
         
         if (collision.gameObject.CompareTag("DroneShot"))

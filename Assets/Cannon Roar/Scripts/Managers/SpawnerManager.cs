@@ -45,6 +45,19 @@ public class SpawnerManager : MonoBehaviour
     public TextMeshProUGUI waveText;
     public TextMeshProUGUI waveTimerText;
 
+    [Header("ScatterShot Settings")]
+    [Tooltip("Wave number (1-based) that grants the cannon its scatter shot powerup when that wave starts. Set 0 to disable.")]
+    public int scatterShotStartWave = 2;
+    public int scatterShotEndWave = 3;
+    [Tooltip("Assign the cannon to grant the powerup to (drag the Cannon GameObject here).")]
+    public Cannon cannon;
+
+    [Header("FullAuto Settings")]
+    [Tooltip("Wave number (1-based) that grants the cannon its full auto powerup when that wave starts. Set 0 to disable.")]
+    public int fullAutoStartWave = 4;
+    public int fullAutoEndWave = 5;
+    
+
     [Header("Audio")]
     public AudioSource audioSource;
     public AudioSource musicSource;
@@ -127,8 +140,7 @@ public class SpawnerManager : MonoBehaviour
             }
             else
             {
-                // Endless mode: increase difficulty
-                endlessCurrentWave.waveTime = endlessCurrentWave.waveTime; // keep user-defined time
+                // Endless mode: increase difficulty (keep waveTime as configured)
                 endlessCurrentWave.spawnRate = Mathf.Max(minSpawnRate, endlessCurrentWave.spawnRate - spawnRateDecrease);
                 endlessCurrentWave.maxEnemies = Mathf.Min(maxEnemiesCap, endlessCurrentWave.maxEnemies + maxEnemiesIncrease);
 
@@ -263,6 +275,35 @@ public class SpawnerManager : MonoBehaviour
         {
             UpdateWaveText();
             PlaySFX(waveStartSFX);
+
+            int currentWaveNumber = currentWaveIndex + 1;
+
+            // Turns on scatter shot powerup if within the specified wave range or off
+            if (scatterShotStartWave > 0 && cannon != null)
+            {
+                // currentWaveIndex is zero-based; scatterShotPowerupWaveNumber is 1-based
+                if (((currentWaveNumber) >= scatterShotStartWave) && ((currentWaveNumber) < scatterShotEndWave))
+                {
+                    cannon.ActivateScatterShot();
+                }
+                else if ((currentWaveNumber) >= (scatterShotEndWave))
+                {
+                    cannon.DeactivateScatterShot();
+                }
+            }
+
+            if (fullAutoStartWave > 0 && cannon != null)
+            {
+                // currentWaveIndex is zero-based; fullAutoPowerupWaveNumber is 1-based
+                if (((currentWaveNumber) >= fullAutoStartWave) && ((currentWaveNumber) < fullAutoEndWave))
+                {
+                    cannon.ActivateFullAutoShot();
+                }
+                else if ((currentWaveNumber) >= (fullAutoEndWave))
+                {
+                    cannon.DeactivateFullAutoShot();
+                }
+            }
         }
     }
 

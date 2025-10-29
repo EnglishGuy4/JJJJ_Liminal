@@ -8,13 +8,16 @@ public class DroneShot : MonoBehaviour
     public GameObject droneShotPrefab; // Assign your projectile prefab here
     public Transform barrelEnd;        // Assign your barrel end (empty GameObject) here
     public float timeBetweenShots = 1f;
+    public float timer = 4f;
     public Transform target; // Assign your shield here
+    [HideInInspector] public bool canShoot = false; // controlled by ship
 
-    private float timer = 0f;
+    
 
     private void Update()
     {
         if (target == null) return;
+        if (!canShoot) return; // don't shoot until allowed
 
         timer += Time.deltaTime;
         if (timer >= timeBetweenShots)

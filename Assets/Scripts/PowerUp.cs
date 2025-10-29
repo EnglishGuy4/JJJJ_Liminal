@@ -33,7 +33,7 @@ public class PowerUp : MonoBehaviour
         if (collision.gameObject.CompareTag("PlayerShot"))
         {
             // Activate cannon power up
-            collision.gameObject.GetComponent<CannonBall>().firedFrom.ActivatePowerUp();
+            collision.gameObject.GetComponent<CannonBall>().firedFrom.ActivateScatterShot();
 
             // Start respawn coroutine to hide & re-enable later
             StartCoroutine(RespawnRoutine());
