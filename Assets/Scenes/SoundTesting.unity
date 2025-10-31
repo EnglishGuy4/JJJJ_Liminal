@@ -2309,18 +2309,6 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 97686df2fa7cd7b4a8b82c3cdad5841d, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d67d102a8fc20942b55a2ee48860175, type: 3}
---- !u!114 &156200937 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
-    type: 3}
-  m_PrefabInstance: {fileID: 2381081738118955342}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bdfd6e2ff2054424ba2e7f4dbdb03ba3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &181807430
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6962,6 +6950,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PoolManager
       objectReference: {fileID: 0}
+    - target: {fileID: 5700958728383478904, guid: c040cae17da156f4fb01180d27946c27,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5700958728383478905, guid: c040cae17da156f4fb01180d27946c27,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -8611,7 +8604,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &729035108
 Transform:
   m_ObjectHideFlags: 0
@@ -8812,7 +8805,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &745262866
 Transform:
   m_ObjectHideFlags: 0
@@ -8942,9 +8935,9 @@ MonoBehaviour:
   waveTimerText: {fileID: 2128932371}
   scatterShotStartWave: 2
   scatterShotEndWave: 3
-  cannon: {fileID: 156200937}
-  fullAutoStartWave: 4
-  fullAutoEndWave: 5
+  cannon: {fileID: 0}
+  fullAutoStartWave: 3
+  fullAutoEndWave: 4
   audioSource: {fileID: 745262868}
   musicSource: {fileID: 1538424675}
   countdownSFX: {fileID: 8300000, guid: 0aca274ac67bcce458926459f0eb8752, type: 3}
@@ -9261,7 +9254,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPosition: {fileID: 1008907451}
   moveDuration: 15
-  spawnerManager: {fileID: 745262867}
+  spawnerManager: {fileID: 0}
 --- !u!4 &761978753
 Transform:
   m_ObjectHideFlags: 0
@@ -12266,7 +12259,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1078134518
 Transform:
   m_ObjectHideFlags: 0
@@ -15821,6 +15814,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BossShip
       objectReference: {fileID: 0}
+    - target: {fileID: 6013814477992480731, guid: a9b9b3b60b777d044b61b1fe28157d7c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1502485696703278470, guid: a9b9b3b60b777d044b61b1fe28157d7c,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -15880,22 +15878,22 @@ PrefabInstance:
         type: 3}
       propertyPath: waypoints.Array.data[0]
       value: 
-      objectReference: {fileID: 729035107}
+      objectReference: {fileID: 0}
     - target: {fileID: 4163765580254583115, guid: a9b9b3b60b777d044b61b1fe28157d7c,
         type: 3}
       propertyPath: waypoints.Array.data[1]
       value: 
-      objectReference: {fileID: 1078134517}
+      objectReference: {fileID: 0}
     - target: {fileID: 4163765580254583115, guid: a9b9b3b60b777d044b61b1fe28157d7c,
         type: 3}
       propertyPath: waypoints.Array.data[2]
       value: 
-      objectReference: {fileID: 1890567692}
+      objectReference: {fileID: 0}
     - target: {fileID: 4163765580254583115, guid: a9b9b3b60b777d044b61b1fe28157d7c,
         type: 3}
       propertyPath: waypoints.Array.data[3]
       value: 
-      objectReference: {fileID: 1810415372}
+      objectReference: {fileID: 0}
     - target: {fileID: 68536981, guid: a9b9b3b60b777d044b61b1fe28157d7c, type: 3}
       propertyPath: m_AngularSpeed
       value: 15
@@ -21474,7 +21472,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1810415373
 Transform:
   m_ObjectHideFlags: 0
@@ -22039,7 +22037,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1882395434
 Transform:
   m_ObjectHideFlags: 0
@@ -22072,7 +22070,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1890567693
 Transform:
   m_ObjectHideFlags: 0
@@ -24962,6 +24960,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 366280909880016191, guid: a3a99bb0dfb98e14aa71935281e1e3d7,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 763815352, guid: a3a99bb0dfb98e14aa71935281e1e3d7, type: 3}
       propertyPath: BypassReverbZones
       value: 1
@@ -25513,7 +25516,7 @@ PrefabInstance:
         type: 3}
       propertyPath: spawnerManager
       value: 
-      objectReference: {fileID: 745262867}
+      objectReference: {fileID: 0}
     - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
         type: 3}
       propertyPath: tutorialHands
@@ -25523,12 +25526,37 @@ PrefabInstance:
         type: 3}
       propertyPath: tutorialDialogue
       value: 
-      objectReference: {fileID: 1882395433}
+      objectReference: {fileID: 0}
     - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
         type: 3}
       propertyPath: gameStartDialogue
       value: 
-      objectReference: {fileID: 902666794}
+      objectReference: {fileID: 0}
+    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: singleShotVolume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: startVolume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: loopVolume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: endVolume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: scatterVolume
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4622140728014162643, guid: ed4d40976a4d723439aa4a65662774f6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -25692,7 +25720,7 @@ PrefabInstance:
     - target: {fileID: 2345567913635400698, guid: 8b8ca5887283d9f49a2b6013a6ec3e78,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3351473987537701863, guid: 8b8ca5887283d9f49a2b6013a6ec3e78,
         type: 3}

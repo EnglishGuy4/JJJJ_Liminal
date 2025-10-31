@@ -41,11 +41,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 5d23eefc64759a64b845b40884f23bcd, type: 3}
-  m_PlayOnAwake: 1
+  m_audioClip: {fileID: 8300000, guid: 8bc3c0001171c0541ae816e7c324ff3b, type: 3}
+  m_PlayOnAwake: 0
   m_Volume: 0.5
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -55,9 +55,9 @@ AudioSource:
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
+  BypassEffects: 1
+  BypassListenerEffects: 1
+  BypassReverbZones: 1
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -138,7 +138,7 @@ GameObject:
   - component: {fileID: 1211485395}
   - component: {fileID: 1211485396}
   m_Layer: 0
-  m_Name: OceanSounds
+  m_Name: Turret Ambient
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -168,23 +168,23 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 430fbaa8b0604d744ab8310175aa929b, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 0c4c237ba9c2dac48b7fbcc3317d4d02, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.26
   m_Pitch: 1
   Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 0
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
   rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
+  BypassEffects: 1
+  BypassListenerEffects: 1
+  BypassReverbZones: 1
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -299,8 +299,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 953a18eb5413a1d419fc08e3da729117, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionPrefab: {fileID: 164944, guid: 93e368dcf2e6b014b90a4bce43ae962b, type: 3}
+  loopExplosionPrefab: {fileID: 120944, guid: 3bac54f7c29530744847780a5d47a6a7, type: 3}
+  explosionSpawnPoint: {fileID: 0}
+  explosionClip: {fileID: 8300000, guid: 9d6d8c51e098bd04cb91afb4d96bb721, type: 3}
+  explosionVolume: 1
+  resultsDelay: 2
+  loopExplosionDelay: 0.5
+  fadeObject: {fileID: 0}
+  fadeMaterial: {fileID: 2100000, guid: 22ddda2e26461f941a6bbe13b8a49840, type: 2}
+  fadeDuration: 1
+  currentShield: 50
+  maxShield: 50
+  minShield: -5
+  shieldRegenRate: 2
+  shieldMaterial: {fileID: 2100000, guid: 0960f507df40faa4ea033d24d5327f61, type: 2}
+  shieldColorProperty: _Color
+  hitColor: {r: 0.7176471, g: 0, b: 0.05912203, a: 1}
+  normalColor: {r: 0, g: 0.24160142, b: 0.3962264, a: 1}
+  colorFlashDuration: 1.5
+  pulseSpeed: 2
+  pulseIntensity: 1
+  shieldHitClip: {fileID: 8300000, guid: c3d40d9a6d556224b83f3f340ec20682, type: 3}
+  shieldHitVolume: 1
+  shieldSlider: {fileID: 0}
+  scoreText: {fileID: 0}
+  waveText: {fileID: 0}
+  waveTimerText: {fileID: 0}
+  score: 0
+  gameOverOnShieldBreak: 0
+  resultsSceneName: TurretGame_Results
   enemies: []
-  allies: []
-  gameMusic: 1
-  gameMusicAudioSource: {fileID: 763815352}
-  bossShip: {fileID: 0}
+  popScale: 1.5
+  popDuration: 0.1

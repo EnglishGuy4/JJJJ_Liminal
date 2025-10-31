@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Liminal.SDK.VR;
 using Liminal.SDK.VR.Input;
+using UnityEngine.Audio; // 🔹 Added using directive for Audio
 
 public class Cannon : MonoBehaviour
 {
@@ -24,6 +25,20 @@ public class Cannon : MonoBehaviour
     [Header("Effects")]
     private new ParticleSystem particleSystem;
     private new AudioSource audio;
+
+    [Header("Audio Clips")]
+    public AudioClip singleShotClip;   // single/semi shot
+    public AudioClip startClip;        // start burst for full auto
+    public AudioClip loopClip;         // continuous loop
+    public AudioClip endClip;          // release tail
+    public AudioClip scatterClip;   // short burst sound for shotgun
+
+    [Header("Audio Volumes")]
+    [Range(0f,1f)] public float singleShotVolume = 1f;
+    [Range(0f,1f)] public float startVolume = 1f;
+    [Range(0f,1f)] public float loopVolume = 1f;
+    [Range(0f,1f)] public float endVolume = 1f;
+    [Range(0f,1f)] public float scatterVolume = 1f;
 
     [Header("Power Up Settings")]
     public bool isScatterShot = false;
@@ -71,6 +86,8 @@ public class Cannon : MonoBehaviour
     // Game Start Dialogue
     [Header("Game Start Dialogue")]
     [SerializeField] private GameObject gameStartDialogue;
+
+    //public AudioMixer masterMixer; // assign in Inspector (SFX group)
 
     void Start()
     {
@@ -246,20 +263,50 @@ public class Cannon : MonoBehaviour
                 else
                     firePressed = downFire;
 
-                if (!isFullAutoShot && firePressed)
+
+                if ((!isFullAutoShot && !isScatterShot) && firePressed)
+                {
                     FireCannon();
+                    
+                }
                 else if (isFullAutoShot && firePressed)
                 {
                     if (autoFireRoutine == null)
+                    {
+                        // Start audio chain (A -> B)
+                        if (startClip != null) audio.PlayOneShot(startClip, startVolume);
+                        if (loopClip != null)
+                        {
+                            audio.loop = true;
+                            audio.clip = loopClip;
+                            audio.PlayDelayed(startClip != null ? startClip.length : 0f);
+                        }
+
                         autoFireRoutine = StartCoroutine(FullAutoFireCannon());
+                    }
                 }
-                else
+                else if ((scatterClip != null) && (isScatterShot && firePressed))
+                {
+                    // play shotgun-style audio for scatter
+                    FireCannon();
+                    audio.PlayOneShot(scatterClip, scatterVolume);
+                }
+                else // player released
                 {
                     if (autoFireRoutine != null)
                     {
                         StopCoroutine(autoFireRoutine);
                         autoFireRoutine = null;
+
+                        // Stop continuous loop and play end sound (C)
+                        audio.loop = false;
+                        audio.Stop();
+                        audio.PlayOneShot(endClip);
                     }
+                    /*else
+                    {
+                        audio.loop = false;
+                    }*/
                 }
             }
         }
@@ -295,7 +342,12 @@ public class Cannon : MonoBehaviour
         else
         {
             SpawnCannonball(barrelEnd.transform.position, barrelEnd.transform.rotation);
+
+            // only play single-shot sound if not in full-auto (full-auto is handled elsewhere)
+            if (!isFullAutoShot && singleShotClip != null)
+                audio.PlayOneShot(singleShotClip, singleShotVolume);
         }
+        
 
         // 🎇 Randomize muzzle flash Z rotation
         if (particleSystem != null)
@@ -305,11 +357,10 @@ public class Cannon : MonoBehaviour
             particleSystem.Play();
         }
 
-        audio.Play();
-
+        
+        // Recoil
         currentRecoil += recoilAngle;
         currentRecoil = Mathf.Clamp(currentRecoil, 0, recoilAngle * 2f);
-
         OVRInput.SetControllerVibration(1f, 1f, OVRInput.Controller.RTouch | OVRInput.Controller.LTouch);
         StartCoroutine(StopHaptics(0.2f));
     }
@@ -403,6 +454,16 @@ public class Cannon : MonoBehaviour
             StopCoroutine(autoFireRoutine);
             autoFireRoutine = null;
         }
+
+        if (audio != null && audio.loop)
+        {
+            audio.loop = false;
+            audio.Stop();
+
+            
+            if (endClip != null)
+            audio.PlayOneShot(endClip, endVolume);
+        }
     }
 
 
@@ -423,5 +484,13 @@ public class Cannon : MonoBehaviour
 
         if (autoFireRoutine != null)
             StopCoroutine(autoFireRoutine);
+    }*/
+
+    // call to set SFX volume from UI (linear 0..1)
+    /*public void SetSFXVolume(float linear)
+    {
+        float clamped = Mathf.Clamp(linear, 0.0001f, 1f); // avoid log(0)
+        float dB = Mathf.Log10(clamped) * 20f; // convert linear to dB
+        masterMixer.SetFloat("SFXVolume", dB); // expose "SFXVolume" param on your mixer
     }*/
 }
