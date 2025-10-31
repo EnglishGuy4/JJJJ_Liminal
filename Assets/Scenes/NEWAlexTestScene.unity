@@ -4801,6 +4801,11 @@ MonoBehaviour:
   maxEnemiesCap: 200
   waveText: {fileID: 1554826681}
   waveTimerText: {fileID: 2128932371}
+  scatterShotStartWave: 2
+  scatterShotEndWave: 3
+  cannon: {fileID: 0}
+  fullAutoStartWave: 4
+  fullAutoEndWave: 5
   audioSource: {fileID: 745262868}
   musicSource: {fileID: 1538424675}
   countdownSFX: {fileID: 8300000, guid: 0aca274ac67bcce458926459f0eb8752, type: 3}
@@ -8830,7 +8835,7 @@ PrefabInstance:
     - target: {fileID: 4835849025717813618, guid: be722b45a20e65f478540c46d9eb9494,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 26.974
+      value: 27.51
       objectReference: {fileID: 0}
     - target: {fileID: 4835849025717813618, guid: be722b45a20e65f478540c46d9eb9494,
         type: 3}
