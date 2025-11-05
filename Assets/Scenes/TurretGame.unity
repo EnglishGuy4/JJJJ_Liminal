@@ -16146,6 +16146,11 @@ PrefabInstance:
       propertyPath: explosionVolume
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7594301601873755616, guid: 10a4a6680fc2bc24b99af8cd373cd28a,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10a4a6680fc2bc24b99af8cd373cd28a, type: 3}
 --- !u!1 &1333161012 stripped
@@ -24911,6 +24916,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_audioClip
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7594301601873755616, guid: 10a4a6680fc2bc24b99af8cd373cd28a,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10a4a6680fc2bc24b99af8cd373cd28a, type: 3}

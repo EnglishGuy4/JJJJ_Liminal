@@ -67,6 +67,12 @@ public class GameManager : MonoBehaviour
     public float popScale = 1.5f;
     public float popDuration = 0.2f;
 
+    [Header("Shield Break Dialogue")]
+    public GameObject shieldsBrokenDialogue;
+    public float explosionPlayDuration = 3f; // how long explosions play before reset
+    public float dialogueDisplayDuration = 4f; // how long the dialogue stays visible
+
+
     private Vector3 originalScale;
     private Coroutine flashRoutine;
     private bool isFlashing = false;
@@ -145,9 +151,9 @@ public class GameManager : MonoBehaviour
             shieldMaterial.SetColor(shieldColorProperty, pulsedColor);
         }
 
-        if (gameOverOnShieldBreak && currentShield <= minShield)
+        if (currentShield <= minShield)
         {
-            TriggerGameOver();
+            StartCoroutine(HandleShieldBreak());
         }
     }
 
@@ -176,10 +182,11 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (gameOverOnShieldBreak && currentShield <= minShield)
+        if (currentShield <= minShield)
         {
-            TriggerGameOver();
+            StartCoroutine(HandleShieldBreak());
         }
+
     }
 
     private void UpdateShieldUI()
@@ -229,6 +236,77 @@ public class GameManager : MonoBehaviour
 
         // Start coroutine that waits, fades, then loads Results
         StartCoroutine(FadeAndLoadResults());
+    }
+
+    private IEnumerator HandleShieldBreak()
+    {
+        if (isGameOver) yield break;
+        isGameOver = true;
+
+        Debug.Log("[GameManager] Shields Broken! Triggering explosion and reset sequence.");
+
+        // Stop spawning enemies temporarily
+        if (spawnerManager != null)
+        {
+            spawnerManager.StopAllCoroutines();
+            spawnerManager.enabled = false;
+        }
+
+        // Play explosion
+        Transform spawnPoint = explosionSpawnPoint != null ? explosionSpawnPoint : transform;
+
+        GameObject startExplosion = null;
+        if (explosionPrefab != null)
+            startExplosion = Instantiate(explosionPrefab, spawnPoint.position, spawnPoint.rotation);
+
+        GameObject loopExplosion = null;
+        if (loopExplosionPrefab != null)
+        {
+            yield return new WaitForSeconds(loopExplosionDelay);
+            loopExplosion = Instantiate(loopExplosionPrefab, spawnPoint.position, spawnPoint.rotation);
+        }
+
+        // Play explosion sound
+        if (explosionClip != null && audioSource != null)
+            audioSource.PlayOneShot(explosionClip, explosionVolume);
+
+        // Let explosions play for a bit
+        yield return new WaitForSeconds(explosionPlayDuration);
+
+        // Stop/cleanup explosions
+        if (startExplosion != null) Destroy(startExplosion);
+        if (loopExplosion != null) Destroy(loopExplosion);
+
+        // Reset shield to full
+        currentShield = maxShield;
+        UpdateShieldUI();
+
+        // Restore visuals
+        if (shieldMaterial != null && shieldMaterial.HasProperty(shieldColorProperty))
+            shieldMaterial.SetColor(shieldColorProperty, normalColor);
+
+        // Activate the dialogue UI
+        if (shieldsBrokenDialogue != null)
+        {
+            shieldsBrokenDialogue.SetActive(true);
+            StartCoroutine(DeactivateShieldDialogueAfterDelay());
+        }
+
+        // Allow shield regen and enemy spawns again
+        if (spawnerManager != null)
+            spawnerManager.enabled = true;
+
+        isGameOver = false;
+
+        Debug.Log("[GameManager] Shield restored and dialogue shown.");
+    }
+
+    private IEnumerator DeactivateShieldDialogueAfterDelay()
+    {
+        yield return new WaitForSeconds(dialogueDisplayDuration);
+
+        if (shieldsBrokenDialogue != null)
+            shieldsBrokenDialogue.SetActive(false);
     }
 
     private IEnumerator PlayLoopExplosion(Transform spawnPoint)
