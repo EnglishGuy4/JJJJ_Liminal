@@ -2497,7 +2497,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 172003229}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d56c93fa0ed1ea54a9359d41373020f6, type: 3}
   m_Name: 
@@ -8333,12 +8333,12 @@ MonoBehaviour:
   - {fileID: 686767948}
   - {fileID: 710720755}
   audioClips:
-  - {fileID: 8300000, guid: 3f9bae65d59324447afa85434101d911, type: 3}
-  - {fileID: 8300000, guid: 3f9bae65d59324447afa85434101d911, type: 3}
+  - {fileID: 8300000, guid: 452d5ba8b7215b44eb5a79b0de64ab21, type: 3}
+  - {fileID: 8300000, guid: 07ff232b3b88c70458a7460c029a98af, type: 3}
   audioSource: {fileID: 683326036}
   displayDurations:
-  - 7
-  - 7
+  - 3
+  - 4
   promptDelays:
   - 0
   - 0
@@ -8524,7 +8524,7 @@ MonoBehaviour:
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_text: They punched through the shields! That blast was the core venting overload
-    energy
+    energy.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 15e04fdc1c2c89e48b1d30f5913c4645, type: 2}
   m_sharedMaterial: {fileID: 4258290489677039707, guid: 15e04fdc1c2c89e48b1d30f5913c4645,
@@ -26814,7 +26814,7 @@ PrefabInstance:
     - target: {fileID: 366280909880016177, guid: a3a99bb0dfb98e14aa71935281e1e3d7,
         type: 3}
       propertyPath: dialogueDisplayDuration
-      value: 7
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 366280909880016177, guid: a3a99bb0dfb98e14aa71935281e1e3d7,
         type: 3}
