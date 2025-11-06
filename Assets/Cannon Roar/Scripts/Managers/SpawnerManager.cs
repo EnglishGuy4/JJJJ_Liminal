@@ -67,6 +67,17 @@ public class SpawnerManager : MonoBehaviour
     public AudioClip allWavesCompleteSFX;
     public AudioClip waveMusic;
 
+    [Header("PowerUp Feedback")]
+    public GameObject powerUpVFX;           // The VFX GameObject to show on powerup activation
+    public AudioClip powerUpSFX;            // The sound played when a powerup activates
+    public float powerUpVFXDuration = 2f;   // How long the VFX stays active
+
+    [Header("PowerUp Animation Settings")]
+    public Vector3 startScale = Vector3.one;        // Base/original scale
+    public Vector3 popScale = new Vector3(1.3f, 1.3f, 1.3f); // Target "pop" scale
+    public float scaleTransitionTime = 0.15f;       // Time for each scaling phase
+    public float holdTimeAtPeak = 0.1f;             // Optional hold at peak scale
+
     [Header("Debug")]
     [Tooltip("Enable to print verbose spawn debug information")]
     public bool debugSpawning = false;
@@ -361,11 +372,13 @@ public class SpawnerManager : MonoBehaviour
                 if (((currentWaveNumber) >= scatterShotStartWave) && ((currentWaveNumber) < scatterShotEndWave))
                 {
                     cannon.ActivateScatterShot();
+                    TriggerPowerUpFeedback();
                 }
                 else if ((currentWaveNumber) >= (scatterShotEndWave))
                 {
                     cannon.DeactivateScatterShot();
                 }
+
             }
 
             if (fullAutoStartWave > 0 && cannon != null)
@@ -374,11 +387,13 @@ public class SpawnerManager : MonoBehaviour
                 if (((currentWaveNumber) >= fullAutoStartWave) && ((currentWaveNumber) < fullAutoEndWave))
                 {
                     cannon.ActivateFullAutoShot();
+                    TriggerPowerUpFeedback();
                 }
                 else if ((currentWaveNumber) >= (fullAutoEndWave))
                 {
                     cannon.DeactivateFullAutoShot();
                 }
+
             }
         }
     }
@@ -402,6 +417,63 @@ public class SpawnerManager : MonoBehaviour
             waveTimerText.text = string.Format("{0:00}:{1:00}", minutes, seconds);
         }
     }
+
+    private void TriggerPowerUpFeedback()
+    {
+        if (powerUpVFX != null)
+        {
+            powerUpVFX.SetActive(true);
+            powerUpVFX.transform.localScale = startScale;
+
+            StopAllCoroutines(); // prevent overlapping animations
+            StartCoroutine(AnimatePowerUpVFX());
+        }
+
+        PlaySFX(powerUpSFX);
+    }
+
+    private IEnumerator AnimatePowerUpVFX()
+    {
+        float timer = 0f;
+
+        // 🔹 Scale up (startScale → popScale)
+        while (timer < scaleTransitionTime)
+        {
+            float t = timer / scaleTransitionTime;
+            powerUpVFX.transform.localScale = Vector3.Lerp(startScale, popScale, t);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        powerUpVFX.transform.localScale = popScale;
+
+        // 🔹 Hold at peak
+        yield return new WaitForSeconds(holdTimeAtPeak);
+
+        // 🔹 Scale down (popScale → startScale)
+        timer = 0f;
+        while (timer < scaleTransitionTime)
+        {
+            float t = timer / scaleTransitionTime;
+            powerUpVFX.transform.localScale = Vector3.Lerp(popScale, startScale, t);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        powerUpVFX.transform.localScale = startScale;
+
+        // 🔹 Keep visible for the remainder of duration
+        yield return new WaitForSeconds(powerUpVFXDuration);
+        powerUpVFX.SetActive(false);
+    }
+
+
+
+    private IEnumerator DeactivatePowerUpVFXAfterDelay()
+    {
+        yield return new WaitForSeconds(powerUpVFXDuration);
+        if (powerUpVFX != null)
+            powerUpVFX.SetActive(false);
+    }
+
 
     private void EndAllWaves()
     {
