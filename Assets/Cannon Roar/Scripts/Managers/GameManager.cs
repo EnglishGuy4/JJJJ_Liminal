@@ -3,6 +3,8 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using Liminal.SDK.Core;
+using Liminal.Experience;
 
 public class GameManager : MonoBehaviour
 {
@@ -234,8 +236,6 @@ public class GameManager : MonoBehaviour
         // ✅ Save score & update high score
         ScoreManager.SubmitScore(score);
 
-        // Start coroutine that waits, fades, then loads Results
-        StartCoroutine(FadeAndLoadResults());
     }
 
     private IEnumerator HandleShieldBreak()
@@ -324,7 +324,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private IEnumerator FadeAndLoadResults()
+    private IEnumerator FadeOutAndLoadResults()
     {
         // ⏳ Wait before fading
         if (resultsDelay > 0f)
@@ -334,13 +334,18 @@ public class GameManager : MonoBehaviour
         if (fadeMaterial != null)
             yield return StartCoroutine(FadeOut());
 
-        // Load Results scene
-        if (!string.IsNullOrEmpty(resultsSceneName))
-            SceneManager.LoadScene(resultsSceneName);
-        else
-            Debug.LogError("[GameManager] Results scene name is not set!");
+        // Find MyExperienceApp and end experience
+        MyExperienceApp expApp = FindObjectOfType<MyExperienceApp>();
+        if (expApp != null)
+        {
+            expApp.EndExperience();
+        }
     }
 
+    public void FadeAndLoadResults()
+    {
+        StartCoroutine(FadeOutAndLoadResults());
+    }
 
 
     public void AddScore(int amount)

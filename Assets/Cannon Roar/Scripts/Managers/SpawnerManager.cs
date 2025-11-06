@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
+using Liminal.Core.Fader;
 
 [System.Serializable]
 public class Wave
@@ -78,6 +79,21 @@ public class SpawnerManager : MonoBehaviour
     public float scaleTransitionTime = 0.15f;       // Time for each scaling phase
     public float holdTimeAtPeak = 0.1f;             // Optional hold at peak scale
 
+    [Header("End Sequence Settings")]
+    [Tooltip("1-based index of the final wave. When this wave completes, the end dialogue triggers.")]
+    public int finalWaveNumber = 5;
+
+    [Tooltip("Dialogue GameObject to show at the end of the final wave.")]
+    public GameObject endDialogue;
+
+    [Tooltip("How long to show the end dialogue before ending the experience.")]
+    public float endDialogueDuration = 5f;
+
+    [Tooltip("Delay (in seconds) before starting the End Dialogue sequence after the final wave completes.")]
+    public float endDialogueStartDelay = 2f;
+
+
+
     [Header("Debug")]
     [Tooltip("Enable to print verbose spawn debug information")]
     public bool debugSpawning = false;
@@ -147,24 +163,35 @@ public class SpawnerManager : MonoBehaviour
 
         if (waveTimer >= currentWave.waveTime)
         {
+            PlaySFX(waveEndSFX);
+
+            int nextWaveNumber = currentWaveIndex + 1; // 1-based number of the *wave that just ended*
+
+            // 🔹 If this was the final wave, handle end sequence
+            if (nextWaveNumber == finalWaveNumber)
+            {
+                EndAllWaves();
+                return;
+            }
+
+            // 🔹 Otherwise, continue as normal
             if (waveMode == WaveMode.Timed)
             {
                 currentWaveIndex++;
-                PlaySFX(waveEndSFX);
                 BeginIntermission();
             }
             else
             {
-                // Endless mode: increase difficulty (keep waveTime as configured)
+                // Endless mode: increase difficulty
                 endlessCurrentWave.spawnRate = Mathf.Max(minSpawnRate, endlessCurrentWave.spawnRate - spawnRateDecrease);
                 endlessCurrentWave.maxEnemies = Mathf.Min(maxEnemiesCap, endlessCurrentWave.maxEnemies + maxEnemiesIncrease);
 
-                currentWaveIndex++; // 🔹 Increment wave counter for Endless mode
-                PlaySFX(waveEndSFX);
+                currentWaveIndex++;
                 BeginIntermission();
             }
             return;
         }
+
 
         if (spawnTimer >= currentWave.spawnRate && enemiesFromThisSpawnerList.Count < currentWave.maxEnemies)
         {
@@ -479,6 +506,7 @@ public class SpawnerManager : MonoBehaviour
     {
         allWavesComplete = true;
         inIntermission = false;
+
         waveText.text = "ALL WAVES COMPLETE!";
         if (waveTimerText != null)
             waveTimerText.text = "";
@@ -486,12 +514,15 @@ public class SpawnerManager : MonoBehaviour
         PlaySFX(allWavesCompleteSFX);
 
         if (musicSource != null && musicSource.isPlaying)
-        {
             musicSource.Stop();
-        }
 
         OnAllWavesComplete?.Invoke();
+
+        // 🔹 Start final dialogue + end experience
+        StartCoroutine(StartEndDialogueWithDelay());
     }
+
+
 
     public void RemoveEnemyFromList(GameObject enemy)
     {
@@ -506,4 +537,35 @@ public class SpawnerManager : MonoBehaviour
             audioSource.PlayOneShot(clip);
         }
     }
+
+    private IEnumerator StartEndDialogueWithDelay()
+    {
+        // Wait for the configured delay before starting the end dialogue sequence
+        yield return new WaitForSeconds(endDialogueStartDelay);
+
+        // Then continue with the existing end sequence
+        StartCoroutine(HandleEndDialogueSequence());
+    }
+
+
+    private IEnumerator HandleEndDialogueSequence()
+    {
+        if (endDialogue != null)
+            endDialogue.SetActive(true);
+
+        // Wait for the dialogue to finish
+        yield return new WaitForSeconds(endDialogueDuration);
+
+        // Find GameManager and trigger fade to results
+        GameManager gm = FindObjectOfType<GameManager>();
+        if (gm != null)
+        {
+            gm.FadeAndLoadResults();
+        }
+        else
+        {
+            Debug.LogWarning("GameManager not found – could not trigger FadeAndLoadResults.");
+        }
+    }
+
 }
