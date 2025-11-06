@@ -50,6 +50,13 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private Material hitMaterial;     // Material to show when hit
     [SerializeField] private float hitFlashDuration = 0.1f; // Duration of hit flash
 
+    [Header("Score UI")]
+    [SerializeField] private GameObject scorePopupPrefab;
+    [SerializeField] private float scorePopupDuration = 1.5f; // How long the UI stays
+    [SerializeField] private Vector3 scorePopupScale = new Vector3(1f, 1f, 1f);
+    [SerializeField] private Vector3 scorePopupPopScale = new Vector3(1.5f, 1.5f, 1.5f);
+
+
 
     private Material enemyMaterial;
     private Coroutine hitFlashCoroutine;
@@ -201,8 +208,57 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
+    private void SpawnScorePopup()
+    {
+        if (scorePopupPrefab == null) return;
 
+        GameObject popup = Instantiate(scorePopupPrefab, transform.position, Quaternion.identity);
 
+        // Set the text
+        TMPro.TextMeshProUGUI tmpText = popup.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+        if (tmpText != null)
+        {
+            tmpText.text = scoreValue.ToString();
+        }
+
+        // Optional: Make it front-facing if not using FaceCamera
+        popup.transform.LookAt(popup.transform.position + Camera.main.transform.forward);
+
+        // Animate scale
+        StartCoroutine(ScorePopupAnimation(popup));
+
+        // Destroy after duration
+        Destroy(popup, scorePopupDuration);
+    }
+
+    private IEnumerator ScorePopupAnimation(GameObject popup)
+    {
+        float timer = 0f;
+        float animDuration = 0.3f; // pop animation time
+
+        Vector3 startScale = scorePopupScale;
+        Vector3 targetScale = scorePopupPopScale;
+
+        while (timer < animDuration)
+        {
+            timer += Time.deltaTime;
+            float t = timer / animDuration;
+            popup.transform.localScale = Vector3.Lerp(startScale, targetScale, Mathf.Sin(t * Mathf.PI * 0.5f)); // smooth pop
+            yield return null;
+        }
+
+        // Lerp back to normal scale
+        timer = 0f;
+        while (timer < animDuration)
+        {
+            timer += Time.deltaTime;
+            float t = timer / animDuration;
+            popup.transform.localScale = Vector3.Lerp(targetScale, startScale, Mathf.Sin(t * Mathf.PI * 0.5f));
+            yield return null;
+        }
+
+        popup.transform.localScale = startScale;
+    }
 
 
     public void Death()
@@ -228,6 +284,9 @@ public class EnemyHealth : MonoBehaviour
 
         // ✅ Explosion on death
         PlayExplosionEffect();
+        // Spawn score UI
+        SpawnScorePopup();
+
 
         gameObject.SetActive(false);
     }

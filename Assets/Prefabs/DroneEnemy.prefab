@@ -4989,6 +4989,11 @@ MonoBehaviour:
   normalMaterial: {fileID: 2100000, guid: e0dd9aa25c8825c4999d9c35f38949a0, type: 2}
   hitMaterial: {fileID: 2100000, guid: a70a522e9c9f10049b4119c49c768395, type: 2}
   hitFlashDuration: 0.1
+  scorePopupPrefab: {fileID: 8658147135966152940, guid: 871ad167bd217e844bcdf3d8514972fc,
+    type: 3}
+  scorePopupDuration: 1.25
+  scorePopupScale: {x: 0.1, y: 0.1, z: 0.1}
+  scorePopupPopScale: {x: 0.2, y: 0.2, z: 0.2}
 --- !u!114 &4951161778118456490
 MonoBehaviour:
   m_ObjectHideFlags: 0
