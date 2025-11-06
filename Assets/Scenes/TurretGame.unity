@@ -7294,6 +7294,12 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
+        type: 3}
+      propertyPath: collectionOfObjectsToBePooled.Array.data[4]
+      value: 
+      objectReference: {fileID: 8829255948184301283, guid: c0b90a1365f28fb4597596e8e5a3dccc,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c040cae17da156f4fb01180d27946c27, type: 3}
 --- !u!1 &590575500
@@ -9742,20 +9748,20 @@ MonoBehaviour:
   waypoints: []
   waveMode: 0
   waves:
-  - waveTime: 30
-    spawnRate: 1.5
+  - waveTime: 60
+    spawnRate: 1
     maxEnemies: 10
     enemyPrefabs:
     - {fileID: 8829255948184301283, guid: 656824176d0916543afc368625ed1522, type: 3}
-  - waveTime: 30
-    spawnRate: 1.5
-    maxEnemies: 10
+  - waveTime: 60
+    spawnRate: 0.75
+    maxEnemies: 15
     enemyPrefabs:
     - {fileID: 8829255948184301283, guid: 656824176d0916543afc368625ed1522, type: 3}
-    - {fileID: 5568970986509601867, guid: bfe1a5a5ea86f15419c4ef9b71769a1b, type: 3}
-  - waveTime: 30
-    spawnRate: 1.5
-    maxEnemies: 10
+    - {fileID: 8829255948184301283, guid: c0b90a1365f28fb4597596e8e5a3dccc, type: 3}
+  - waveTime: 60
+    spawnRate: 0.5
+    maxEnemies: 20
     enemyPrefabs:
     - {fileID: 8829255948184301283, guid: 656824176d0916543afc368625ed1522, type: 3}
     - {fileID: 5568970986509601867, guid: bfe1a5a5ea86f15419c4ef9b71769a1b, type: 3}
