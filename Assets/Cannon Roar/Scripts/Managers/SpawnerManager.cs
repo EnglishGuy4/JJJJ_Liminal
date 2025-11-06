@@ -56,7 +56,7 @@ public class SpawnerManager : MonoBehaviour
     [Tooltip("Wave number (1-based) that grants the cannon its full auto powerup when that wave starts. Set 0 to disable.")]
     public int fullAutoStartWave = 4;
     public int fullAutoEndWave = 5;
-    
+
 
     [Header("Audio")]
     public AudioSource audioSource;
@@ -66,6 +66,10 @@ public class SpawnerManager : MonoBehaviour
     public AudioClip waveEndSFX;
     public AudioClip allWavesCompleteSFX;
     public AudioClip waveMusic;
+
+    [Header("Debug")]
+    [Tooltip("Enable to print verbose spawn debug information")]
+    public bool debugSpawning = false;
 
     private int currentWaveIndex = 0;
     private float waveTimer = 0f;
@@ -171,7 +175,8 @@ public class SpawnerManager : MonoBehaviour
             endlessCurrentWave.waveTime = (waves.Count > 0 ? waves[0].waveTime : 30f);
             endlessCurrentWave.spawnRate = (waves.Count > 0 ? waves[0].spawnRate : 2f);
             endlessCurrentWave.maxEnemies = (waves.Count > 0 ? waves[0].maxEnemies : 10);
-            endlessCurrentWave.enemyPrefabs = new List<GameObject>(waves[0].enemyPrefabs); // 🔹 copy enemy list
+            // defensive copy so inspector changes later won't mutate the runtime list unexpectedly
+            endlessCurrentWave.enemyPrefabs = new List<GameObject>(waves.Count > 0 ? waves[0].enemyPrefabs : new List<GameObject>());
         }
 
 
@@ -199,39 +204,111 @@ public class SpawnerManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Robust SpawnEnemy: picks one random prefab, one random spawn point, tries pool lookup by name,
+    /// falls back to Instantiate if pooling returns null. Defensive checks for required components.
+    /// </summary>
     private void SpawnEnemy()
     {
-        if (spawnPoints.Count == 0) return;
+        if (spawnPoints.Count == 0)
+        {
+            if (debugSpawning) Debug.LogWarning("[SpawnerManager] No spawn points assigned.");
+            return;
+        }
 
         Wave currentWave = (waveMode == WaveMode.Timed && currentWaveIndex < waves.Count)
             ? waves[currentWaveIndex]
             : endlessCurrentWave;
 
-        if (currentWave.enemyPrefabs == null || currentWave.enemyPrefabs.Count == 0) return;
+        if (currentWave == null)
+        {
+            if (debugSpawning) Debug.LogWarning("[SpawnerManager] currentWave is null.");
+            return;
+        }
 
-        // 🔹 Pick a random enemy prefab from the wave’s list
-        GameObject chosenPrefab = currentWave.enemyPrefabs[UnityEngine.Random.Range(0, currentWave.enemyPrefabs.Count)];
+        if (currentWave.enemyPrefabs == null || currentWave.enemyPrefabs.Count == 0)
+        {
+            if (debugSpawning) Debug.LogWarning("[SpawnerManager] No enemy prefabs assigned for current wave.");
+            return;
+        }
 
+        // pick a random enemy prefab (single pick)
+        int prefabIndex = UnityEngine.Random.Range(0, currentWave.enemyPrefabs.Count);
+        GameObject chosenPrefab = currentWave.enemyPrefabs[prefabIndex];
+        if (chosenPrefab == null)
+        {
+            if (debugSpawning) Debug.LogWarning("[SpawnerManager] chosenPrefab is null at index " + prefabIndex);
+            return;
+        }
+
+        // pick one random spawn point (single pick)
         int spawnIndex = UnityEngine.Random.Range(0, spawnPoints.Count);
-        GameObject enemy = PoolManager.current.GetPooledObject(chosenPrefab.name);
-        if (enemy == null) return;
+        Transform spawnPoint = spawnPoints[spawnIndex];
 
-        enemy.transform.position = spawnPoints[spawnIndex].position;
-        enemy.transform.rotation = spawnPoints[spawnIndex].rotation;
-        enemy.GetComponent<EnemyHealth>().health = 1;
-        enemy.GetComponent<EnemyMovement>().isDead = false;
-        enemy.SetActive(true);
-        enemy.GetComponent<EnemyShoot>().enabled = true;
-        enemy.GetComponent<NavMeshAgent>().enabled = true;
+        GameObject enemy = null;
+
+        // Try to get a pooled object. Using name lookup can be fragile because of "(Clone)" suffix.
+        // Try a sanitized name first, then raw name. If your PoolManager supports GetPooledObject(GameObject) prefer that.
+        if (PoolManager.current != null)
+        {
+            string sanitized = chosenPrefab.name.Replace("(Clone)", "").Trim();
+            enemy = PoolManager.current.GetPooledObject(sanitized);
+            if (enemy == null)
+            {
+                // try with the raw name if sanitized failed
+                enemy = PoolManager.current.GetPooledObject(chosenPrefab.name);
+            }
+        }
+
+        // If pooling failed or no PoolManager, instantiate a fresh copy as a fallback
+        if (enemy == null)
+        {
+            if (debugSpawning) Debug.Log("[SpawnerManager] Pool lookup failed for '" + chosenPrefab.name + "'. Instantiating fallback.");
+            enemy = Instantiate(chosenPrefab, spawnPoint.position, spawnPoint.rotation);
+        }
+        else
+        {
+            // place pooled object at the spawn point
+            enemy.transform.position = spawnPoint.position;
+            enemy.transform.rotation = spawnPoint.rotation;
+            enemy.SetActive(true);
+        }
+
+        // Defensive: ensure required components exist before using them
+        EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
+        if (enemyHealth != null)
+        {
+            enemyHealth.health = 1;
+            enemyHealth.enemySpawnerScript = this;
+        }
+        else
+        {
+            if (debugSpawning) Debug.LogWarning("[SpawnerManager] Spawned enemy missing EnemyHealth component: " + enemy.name);
+        }
 
         EnemyMovement enemyMovement = enemy.GetComponent<EnemyMovement>();
-        enemyMovement.waypoints = waypoints;
+        if (enemyMovement != null)
+        {
+            enemyMovement.isDead = false;
+            enemyMovement.waypoints = waypoints;
+        }
+        else
+        {
+            if (debugSpawning) Debug.LogWarning("[SpawnerManager] Spawned enemy missing EnemyMovement component: " + enemy.name);
+        }
 
-        EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
-        enemyHealth.enemySpawnerScript = this;
+        EnemyShoot enemyShoot = enemy.GetComponent<EnemyShoot>();
+        if (enemyShoot != null) enemyShoot.enabled = true;
 
+        NavMeshAgent nav = enemy.GetComponent<NavMeshAgent>();
+        if (nav != null) nav.enabled = true;
+
+        // Track spawned enemy
         enemiesFromThisSpawnerList.Add(enemy);
-        gameManager.enemies.Add(enemy);
+        if (gameManager != null)
+            gameManager.enemies.Add(enemy);
+
+        if (debugSpawning) Debug.LogFormat("[SpawnerManager] Spawned '{0}' at spawnIndex {1}. PoolUsed={2}", chosenPrefab.name, spawnIndex, (PoolManager.current != null).ToString());
     }
 
 

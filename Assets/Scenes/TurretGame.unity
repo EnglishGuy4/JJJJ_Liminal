@@ -9740,8 +9740,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoints: []
   waypoints: []
-  waveMode: 1
+  waveMode: 0
   waves:
+  - waveTime: 30
+    spawnRate: 1.5
+    maxEnemies: 10
+    enemyPrefabs:
+    - {fileID: 8829255948184301283, guid: 656824176d0916543afc368625ed1522, type: 3}
+  - waveTime: 30
+    spawnRate: 1.5
+    maxEnemies: 10
+    enemyPrefabs:
+    - {fileID: 8829255948184301283, guid: 656824176d0916543afc368625ed1522, type: 3}
+    - {fileID: 5568970986509601867, guid: bfe1a5a5ea86f15419c4ef9b71769a1b, type: 3}
   - waveTime: 30
     spawnRate: 1.5
     maxEnemies: 10
@@ -9767,6 +9778,7 @@ MonoBehaviour:
   waveEndSFX: {fileID: 8300000, guid: 3510bdbd9fc49bf489bd6fec1cd58ad5, type: 3}
   allWavesCompleteSFX: {fileID: 8300000, guid: 9922b00674c8b4c4d9717398606b1f88, type: 3}
   waveMusic: {fileID: 8300000, guid: 8bc3c0001171c0541ae816e7c324ff3b, type: 3}
+  debugSpawning: 0
   enemiesFromThisSpawnerList: []
 --- !u!82 &745262868
 AudioSource:
