@@ -559,6 +559,10 @@ MonoBehaviour:
   portalSound2D: 0
   portalMinDistance: 1
   portalMaxDistance: 10000
+  enemyRenderer: {fileID: 7324628961939007880}
+  normalMaterial: {fileID: 2100000, guid: bdc5d894da18cb4459fb7f024738ae00, type: 2}
+  hitMaterial: {fileID: 2100000, guid: 8de10724f8a9a92498b593e266fd9004, type: 2}
+  hitFlashDuration: 0.1
 --- !u!114 &8320729604627551746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -582,6 +586,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4407734449912597694}
     m_Modifications:
+    - target: {fileID: -927199367670048503, guid: 96b953ba1b28fa34f9defe81c454ee7e,
+        type: 3}
+      propertyPath: m_Name
+      value: m_meteor
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 96b953ba1b28fa34f9defe81c454ee7e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 96b953ba1b28fa34f9defe81c454ee7e,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -652,16 +666,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 1.3634589
       objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: 96b953ba1b28fa34f9defe81c454ee7e,
-        type: 3}
-      propertyPath: m_Name
-      value: m_meteor
-      objectReference: {fileID: 0}
-    - target: {fileID: -927199367670048503, guid: 96b953ba1b28fa34f9defe81c454ee7e,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: -2416733968201007103, guid: 96b953ba1b28fa34f9defe81c454ee7e,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
@@ -681,6 +685,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4310022329421523337}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &7324628961939007880 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -2416733968201007103, guid: 96b953ba1b28fa34f9defe81c454ee7e,
+    type: 3}
+  m_PrefabInstance: {fileID: 4310022329421523337}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5649495774449742535
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -688,6 +698,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4407734449912597694}
     m_Modifications:
+    - target: {fileID: 103382, guid: 0bb13cc303ac86348ae819a2d91aacb0, type: 3}
+      propertyPath: m_Name
+      value: pf_vfx-inf_psys_demo_loop_flameThrower (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 406954, guid: 0bb13cc303ac86348ae819a2d91aacb0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.36185429
@@ -752,10 +766,6 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: -2.696
       objectReference: {fileID: 0}
-    - target: {fileID: 103382, guid: 0bb13cc303ac86348ae819a2d91aacb0, type: 3}
-      propertyPath: m_Name
-      value: pf_vfx-inf_psys_demo_loop_flameThrower (1)
-      objectReference: {fileID: 0}
     - target: {fileID: 198603313496135824, guid: 0bb13cc303ac86348ae819a2d91aacb0,
         type: 3}
       propertyPath: scalingMode
@@ -812,6 +822,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4407734449912597694}
     m_Modifications:
+    - target: {fileID: 105832, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
+      propertyPath: m_Name
+      value: pf_vfx-inf_psys_demo_loop_vulcore
+      objectReference: {fileID: 0}
+    - target: {fileID: 105832, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 452966, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.08
@@ -911,14 +929,6 @@ PrefabInstance:
     - target: {fileID: 499620, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 181.73499
-      objectReference: {fileID: 0}
-    - target: {fileID: 105832, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
-      propertyPath: m_Name
-      value: pf_vfx-inf_psys_demo_loop_vulcore
-      objectReference: {fileID: 0}
-    - target: {fileID: 105832, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 133054, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
       propertyPath: m_IsActive

@@ -44,11 +44,30 @@ public class EnemyHealth : MonoBehaviour
     [SerializeField] private float portalMinDistance = 1f;
     [SerializeField] private float portalMaxDistance = 50f;
 
+    [Header("Hit Materials")]
+    [SerializeField] private Renderer enemyRenderer;  // Assign main Renderer
+    [SerializeField] private Material normalMaterial;  // Default material
+    [SerializeField] private Material hitMaterial;     // Material to show when hit
+    [SerializeField] private float hitFlashDuration = 0.1f; // Duration of hit flash
+
+
+    private Material enemyMaterial;
+    private Coroutine hitFlashCoroutine;
+
+
     private bool hasSpawnedOnce = false; // ✅ prevents portal at pool init
+    private int startHealth;
+
 
     void Awake()
     {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        startHealth = health; // store initial value
+
+        if (enemyRenderer != null && normalMaterial != null)
+        {
+            enemyRenderer.material = normalMaterial;
+        }
 
         if (enemyShip)
         {
@@ -64,6 +83,7 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
+
     private void Start()
     {
         enemyMovement = GetComponent<EnemyMovement>();
@@ -71,16 +91,50 @@ public class EnemyHealth : MonoBehaviour
 
     private void OnEnable()
     {
-        // Skip very first activation (pool setup)
+        health = startHealth; // Reset health
+
+        if (enemyRenderer != null && normalMaterial != null)
+        {
+            enemyRenderer.material = normalMaterial;
+        }
+
         if (!hasSpawnedOnce)
         {
             hasSpawnedOnce = true;
             return;
         }
 
-        // ✅ Only runs when spawned into play
         SpawnPortalEffect();
     }
+
+
+    private void FlashHit()
+    {
+        if (enemyRenderer == null || hitMaterial == null || normalMaterial == null) return;
+
+        // Stop previous flash if still running
+        if (hitFlashCoroutine != null)
+            StopCoroutine(hitFlashCoroutine);
+
+        hitFlashCoroutine = StartCoroutine(HitFlashCoroutine());
+    }
+
+    private IEnumerator HitFlashCoroutine()
+    {
+        // Switch to hit material
+        enemyRenderer.material = hitMaterial;
+
+        // Wait for the flash duration
+        yield return new WaitForSeconds(hitFlashDuration);
+
+        // Revert to normal material
+        enemyRenderer.material = normalMaterial;
+
+        hitFlashCoroutine = null;
+    }
+
+
+
 
     private void SpawnPortalEffect()
     {
@@ -132,12 +186,24 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        Debug.Log($"{name} hit! Health before: {health}, Damage: {damage}");
+
+        // Trigger material flash
+        FlashHit();
+
         health -= damage;
+        Debug.Log($"{name} health after: {health}");
+
         if (health <= 0)
         {
+            Debug.Log($"{name} died!");
             Death();
         }
     }
+
+
+
+
 
     public void Death()
     {
