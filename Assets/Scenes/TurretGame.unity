@@ -10837,7 +10837,6 @@ GameObject:
   m_Component:
   - component: {fileID: 761978753}
   - component: {fileID: 761978752}
-  - component: {fileID: 761978751}
   m_Layer: 0
   m_Name: UFOs
   m_TagString: Untagged
@@ -10845,77 +10844,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &761978751
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 761978750}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f569c3d292e5e741a72643a0e1bf1f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enableMovement: 0
-  moveDirection: {x: 0, y: 1, z: 0}
-  moveDistance: 100
-  moveSpeed: 0.1
-  loopMovement: 1
-  movementEase:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  enableRotation: 0
-  rotationAxis: {x: 0, y: 1, z: 0}
-  rotationExtent: 90
-  rotationSpeed: 2
-  rotationMode: 0
-  loopRotation: 1
-  rotationEase:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!114 &761978752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10930,6 +10858,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPosition: {fileID: 1008907451}
   moveDuration: 15
+  endGamePosition: {fileID: 1008907451}
+  endMoveDuration: 15
   spawnerManager: {fileID: 745262867}
 --- !u!4 &761978753
 Transform:
@@ -14148,7 +14078,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1021277547
 PrefabInstance:
@@ -28467,7 +28397,7 @@ PrefabInstance:
     - target: {fileID: 5160073073065199478, guid: 10a4a6680fc2bc24b99af8cd373cd28a,
         type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5160073073065199478, guid: 10a4a6680fc2bc24b99af8cd373cd28a,
         type: 3}

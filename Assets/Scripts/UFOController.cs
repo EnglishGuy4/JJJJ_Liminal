@@ -4,19 +4,23 @@ using UnityEngine;
 public class UFOController : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public Transform startPosition;    // Where the UFO begins (off-screen, etc.)
-    public float moveDuration = 3f;    // How long it takes to reach the final spot
+    public Transform startPosition;        // Where the UFO begins (off-screen, etc.)
+    public float moveDuration = 3f;        // Duration to move into initial position
+
+    [Header("End Game Movement")]
+    public Transform endGamePosition;      // Where the UFO moves after all waves complete
+    public float endMoveDuration = 4f;     // Duration for end-game movement
 
     [Header("References")]
-    public SpawnerManager spawnerManager; // Assign in Inspector or auto-find
+    public SpawnerManager spawnerManager;  // Assign in Inspector or auto-find
 
-    private Vector3 finalPosition;     // Where it was placed in the editor
+    private Vector3 finalPosition;         // Position where it sits during gameplay
     private bool isMoving = false;
     private Transform[] childObjects;
 
     private void Start()
     {
-        // Save editor-placed position as the "final" destination
+        // Save editor-placed position as the "final" in-game position
         finalPosition = transform.position;
 
         // Cache children
@@ -31,10 +35,11 @@ public class UFOController : MonoBehaviour
             spawnerManager = FindObjectOfType<SpawnerManager>();
         }
 
-        // Subscribe to waves beginning
+        // Subscribe to both wave start and completion events
         if (spawnerManager != null)
         {
             spawnerManager.BeginSpawningEvent += OnWavesBegin;
+            spawnerManager.OnAllWavesComplete += OnAllWavesComplete;
         }
     }
 
@@ -43,6 +48,7 @@ public class UFOController : MonoBehaviour
         if (spawnerManager != null)
         {
             spawnerManager.BeginSpawningEvent -= OnWavesBegin;
+            spawnerManager.OnAllWavesComplete -= OnAllWavesComplete;
         }
     }
 
@@ -50,35 +56,35 @@ public class UFOController : MonoBehaviour
     {
         if (!isMoving && startPosition != null)
         {
-            // Place UFO at start position before moving
             transform.position = startPosition.position;
-
-            // Turn children back on
             SetChildrenActive(true);
-
-            StartCoroutine(MoveToFinalPosition());
+            StartCoroutine(MoveToPosition(startPosition.position, finalPosition, moveDuration));
         }
     }
 
-    private IEnumerator MoveToFinalPosition()
+    private void OnAllWavesComplete()
+    {
+        if (endGamePosition != null && !isMoving)
+        {
+            StartCoroutine(MoveToPosition(transform.position, endGamePosition.position, endMoveDuration));
+        }
+    }
+
+    private IEnumerator MoveToPosition(Vector3 from, Vector3 to, float duration)
     {
         isMoving = true;
 
         float elapsed = 0f;
-        while (elapsed < moveDuration)
+        while (elapsed < duration)
         {
-            float t = elapsed / moveDuration;
-
-            // 🔹 Smooth easing in/out
+            float t = elapsed / duration;
             t = Mathf.SmoothStep(0f, 1f, t);
-
-            transform.position = Vector3.Lerp(startPosition.position, finalPosition, t);
+            transform.position = Vector3.Lerp(from, to, t);
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        // Snap exactly to final editor-set position
-        transform.position = finalPosition;
+        transform.position = to;
         isMoving = false;
     }
 
@@ -86,7 +92,7 @@ public class UFOController : MonoBehaviour
     {
         foreach (Transform child in childObjects)
         {
-            if (child != this.transform) // don’t disable the root
+            if (child != this.transform)
                 child.gameObject.SetActive(state);
         }
     }
