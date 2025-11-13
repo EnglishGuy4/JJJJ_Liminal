@@ -14,7 +14,17 @@ public class Wave
 
     [Header("Enemy Variations")]
     public List<GameObject> enemyPrefabs = new List<GameObject>();  // Different enemy types
+
+    [Header("Timing")]
+    [Tooltip("Extra delay (in seconds) to add after this wave before the next wave begins.")]
+    public float extraDelayAfterWave = 0f;
+
+    [Header("Dialogue")]
+    [Tooltip("Optional dialogue GameObject to activate when this wave ends.")]
+    public GameObject waveDialogueObject;
+
 }
+
 
 
 public enum WaveMode
@@ -166,6 +176,22 @@ public class SpawnerManager : MonoBehaviour
             PlaySFX(waveEndSFX);
 
             int nextWaveNumber = currentWaveIndex + 1; // 1-based number of the *wave that just ended*
+
+            // 🔹 Activate dialogue for the completed wave (if assigned)
+            Wave completedWave = waves[currentWaveIndex];
+            if (completedWave.waveDialogueObject != null)
+            {
+                // Optional: deactivate any previously active dialogue
+                foreach (var w in waves)
+                {
+                    if (w.waveDialogueObject != null)
+                        w.waveDialogueObject.SetActive(false);
+                }
+
+                // Activate this wave's dialogue
+                completedWave.waveDialogueObject.SetActive(true);
+            }
+
 
             // 🔹 If this was the final wave, handle end sequence
             if (nextWaveNumber == finalWaveNumber)
@@ -357,8 +383,21 @@ public class SpawnerManager : MonoBehaviour
             return;
         }
 
+        float extraDelay = 0f;
+
+        // If we're in Timed mode and there’s a valid wave, add that wave’s custom delay
+        if (waveMode == WaveMode.Timed && currentWaveIndex < waves.Count)
+        {
+            extraDelay = waves[currentWaveIndex].extraDelayAfterWave;
+        }
+
+        // Combine global and per-wave delay
+        intermissionTimer = timeBetweenWaves + extraDelay;
         inIntermission = true;
-        intermissionTimer = timeBetweenWaves;
+
+        // 🟢 OPTIONAL: Display total wait time in wave text
+        if (waveText != null)
+            waveText.text = $"NEXT WAVE INCOMING... ({intermissionTimer:F1}s)";
 
         if (startingWave)
         {
@@ -371,9 +410,25 @@ public class SpawnerManager : MonoBehaviour
             else
                 waveText.text = "ANOTHER WAVE INCOMING...";
         }
+        // 🕒 Start delayed countdown sound
 
-        PlaySFX(countdownSFX);
+        StartCoroutine(PlayCountdownSFX(intermissionTimer));
+
     }
+
+    private IEnumerator PlayCountdownSFX(float totalDelay)
+    {
+        // Wait until 6 seconds remain before the next wave
+        float waitTime = Mathf.Max(0f, totalDelay - 6f);
+        yield return new WaitForSeconds(waitTime);
+
+        // Only play if we’re still in intermission (not interrupted early)
+        if (inIntermission)
+        {
+            PlaySFX(countdownSFX);
+        }
+    }
+
 
     private void StartNextWave()
     {
