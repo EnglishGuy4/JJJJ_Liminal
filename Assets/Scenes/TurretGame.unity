@@ -26979,6 +26979,16 @@ PrefabInstance:
       propertyPath: m_PlayOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1014735670101969128, guid: 10a4a6680fc2bc24b99af8cd373cd28a,
+        type: 3}
+      propertyPath: m_DynamicOccludee
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1014735670101969128, guid: 10a4a6680fc2bc24b99af8cd373cd28a,
+        type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 10a4a6680fc2bc24b99af8cd373cd28a, type: 3}
 --- !u!4 &208546112452149000
@@ -27362,46 +27372,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: CannonGradient
       objectReference: {fileID: 0}
-    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
-        type: 3}
-      propertyPath: hand
-      value: 
-      objectReference: {fileID: 53274494}
-    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
-        type: 3}
-      propertyPath: primaryHand
-      value: 
-      objectReference: {fileID: 1260162970263012946}
-    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
-        type: 3}
-      propertyPath: secondaryHand
-      value: 
-      objectReference: {fileID: 650289673}
-    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
-        type: 3}
-      propertyPath: primaryHandAnchor
-      value: 
-      objectReference: {fileID: 1260162968866365234}
-    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
-        type: 3}
-      propertyPath: spawnerManager
-      value: 
-      objectReference: {fileID: 745262867}
-    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
-        type: 3}
-      propertyPath: tutorialHands
-      value: 
-      objectReference: {fileID: 923302817}
-    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
-        type: 3}
-      propertyPath: tutorialDialogue
-      value: 
-      objectReference: {fileID: 1882395433}
-    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
-        type: 3}
-      propertyPath: gameStartDialogue
-      value: 
-      objectReference: {fileID: 902666794}
     - target: {fileID: 4622140728014162643, guid: ed4d40976a4d723439aa4a65662774f6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -27457,6 +27427,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: hand
+      value: 
+      objectReference: {fileID: 53274494}
+    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: primaryHand
+      value: 
+      objectReference: {fileID: 1260162970263012946}
+    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: secondaryHand
+      value: 
+      objectReference: {fileID: 650289673}
+    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: primaryHandAnchor
+      value: 
+      objectReference: {fileID: 1260162968866365234}
+    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: spawnerManager
+      value: 
+      objectReference: {fileID: 745262867}
+    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: tutorialHands
+      value: 
+      objectReference: {fileID: 923302817}
+    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: tutorialDialogue
+      value: 
+      objectReference: {fileID: 1882395433}
+    - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: gameStartDialogue
+      value: 
+      objectReference: {fileID: 902666794}
     - target: {fileID: 2381081737574060029, guid: ed4d40976a4d723439aa4a65662774f6,
         type: 3}
       propertyPath: m_Volume
