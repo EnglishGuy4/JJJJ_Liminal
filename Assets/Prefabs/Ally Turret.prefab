@@ -29216,7 +29216,7 @@ MonoBehaviour:
   turretCannonBarrel: {fileID: 3926468127060868935}
   recoilDistance: 0.5
   recoilReturnSpeed: 8
-  explosionSound: {fileID: 8300000, guid: abf6edbfb3188c148ad6f3e2442e9836, type: 3}
+  explosionSound: {fileID: 8300000, guid: 3a0b27db72dad9f44833a4091e8b7b9a, type: 3}
   explosionVolume: 1
   explosionSound2D: 0
   explosionMinDistance: 1
@@ -29231,9 +29231,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 9a0a096a912603e4a943e06fb8635558, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 3a0b27db72dad9f44833a4091e8b7b9a, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.519
   m_Pitch: 1
   Loop: 0
   Mute: 0
