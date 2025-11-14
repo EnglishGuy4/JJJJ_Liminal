@@ -11,6 +11,10 @@ public class DroneShot : MonoBehaviour
     public float timer = 4f;
     public Transform target; // Assign your shield here
     [HideInInspector] public bool canShoot = false; // controlled by ship
+    [HideInInspector] public SpawnerManager enemySpawnerScript;
+    private GameManager gameManager;
+    [SerializeField] private GameObject explosionPrefab;
+    public float shieldDamage = 20f;
 
     
 
@@ -45,5 +49,10 @@ public class DroneShot : MonoBehaviour
         }
 
         shot.SetActive(true); // <-- Set active AFTER setting positions!
+    }
+
+    private void PlayExplosionEffect()
+    {
+        
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using TMPro;
 
 public class DroneHealth : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class DroneHealth : MonoBehaviour
 
     [Header("Scoring")]
     public int scoreValue = 100;
+    private bool lastHitByPlayer = false; // NEW
 
     [Header("Shield Damage")]
     public float shieldDamage = 10f;
@@ -44,6 +46,12 @@ public class DroneHealth : MonoBehaviour
     [SerializeField] private bool portalSound2D = false;
     [SerializeField] private float portalMinDistance = 1f;
     [SerializeField] private float portalMaxDistance = 50f;
+
+    [Header("Score UI")]
+    [SerializeField] private GameObject scorePopupPrefab;
+    [SerializeField] private float scorePopupDuration = 1.5f; // How long the UI stays
+    [SerializeField] private Vector3 scorePopupScale = new Vector3(1f, 1f, 1f);
+    [SerializeField] private Vector3 scorePopupPopScale = new Vector3(1.5f, 1.5f, 1.5f);
 
     private bool hasSpawnedOnce = false; // ✅ prevents portal at pool init
 
@@ -81,6 +89,9 @@ public class DroneHealth : MonoBehaviour
             hasSpawnedOnce = true;
             return;
         }
+
+        // reset hit source for each spawn
+        lastHitByPlayer = false;
 
         // ✅ Only runs when spawned into play
         SpawnPortalEffect();
@@ -134,29 +145,33 @@ public class DroneHealth : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int damage)
+    // Replace original TakeDamage with overload that accepts who caused it
+    public void TakeDamage(int damage, bool fromPlayer)
     {
-        //Debug.Log("TakeDamage called on: " + gameObject.name + " for " + damage);
+        lastHitByPlayer = fromPlayer;
         health -= damage;
-        //Debug.Log("Took damage, current health: " + health);
         if (health <= 0)
         {
             Death();
         }
     }
 
+    // keep compatibility
+    public void TakeDamage(int damage) => TakeDamage(damage, false);
 
     public void Death()
     {
-        if (scoreValue > 0 && gameManager != null)
+        // Award score only if player caused the kill
+        if (lastHitByPlayer && scoreValue > 0 && gameManager != null)
         {
             gameManager.AddScore(scoreValue);
-            // show popup, etc.
+            // show popup, etc. (use existing popup code if you have it)
+            SpawnScorePopup();
         }
 
         if (gameManager != null)
         {
-            gameManager.AddScore(scoreValue);
+            // remove from enemy list (do not add score again)
             gameManager.enemies.Remove(gameObject);
         }
 
@@ -182,6 +197,61 @@ public class DroneHealth : MonoBehaviour
         PlayExplosionEffect();
 
         gameObject.SetActive(false);
+    }
+
+    private void SpawnScorePopup()
+    {
+        if (scorePopupPrefab == null) return;
+
+        GameObject popup = Instantiate(scorePopupPrefab, transform.position, Quaternion.identity);
+
+        // Set the text
+        TMPro.TextMeshProUGUI tmpText = popup.GetComponentInChildren<TMPro.TextMeshProUGUI>();
+        if (tmpText != null)
+        {
+            tmpText.text = scoreValue.ToString();
+        }
+
+        // Optional: Make it front-facing if not using FaceCamera
+        if (Camera.main != null)
+            popup.transform.LookAt(popup.transform.position + Camera.main.transform.forward);
+
+        popup.transform.localScale = scorePopupScale;
+
+        // Animate scale
+        StartCoroutine(ScorePopupAnimation(popup));
+
+        // Destroy after duration
+        Destroy(popup, scorePopupDuration);
+    }
+
+    private IEnumerator ScorePopupAnimation(GameObject popup)
+    {
+        float timer = 0f;
+        float animDuration = 0.3f; // pop animation time
+
+        Vector3 startScale = scorePopupScale;
+        Vector3 targetScale = scorePopupPopScale;
+
+        while (timer < animDuration)
+        {
+            timer += Time.deltaTime;
+            float t = timer / animDuration;
+            popup.transform.localScale = Vector3.Lerp(startScale, targetScale, Mathf.Sin(t * Mathf.PI * 0.5f)); // smooth pop
+            yield return null;
+        }
+
+        // Lerp back to normal scale
+        timer = 0f;
+        while (timer < animDuration)
+        {
+            timer += Time.deltaTime;
+            float t = timer / animDuration;
+            popup.transform.localScale = Vector3.Lerp(targetScale, startScale, Mathf.Sin(t * Mathf.PI * 0.5f));
+            yield return null;
+        }
+
+        popup.transform.localScale = startScale;
     }
 
     /// <summary>

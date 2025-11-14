@@ -540,6 +540,11 @@ MonoBehaviour:
   portalSound2D: 0
   portalMinDistance: 1
   portalMaxDistance: 10000
+  scorePopupPrefab: {fileID: 8658147135966152940, guid: 871ad167bd217e844bcdf3d8514972fc,
+    type: 3}
+  scorePopupDuration: 1.25
+  scorePopupScale: {x: 0.1, y: 0.1, z: 0.1}
+  scorePopupPopScale: {x: 0.5, y: 0.5, z: 0.5}
 --- !u!114 &1734896970410972521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -559,6 +564,9 @@ MonoBehaviour:
   timer: 3
   target: {fileID: 0}
   canShoot: 0
+  enemySpawnerScript: {fileID: 0}
+  explosionPrefab: {fileID: 0}
+  shieldDamage: 20
 --- !u!195 &5580597172338483727
 NavMeshAgent:
   m_ObjectHideFlags: 0

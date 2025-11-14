@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 8998764143647382430}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -93,10 +93,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 025d2d84c2ed05d41a8c7aa8497c9d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targetPos: {x: 0, y: 0, z: 0}
   startPos: {x: 0, y: 0, z: 0}
+  targetPos: {x: 0, y: 0, z: 0}
   speed: 25
-  audioSource: {fileID: 4776449839243648800}
+  outOfBoundsY: -4
+  shieldDamage: 10
+  enemySpawnerScript: {fileID: 0}
 --- !u!114 &4207404285400982134
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,6 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 1
+  scoreValue: 50
   explosionPrefab: {fileID: 141070, guid: 5bb09f328cde38248a9eb17356387795, type: 3}
   explosionLifetime: 3
   explosionScale: 0.0001
@@ -118,6 +121,11 @@ MonoBehaviour:
   explosionSound2D: 0
   explosionMinDistance: 1
   explosionMaxDistance: 10000
+  scorePopupPrefab: {fileID: 8658147135966152940, guid: 871ad167bd217e844bcdf3d8514972fc,
+    type: 3}
+  scorePopupDuration: 1.25
+  scorePopupScale: {x: 0.1, y: 0.1, z: 0.1}
+  scorePopupPopScale: {x: 0.25, y: 0.25, z: 0.25}
 --- !u!82 &4776449839243648800
 AudioSource:
   m_ObjectHideFlags: 0

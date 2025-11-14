@@ -15,6 +15,7 @@ TagManager:
   - PowerUp
   - PlayerShot
   - UFO
+  - Shield
   layers:
   - Default
   - TransparentFX

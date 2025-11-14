@@ -76,7 +76,7 @@ public class CannonBall : MonoBehaviour
                     //Debug.Log("Found DroneHealth!");
                     Instantiate(droneHitPrefab, transform.position, Quaternion.identity);
                     droneHealth.cannonBall = gameObject;
-                    droneHealth.TakeDamage(damage);
+                    droneHealth.TakeDamage(damage, true); // mark as player-caused so score will be awarded
                     ResetBall();
                 }
                 //else
@@ -118,7 +118,7 @@ public class CannonBall : MonoBehaviour
             var projHealth = collision.gameObject.GetComponentInParent<ProjectileHealth>();
             if (projHealth != null)
             {
-                projHealth.TakeDamage(damage); // or just projHealth.Death() if you want instant destruction
+                projHealth.TakeDamage(damage, true); // or just projHealth.Death() if you want instant destruction
             }
             // Optionally, play a hit effect here
             ResetBall(); 

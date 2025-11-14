@@ -4049,6 +4049,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1799019779132808453, guid: 1e540d660e5117e4b8c65668bb0b9a8d,
+        type: 3}
+      propertyPath: m_TagString
+      value: Shield
+      objectReference: {fileID: 0}
     - target: {fileID: 1422212077953255359, guid: 1e540d660e5117e4b8c65668bb0b9a8d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4918,6 +4923,11 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
+    - target: {fileID: 3989178107089599183, guid: cac1b8fd2aba0d044a4ab27125586872,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 74082356465617116, guid: cac1b8fd2aba0d044a4ab27125586872,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5251,6 +5261,7 @@ Transform:
   - {fileID: 1611959266}
   - {fileID: 377364423}
   - {fileID: 649258833}
+  - {fileID: 1064086630}
   m_Father: {fileID: 1931093836}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5274,6 +5285,8 @@ MonoBehaviour:
     spawnRate: 1.5
     maxEnemies: 10
     enemyPrefabs: []
+    extraDelayAfterWave: 0
+    waveDialogueObject: {fileID: 0}
   timeBetweenWaves: 5
   spawnRateDecrease: 0.2
   maxEnemiesIncrease: 20
@@ -5293,6 +5306,18 @@ MonoBehaviour:
   waveEndSFX: {fileID: 8300000, guid: 3510bdbd9fc49bf489bd6fec1cd58ad5, type: 3}
   allWavesCompleteSFX: {fileID: 8300000, guid: 9922b00674c8b4c4d9717398606b1f88, type: 3}
   waveMusic: {fileID: 8300000, guid: 8bc3c0001171c0541ae816e7c324ff3b, type: 3}
+  powerUpVFX: {fileID: 0}
+  powerUpSFX: {fileID: 0}
+  powerUpVFXDuration: 2
+  startScale: {x: 1, y: 1, z: 1}
+  popScale: {x: 1.3, y: 1.3, z: 1.3}
+  scaleTransitionTime: 0.15
+  holdTimeAtPeak: 0.1
+  finalWaveNumber: 5
+  endDialogue: {fileID: 0}
+  endDialogueDuration: 5
+  endDialogueStartDelay: 2
+  debugSpawning: 0
   enemiesFromThisSpawnerList: []
 --- !u!82 &745262868
 AudioSource:
@@ -7607,6 +7632,51 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gizmoColor: {r: 0, g: 1, b: 0, a: 1}
   gizmoSize: 10
+--- !u!1 &1064086629
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1064086630}
+  - component: {fileID: 1064086631}
+  m_Layer: 0
+  m_Name: DroneShotWayPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1064086630
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1064086629}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -31.142, y: -4.65, z: -5.32}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 745262866}
+  m_RootOrder: 52
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1064086631
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1064086629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4720ba6e6336cee46b17fafdd4dbc76f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gizmoColor: {r: 0, g: 0.4081595, b: 1, a: 1}
+  gizmoSize: 2.5
 --- !u!1001 &1064933186
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9141,12 +9211,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 625822694}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1283406432 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1422212077953255359, guid: 1e540d660e5117e4b8c65668bb0b9a8d,
-    type: 3}
-  m_PrefabInstance: {fileID: 625822694}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1283406433
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9370,6 +9434,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPosition: {fileID: 1008907451}
   moveDuration: 15
+  endGamePosition: {fileID: 0}
+  endMoveDuration: 4
   spawnerManager: {fileID: 0}
 --- !u!114 &1307216880
 MonoBehaviour:
@@ -16289,7 +16355,7 @@ PrefabInstance:
         type: 3}
       propertyPath: target
       value: 
-      objectReference: {fileID: 1283406432}
+      objectReference: {fileID: 1064086630}
     - target: {fileID: 1734896969175143137, guid: ccf244b2400f38d47b99d6fffd8a438b,
         type: 3}
       propertyPath: holdPoint
@@ -16998,6 +17064,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TagString
       value: Untagged
+      objectReference: {fileID: 0}
+    - target: {fileID: 3989178107089599183, guid: f0d3b230becdd5247ba40c49624ed75f,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 74082356465617116, guid: f0d3b230becdd5247ba40c49624ed75f,
         type: 3}
