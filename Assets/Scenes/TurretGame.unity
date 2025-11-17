@@ -27434,12 +27434,12 @@ PrefabInstance:
         type: 3}
       propertyPath: startClip
       value: 
-      objectReference: {fileID: 8300000, guid: 955080f04ac535e4f8f1dba91c1d2dbd, type: 3}
+      objectReference: {fileID: 8300000, guid: a98503dbeab475d45a09afe209247455, type: 3}
     - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
         type: 3}
       propertyPath: loopClip
       value: 
-      objectReference: {fileID: 8300000, guid: 967bf8763a5ac0f4cb363306a55acb6c, type: 3}
+      objectReference: {fileID: 8300000, guid: 7b51a8dc8575bf34b93702f8be5c07aa, type: 3}
     - target: {fileID: 7540508606716804044, guid: ed4d40976a4d723439aa4a65662774f6,
         type: 3}
       propertyPath: endClip
