@@ -5279,6 +5279,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPoints: []
   waypoints: []
+  droneWaypoints: []
   waveMode: 1
   waves:
   - waveTime: 30
@@ -16605,6 +16606,44 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.192
+      objectReference: {fileID: 0}
+    - target: {fileID: 4877830705583922282, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 902497786, guid: ed4d40976a4d723439aa4a65662774f6, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2102884445, guid: ed4d40976a4d723439aa4a65662774f6, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7237840916378466853, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 8675334518926507890, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 481519028426348031, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1483766270998473822, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4050031655472934173, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 12
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ed4d40976a4d723439aa4a65662774f6, type: 3}

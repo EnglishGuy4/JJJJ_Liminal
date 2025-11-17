@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "com.liminal.sdk": "https://github.com/LiminalVR/Liminal-SDK-Unity-Package.git",
+    "com.liminal.sdk": "file:C:/Users/npetersen5/Downloads/LiminalSdk-UnityPackage-master/LiminalSdk-UnityPackage-master",
     "com.unity.ads": "2.0.8",
     "com.unity.analytics": "3.3.2",
     "com.unity.collab-proxy": "1.2.16",
@@ -42,11 +42,5 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  },
-  "lock": {
-    "com.liminal.sdk": {
-      "hash": "3ca0200eaad777e455a5ac3a076ab1e658b76616",
-      "revision": "HEAD"
-    }
   }
 }

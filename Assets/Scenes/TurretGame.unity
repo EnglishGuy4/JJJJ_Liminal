@@ -7593,6 +7593,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8829255948184301283, guid: c0b90a1365f28fb4597596e8e5a3dccc,
         type: 3}
+    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
+        type: 3}
+      propertyPath: collectionOfObjectsToBePooled.Array.data[1]
+      value: 
+      objectReference: {fileID: 8998764143647382430, guid: eac86cbf80d82ad4e8c93d92c94004fa,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c040cae17da156f4fb01180d27946c27, type: 3}
 --- !u!1 &592350806
@@ -9685,6 +9691,7 @@ Transform:
   - {fileID: 227256106}
   - {fileID: 1880695674}
   - {fileID: 2017050162}
+  - {fileID: 1340948515}
   m_Father: {fileID: 1931093836}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -9724,7 +9731,7 @@ MonoBehaviour:
     maxEnemies: 20
     enemyPrefabs:
     - {fileID: 8829255948184301283, guid: 656824176d0916543afc368625ed1522, type: 3}
-    - {fileID: 5568970986509601867, guid: bfe1a5a5ea86f15419c4ef9b71769a1b, type: 3}
+    - {fileID: 0}
     extraDelayAfterWave: 10
     waveDialogueObject: {fileID: 0}
   timeBetweenWaves: 6
@@ -17872,6 +17879,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a6003be34575ea41923958512d8f7e0, type: 3}
+--- !u!1 &1340948514
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1340948515}
+  - component: {fileID: 1340948516}
+  m_Layer: 0
+  m_Name: droneWaypoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1340948515
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1340948514}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -30.3, y: 19.9, z: 86.8}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 745262866}
+  m_RootOrder: 83
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1340948516
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1340948514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4720ba6e6336cee46b17fafdd4dbc76f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gizmoColor: {r: 1, g: 0.112376936, b: 0, a: 1}
+  gizmoSize: 10
 --- !u!1001 &1343636413
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24270,6 +24322,59 @@ Transform:
   m_Father: {fileID: 558838192}
   m_RootOrder: 41
   m_LocalEulerAnglesHint: {x: 90.00001, y: 0, z: 0}
+--- !u!1 &1914608942
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1914608943}
+  - component: {fileID: 1914608944}
+  m_Layer: 0
+  m_Name: DroneSpawnManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1914608943
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914608942}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1931093836}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1914608944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914608942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3643429100de773489f7b5d0f1ac6dd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startWave: 3
+  runDuringWaveOnly: 1
+  spawnRate: 5
+  maxConcurrent: 3
+  dronePrefabs:
+  - {fileID: 5568970986509601867, guid: bfe1a5a5ea86f15419c4ef9b71769a1b, type: 3}
+  spawnPoints: []
+  droneWaypoints: []
+  usePooling: 1
+  debug: 0
 --- !u!1 &1931093833
 GameObject:
   m_ObjectHideFlags: 0
@@ -24344,6 +24449,7 @@ Transform:
   - {fileID: 605738625}
   - {fileID: 1839872775}
   - {fileID: 5006512734795619555}
+  - {fileID: 1914608943}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -27067,7 +27173,7 @@ PrefabInstance:
     - target: {fileID: 366280909880016190, guid: a3a99bb0dfb98e14aa71935281e1e3d7,
         type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 366280909880016190, guid: a3a99bb0dfb98e14aa71935281e1e3d7,
         type: 3}
@@ -27440,7 +27546,7 @@ PrefabInstance:
     - target: {fileID: 4622140728014162643, guid: ed4d40976a4d723439aa4a65662774f6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4622140728014162643, guid: ed4d40976a4d723439aa4a65662774f6,
         type: 3}

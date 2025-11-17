@@ -607,11 +607,11 @@ MonoBehaviour:
   moveSpeed: 15
   stopDistance: 0.5
   arrived: 0
-  enableDroneShootingOnArrive: 1
-  moveWobbleAmplitude: 2
-  moveWobbleFrequency: 2
-  idleWobbleAmplitude: 2
-  idleWobbleFrequency: 2
+  enableDroneShootingOnArrive: 0
+  moveWobbleAmplitude: 0
+  moveWobbleFrequency: 0
+  idleWobbleAmplitude: 0
+  idleWobbleFrequency: 0
   useSpawnBasedHold: 0
   holdDistanceFromSpawn: 90
   possibleHoldPoints: []
