@@ -87,7 +87,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5580995834612555217}
   m_Layer: 0
-  m_Name: m_meteor
+  m_Name: Meteor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -239,6 +239,38 @@ PrefabInstance:
     - target: {fileID: 452966, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19824146, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
+      propertyPath: InitialModule.startSizeY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19824146, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
+      propertyPath: InitialModule.startSizeZ.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19824146, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
+      propertyPath: InitialModule.startRotationX.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19824146, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
+      propertyPath: InitialModule.startRotationY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19853356, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
+      propertyPath: InitialModule.startSizeY.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19853356, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
+      propertyPath: InitialModule.startSizeZ.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19853356, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
+      propertyPath: InitialModule.startRotationX.minMaxState
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 19853356, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
+      propertyPath: InitialModule.startRotationY.minMaxState
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7ba69f5d6c00b441915500b411a4dac, type: 3}
