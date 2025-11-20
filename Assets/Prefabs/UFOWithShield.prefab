@@ -165,27 +165,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.58, y: 1.01, z: 1.59}
   m_Center: {x: -0.00000023841858, y: 0, z: 0}
---- !u!114 &6893821693498567471
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5142161599932877751}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb3e9941ee6b1d844a018fe76e4816c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shieldMaterial: {fileID: 2100000, guid: f17c8166cd3439044a31ef625101f1d9, type: 2}
-  shieldColorProperty: _Color
-  hitColor: {r: 1, g: 0, b: 0, a: 1}
-  normalColor: {r: 0, g: 1, b: 1, a: 1}
-  colorFlashDuration: 0.5
-  pulseSpeed: 2
-  pulseIntensity: 0.2
-  shieldHitClip: {fileID: 0}
-  shieldHitVolume: 1
 --- !u!114 &6893821693498567470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,6 +236,27 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6893821693498567471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5142161599932877751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb3e9941ee6b1d844a018fe76e4816c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shieldMaterial: {fileID: 2100000, guid: f17c8166cd3439044a31ef625101f1d9, type: 2}
+  shieldColorProperty: _Color
+  hitColor: {r: 1, g: 0, b: 0, a: 1}
+  normalColor: {r: 0, g: 1, b: 1, a: 1}
+  colorFlashDuration: 0.5
+  pulseSpeed: 2
+  pulseIntensity: 0.2
+  shieldHitClip: {fileID: 0}
+  shieldHitVolume: 1
 --- !u!1001 &6893821693110490802
 PrefabInstance:
   m_ObjectHideFlags: 0
