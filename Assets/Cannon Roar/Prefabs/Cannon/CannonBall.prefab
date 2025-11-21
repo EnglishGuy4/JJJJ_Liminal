@@ -132,12 +132,9 @@ MonoBehaviour:
   rb: {fileID: 0}
   force: 12000
   damage: 1
-  standerdHitPrefab: {fileID: 1134129239631916, guid: 051b19dce2efe7a4ab2e6a7aa3211dfc,
-    type: 3}
-  powerupHitPrefab: {fileID: 3626195926643447878, guid: 2f53fabac02a1b046a71bdef66a5351e,
-    type: 3}
-  droneHitPrefab: {fileID: 1480925450122551300, guid: b47c66d142d324444ab4c2dd26fd6124,
-    type: 3}
+  standerdHitPrefab: {fileID: 100002, guid: e74af37e539075d428c1f7bd8cdb781d, type: 3}
+  powerupHitPrefab: {fileID: 0}
+  droneHitPrefab: {fileID: 100002, guid: e74af37e539075d428c1f7bd8cdb781d, type: 3}
   firedFrom: {fileID: 0}
 --- !u!96 &3155416588032936127
 TrailRenderer:
@@ -331,16 +328,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7631248479265808528}
     m_Modifications:
-    - target: {fileID: 1480925450122551300, guid: 44c0c129973459947a65431364068097,
-        type: 3}
-      propertyPath: m_Name
-      value: RockHit
-      objectReference: {fileID: 0}
-    - target: {fileID: 1480925450122551300, guid: 44c0c129973459947a65431364068097,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1480925450122551299, guid: 44c0c129973459947a65431364068097,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -395,6 +382,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1480925450122551300, guid: 44c0c129973459947a65431364068097,
+        type: 3}
+      propertyPath: m_Name
+      value: RockHit
+      objectReference: {fileID: 0}
+    - target: {fileID: 1480925450122551300, guid: 44c0c129973459947a65431364068097,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1480925450122551298, guid: 44c0c129973459947a65431364068097,
         type: 3}
@@ -511,11 +508,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7631248479265808528}
     m_Modifications:
-    - target: {fileID: 7316349234404702153, guid: 8a79985c05191854c83228e5adfdeeef,
-        type: 3}
-      propertyPath: m_Name
-      value: SmokeEffect
-      objectReference: {fileID: 0}
     - target: {fileID: 7316349234404702004, guid: 8a79985c05191854c83228e5adfdeeef,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -570,6 +562,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7316349234404702153, guid: 8a79985c05191854c83228e5adfdeeef,
+        type: 3}
+      propertyPath: m_Name
+      value: SmokeEffect
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a79985c05191854c83228e5adfdeeef, type: 3}
@@ -724,11 +721,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7631248479265808528}
     m_Modifications:
-    - target: {fileID: 5848965708628791855, guid: b9e67915e3cf63e4fb8dcac43a71c006,
-        type: 3}
-      propertyPath: m_Name
-      value: Glow 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5848965708628791854, guid: b9e67915e3cf63e4fb8dcac43a71c006,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -798,6 +790,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.62622726
+      objectReference: {fileID: 0}
+    - target: {fileID: 5848965708628791855, guid: b9e67915e3cf63e4fb8dcac43a71c006,
+        type: 3}
+      propertyPath: m_Name
+      value: Glow 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9e67915e3cf63e4fb8dcac43a71c006, type: 3}
