@@ -74,7 +74,6 @@ public class GameManager : MonoBehaviour
     public float explosionPlayDuration = 3f; // how long explosions play before reset
     public float dialogueDisplayDuration = 4f; // how long the dialogue stays visible
 
-
     private Vector3 originalScale;
     private Coroutine flashRoutine;
     private bool isFlashing = false;
@@ -162,6 +161,13 @@ public class GameManager : MonoBehaviour
     public void ModifyShield(float amount)
     {
         if (isGameOver) return;
+
+        // If this is damage and the spawner indicates a shield-invincibility window, ignore it
+        if (amount < 0 && spawnerManager != null && spawnerManager.IsShieldInvincible())
+        {
+            Debug.Log("[GameManager] Damage ignored due to wave-end invincibility window.");
+            return;
+        }
 
         currentShield += amount;
         currentShield = Mathf.Clamp(currentShield, minShield, maxShield);
@@ -522,6 +528,4 @@ public class GameManager : MonoBehaviour
         ResetFadeMaterial();
     }
 #endif
-
-
 }

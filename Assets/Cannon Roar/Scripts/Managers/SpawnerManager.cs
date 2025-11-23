@@ -623,4 +623,36 @@ public class SpawnerManager : MonoBehaviour
         }
     }
 
+    [Header("Shield Invincibility")]
+    [Tooltip("When this many seconds remain in a wave, shields become invincible to prevent overlapping dialogues.")]
+    public float shieldInvincibilityWaveSeconds = 10f;      // default 10s
+    [Tooltip("During intermission, shields remain invincible while the intermission timer is <= this value (seconds).")]
+    public float shieldInvincibilityIntermissionSeconds = 6f; // default 6s
+
+    /// <summary>
+    /// Returns true when shields should be considered invincible to avoid dialogue overlap.
+    /// Uses configured thresholds for wave-end and intermission windows.
+    /// </summary>
+    public bool IsShieldInvincible()
+    {
+        // Only guard when waves are active
+        if (!wavesStarted) return false;
+
+        // If currently in intermission, protect during the configured final seconds of intermission
+        if (inIntermission)
+        {
+            return intermissionTimer > 0f && intermissionTimer <= shieldInvincibilityIntermissionSeconds;
+        }
+
+        // If in a timed wave, check remaining time
+        Wave currentWave = (waveMode == WaveMode.Timed && currentWaveIndex < waves.Count)
+            ? waves[currentWaveIndex]
+            : endlessCurrentWave;
+
+        if (currentWave == null) return false;
+
+        float remaining = currentWave.waveTime - waveTimer;
+        return remaining <= shieldInvincibilityWaveSeconds;
+    }
+
 }
