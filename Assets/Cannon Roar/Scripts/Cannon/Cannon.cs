@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Liminal.SDK.VR;
 using Liminal.SDK.VR.Input;
-using UnityEngine.Audio; // 🔹 Added using directive for Audio
+using UnityEngine.Audio; 
 
 public class Cannon : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class Cannon : MonoBehaviour
     public GameObject hand;
     public GameObject handleHand;
     public GameObject primaryHand;
-    public GameObject secondaryHand; // 🔹 Added reference for secondary hand
+    public GameObject secondaryHand; 
     public GameObject cannonPos;
     private CannonBall cb;
 
@@ -44,11 +44,11 @@ public class Cannon : MonoBehaviour
     public bool isScatterShot = false;
     public bool isFullAutoShot = false;
     private Coroutine powerUpRoutine;
-    private Coroutine autoFireRoutine; // ensure this exists (you already have autoFireRoutine field)
+    private Coroutine autoFireRoutine;
     public float fullAutoFireRate = 0.25f;
 
     [Header("Spawner Manager")]
-    public SpawnerManager spawnerManager; // 🔹 Reference to SpawnerManager
+    public SpawnerManager spawnerManager; 
 
     // Handle interaction
     [HideInInspector] public bool grabHandle;
@@ -87,7 +87,7 @@ public class Cannon : MonoBehaviour
     [Header("Game Start Dialogue")]
     [SerializeField] private GameObject gameStartDialogue;
 
-    //public AudioMixer masterMixer; // assign in Inspector (SFX group)
+    //public AudioMixer masterMixer; 
 
     void Start()
     {
@@ -114,19 +114,19 @@ public class Cannon : MonoBehaviour
             hand.GetComponent<MeshRenderer>().enabled = false;
             if (secondaryHand != null) secondaryHand.SetActive(false);
 
-            // 🔹 Tell SpawnerManager to begin waves
+            // Tell SpawnerManager to begin waves
             if (spawnerManager != null)
                 spawnerManager.BeginSpawning();
 
-            // 🔹 Turn off Tutorial Hands when turret grabbed
+            // Turn off Tutorial Hands when turret grabbed
             if (tutorialHands != null)
                 tutorialHands.SetActive(false);
 
-            // 🔹 Turn off Tutorial Dialogue when turret grabbed
+            // Turn off Tutorial Dialogue when turret grabbed
             if (tutorialDialogue != null)
                 tutorialDialogue.SetActive(false);
 
-            // 🔹 Turn on Game Start Dialogue when turret grabbed
+            // Turn on Game Start Dialogue when turret grabbed
             if (gameStartDialogue != null)
                 gameStartDialogue.SetActive(true);
 
@@ -149,19 +149,19 @@ public class Cannon : MonoBehaviour
                     hand.GetComponent<MeshRenderer>().enabled = false;
                     if (secondaryHand != null) secondaryHand.SetActive(false);
 
-                    // 🔹 Turn off Tutorial Hands when turret grabbed
+                    // Turn off Tutorial Hands when turret grabbed
                     if (tutorialHands != null)
                         tutorialHands.SetActive(false);
 
-                    // 🔹 Turn off Tutorial Dialogue when turret grabbed
+                    // Turn off Tutorial Dialogue when turret grabbed
                     if (tutorialDialogue != null)
                         tutorialDialogue.SetActive(false);
 
-                    // 🔹 Turn on Game Start Dialogue when turret grabbed
+                    // Turn on Game Start Dialogue when turret grabbed
                     if (gameStartDialogue != null)
                         gameStartDialogue.SetActive(true);
 
-                    // 🔹 Trigger waves when cannon is first grabbed
+                    // Trigger waves when cannon is first grabbed
                     if (spawnerManager != null)
                         spawnerManager.BeginSpawning();
                 }
@@ -178,6 +178,27 @@ public class Cannon : MonoBehaviour
                     hand.transform.rotation = primaryHandAnchor.rotation;
                     initialGrab = false;
                     if (secondaryHand != null) secondaryHand.SetActive(true);
+
+                    // STOP any firing state when handle is released (prevent continued full-auto)
+                    firePressed = false;
+
+                    if (autoFireRoutine != null)
+                    {
+                        StopCoroutine(autoFireRoutine);
+                        autoFireRoutine = null;
+                    }
+
+                    if (audio != null)
+                    {
+                        if (audio.loop)
+                        {
+                            audio.loop = false;
+                            audio.Stop();
+                        }
+                        // play release tail if assigned
+                        if (endClip != null)
+                            audio.PlayOneShot(endClip, endVolume);
+                    }
                 }
             }
         }
