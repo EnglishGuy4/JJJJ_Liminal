@@ -195,8 +195,8 @@ public class Cannon : MonoBehaviour
                             audio.loop = false;
                             audio.Stop();
                         }
-                        // play release tail if assigned
-                        if (endClip != null)
+                        // play release tail only if we were in full-auto
+                        if (isFullAutoShot && endClip != null)
                             audio.PlayOneShot(endClip, endVolume);
                     }
                 }
@@ -322,7 +322,9 @@ public class Cannon : MonoBehaviour
                         // Stop continuous loop and play end sound (C)
                         audio.loop = false;
                         audio.Stop();
-                        audio.PlayOneShot(endClip);
+                        // only play end sound for full-auto mode
+                        if (isFullAutoShot && endClip != null)
+                            audio.PlayOneShot(endClip, endVolume);
                     }
                     /*else
                     {
