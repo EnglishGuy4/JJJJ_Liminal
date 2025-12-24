@@ -29,6 +29,10 @@ public class PoolManager : MonoBehaviour
             for (int j = 0; j < pooledAmountForEachObject[i]; j++)
             {
                 GameObject obj = Instantiate(collectionOfObjectsToBePooled[i], transform); //Creates the object in the scene
+                // If the prefab has a NavMeshAgent, disable it while pooled to avoid "no valid NavMesh" warnings
+                var nav = obj.GetComponent<UnityEngine.AI.NavMeshAgent>();
+                if (nav != null) nav.enabled = false;
+
                 obj.SetActive(false);
                 pooledObjects.Add(obj); //Adds the newly created object to an array so it can be stored in a Dictionary
             }
@@ -55,6 +59,10 @@ public class PoolManager : MonoBehaviour
         if (willGrow)
         {
             GameObject obj = Instantiate(poolerData[nameOfPooledObject][0], transform);
+            // Disable NavMeshAgent on grow as well
+            var nav = obj.GetComponent<UnityEngine.AI.NavMeshAgent>();
+            if (nav != null) nav.enabled = false;
+
             obj.transform.position = new Vector3(0, 0, 0);
             obj.SetActive(false);
             poolerData[nameOfPooledObject].Add(obj);

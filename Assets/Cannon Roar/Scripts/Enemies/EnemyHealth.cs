@@ -68,7 +68,11 @@ public class EnemyHealth : MonoBehaviour
 
     void Awake()
     {
-        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        // safer lookup: don't assume a named object exists
+        gameManager = FindObjectOfType<GameManager>();
+        if (gameManager == null)
+            Debug.LogWarning("[EnemyHealth] GameManager not found in scene. Score/remove calls will be skipped.");
+
         startHealth = health; // store initial value
 
         if (enemyRenderer != null && normalMaterial != null)
@@ -180,7 +184,7 @@ public class EnemyHealth : MonoBehaviour
 
             if (gameManager != null)
             {
-                Debug.Log("[EnemyHealth] Enemy fell out of world, reducing shield by " + shieldDamage);
+                //Debug.Log("[EnemyHealth] Enemy fell out of world, reducing shield by " + shieldDamage);
                 gameManager.ModifyShield(-shieldDamage);
 
                 // ✅ Play explosion when shield is damaged
@@ -193,17 +197,17 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        Debug.Log($"{name} hit! Health before: {health}, Damage: {damage}");
+        //Debug.Log($"{name} hit! Health before: {health}, Damage: {damage}");
 
         // Trigger material flash
         FlashHit();
 
         health -= damage;
-        Debug.Log($"{name} health after: {health}");
+        //Debug.Log($"{name} health after: {health}");
 
         if (health <= 0)
         {
-            Debug.Log($"{name} died!");
+            //Debug.Log($"{name} died!");
             Death();
         }
     }
@@ -263,17 +267,26 @@ public class EnemyHealth : MonoBehaviour
 
     public void Death()
     {
+        // award score if we have a valid GameManager
         if (gameManager != null)
         {
             gameManager.AddScore(scoreValue);
+
+            if (gameManager.enemies != null)
+                gameManager.enemies.Remove(gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("[EnemyHealth] Death() called but GameManager reference is null.");
         }
 
-        gameManager.enemies.Remove(gameObject);
-
+        // mark movement/agent safely
         if (enemyShip)
         {
-            enemyMovement.isDead = true;
-            agent.enabled = false;
+            if (enemyMovement != null)
+                enemyMovement.isDead = true;
+            if (agent != null)
+                agent.enabled = false;
         }
 
         if (enemyShoot != null)
@@ -282,9 +295,8 @@ public class EnemyHealth : MonoBehaviour
         if (enemyShip && enemySpawnerScript != null)
             enemySpawnerScript.enemiesFromThisSpawnerList.Remove(gameObject);
 
-        // ✅ Explosion on death
+        // Explosion and score UI (SpawnScorePopup is already guarded)
         PlayExplosionEffect();
-        // Spawn score UI
         SpawnScorePopup();
 
 

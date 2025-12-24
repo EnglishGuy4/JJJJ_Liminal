@@ -82,6 +82,12 @@ public class GameManager : MonoBehaviour
 
     private SpawnerManager spawnerManager;
 
+    private void Awake()
+    {
+        // ensure spawnerManager reference is assigned
+        spawnerManager = FindObjectOfType<SpawnerManager>();
+    }
+
     private void Start()
     {
       // If no material assigned manually, get it from fadeObject
@@ -159,22 +165,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Replace or patch ModifyShield to early-ignore damage when spawner says shields are invincible
     public void ModifyShield(float amount)
     {
         if (isGameOver) return;
 
+        // If this is damage and the spawner indicates a shield-invincibility window, ignore it
+        if (amount < 0f && spawnerManager != null && spawnerManager.IsShieldInvincible())
+        {
+            Debug.Log("[GameManager] Shield damage ignored due to wave-end invincibility window.");
+            return;
+        }
+
         currentShield += amount;
         currentShield = Mathf.Clamp(currentShield, minShield, maxShield);
-        Debug.Log("[GameManager] Shield modified: " + amount + " | Current: " + currentShield);
         UpdateShieldUI();
 
-        if (amount < 0)
+        if (amount < 0f)
         {
             if (shieldMaterial != null)
             {
-                if (flashRoutine != null)
-                    StopCoroutine(flashRoutine);
-
+                if (flashRoutine != null) StopCoroutine(flashRoutine);
                 flashRoutine = StartCoroutine(FlashShieldColor());
             }
 
@@ -188,7 +199,6 @@ public class GameManager : MonoBehaviour
         {
             StartCoroutine(HandleShieldBreak());
         }
-
     }
 
     private void UpdateShieldUI()

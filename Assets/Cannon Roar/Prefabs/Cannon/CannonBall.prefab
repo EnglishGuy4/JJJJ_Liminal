@@ -112,7 +112,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 2
+  m_CollisionDetection: 3
 --- !u!114 &-5830589597510854564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,6 +234,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7631248479265808528}
     m_Modifications:
+    - target: {fileID: 5848965708628791855, guid: 02177a89d07850c46a647fdc9ace6169,
+        type: 3}
+      propertyPath: m_Name
+      value: Glow (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 5848965708628791854, guid: 02177a89d07850c46a647fdc9ace6169,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -304,11 +309,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 5.6509604
       objectReference: {fileID: 0}
-    - target: {fileID: 5848965708628791855, guid: 02177a89d07850c46a647fdc9ace6169,
-        type: 3}
-      propertyPath: m_Name
-      value: Glow (1)
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02177a89d07850c46a647fdc9ace6169, type: 3}
 --- !u!4 &6240465202800212283 stripped
@@ -324,6 +324,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7631248479265808528}
     m_Modifications:
+    - target: {fileID: 5848965708628791855, guid: 02177a89d07850c46a647fdc9ace6169,
+        type: 3}
+      propertyPath: m_Name
+      value: Glow
+      objectReference: {fileID: 0}
     - target: {fileID: 5848965708628791854, guid: 02177a89d07850c46a647fdc9ace6169,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -394,11 +399,6 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 4.833012
       objectReference: {fileID: 0}
-    - target: {fileID: 5848965708628791855, guid: 02177a89d07850c46a647fdc9ace6169,
-        type: 3}
-      propertyPath: m_Name
-      value: Glow
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02177a89d07850c46a647fdc9ace6169, type: 3}
 --- !u!4 &8908559662477757372 stripped
@@ -414,6 +414,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7631248479265808528}
     m_Modifications:
+    - target: {fileID: 5848965708628791855, guid: b9e67915e3cf63e4fb8dcac43a71c006,
+        type: 3}
+      propertyPath: m_Name
+      value: Glow 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5848965708628791854, guid: b9e67915e3cf63e4fb8dcac43a71c006,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -483,11 +488,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.62622726
-      objectReference: {fileID: 0}
-    - target: {fileID: 5848965708628791855, guid: b9e67915e3cf63e4fb8dcac43a71c006,
-        type: 3}
-      propertyPath: m_Name
-      value: Glow 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b9e67915e3cf63e4fb8dcac43a71c006, type: 3}
