@@ -3,7 +3,77 @@ guid: 5c9e13a4dca4b1e4e8289f7368503ada
 ModelImporter:
   serializedVersion: 25
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: T_B1base_gray
+    second: {fileID: 2100000, guid: 629a8c326e3b88249a0e8bf2042cd1d3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: T_B1base_white
+    second: {fileID: 2100000, guid: ab1ef2243d8230447aeff2d70f747f62, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: T_B2base_gray
+    second: {fileID: 2100000, guid: 97fad4de113d5434f89df99c06aeaec7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: T_B2base_white
+    second: {fileID: 2100000, guid: 8b26c200b28e5084a98f4cd953d0459a, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: T_B2windows
+    second: {fileID: 2100000, guid: c1216d085bd0dbf49ba0c5bdf4946c56, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: T_B3base_gray
+    second: {fileID: 2100000, guid: e80dc229b9e78c34c80a4eebf1089aae, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: T_B3base_white
+    second: {fileID: 2100000, guid: 3617642584752b94086242cdd6adf57e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: T_B4base_gray
+    second: {fileID: 2100000, guid: 4d45a8a1058c7e2428f93dcfad9622da, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: T_B4base_white
+    second: {fileID: 2100000, guid: 1d052891d34db7b48800cf9f9f9970dc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: T_B5base_gray
+    second: {fileID: 2100000, guid: 72f750df4af29a74cb9c68ace01520b3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: T_B5base_white
+    second: {fileID: 2100000, guid: 1c2c85a424faec546a2f977e45486f20, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: T_B6base_gray
+    second: {fileID: 2100000, guid: 993653ad43eb3fc45a9ee4a2b1015f69, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: T_B6base_white
+    second: {fileID: 2100000, guid: f96b98865d4a5e14ba00d936cc9897c3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: T_B6windows
+    second: {fileID: 2100000, guid: a4daf6899808e3449a9fecd21c1eb77a, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
@@ -43,7 +113,7 @@ ModelImporter:
     importCameras: 1
     importLights: 1
     swapUVChannels: 0
-    generateSecondaryUV: 0
+    generateSecondaryUV: 1
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1

@@ -3,7 +3,27 @@ guid: fe25fa316906daa4caadfeb2b71128f0
 ModelImporter:
   serializedVersion: 25
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ind_pipe_large_01_mt
+    second: {fileID: 2100000, guid: 4bb71d69345a9874d81738e3c3308c98, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ind_pipe_medium_01_mt
+    second: {fileID: 2100000, guid: 4b3bd116cdce9cf4d9aec0b071edde7d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ind_pipe_small_01_mt
+    second: {fileID: 2100000, guid: c91380bbf0a32d147b878eabad9d23f7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: lambert2
+    second: {fileID: 2100000, guid: 7c0139ea5ba1ae8449ed26362e35e379, type: 2}
   materials:
     importMaterials: 1
     materialName: 1
@@ -43,7 +63,7 @@ ModelImporter:
     importCameras: 1
     importLights: 1
     swapUVChannels: 0
-    generateSecondaryUV: 0
+    generateSecondaryUV: 1
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
