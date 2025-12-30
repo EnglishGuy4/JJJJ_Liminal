@@ -108,6 +108,13 @@ public class SpawnerManager : MonoBehaviour
     [Tooltip("Enable to print verbose spawn debug information")]
     public bool debugSpawning = false;
 
+    // NEW: Shield invincibility settings
+    [Header("Shield Invincibility")]
+    [Tooltip("When this many seconds remain in a wave, shields become invincible to prevent overlapping dialogues.")]
+    public float shieldInvincibilityWaveSeconds = 10f;
+    [Tooltip("During intermission, shields remain invincible while the intermission timer is <= this value (seconds).")]
+    public float shieldInvincibilityIntermissionSeconds = 6f;
+
     private int currentWaveIndex = 0;
     private float waveTimer = 0f;
     private float spawnTimer = 0f;
@@ -325,18 +332,38 @@ public class SpawnerManager : MonoBehaviour
         }
 
         // If pooling failed or no PoolManager, instantiate a fresh copy as a fallback
+        // unified handling for both pooled and instantiated objects:
+        var navAgent = enemy != null ? enemy.GetComponent<UnityEngine.AI.NavMeshAgent>() : null;
+        // make sure agent is disabled while we position the object
+        if (navAgent != null) navAgent.enabled = false;
+
+        UnityEngine.AI.NavMeshHit hit;
+        bool foundOnNav = UnityEngine.AI.NavMesh.SamplePosition(spawnPoint.position, out hit, 5f, UnityEngine.AI.NavMesh.AllAreas);
+
         if (enemy == null)
         {
             if (debugSpawning) Debug.Log("[SpawnerManager] Pool lookup failed for '" + chosenPrefab.name + "'. Instantiating fallback.");
-            enemy = Instantiate(chosenPrefab, spawnPoint.position, spawnPoint.rotation);
+            enemy = Instantiate(chosenPrefab);
+            // update navAgent reference for instantiated object
+            navAgent = enemy.GetComponent<UnityEngine.AI.NavMeshAgent>();
+            if (navAgent != null) navAgent.enabled = false;
+        }
+
+        // place and enable only if we found valid NavMesh
+        if (foundOnNav)
+        {
+            enemy.transform.position = hit.position;
+            enemy.transform.rotation = spawnPoint.rotation;
         }
         else
         {
-            // place pooled object at the spawn point
             enemy.transform.position = spawnPoint.position;
             enemy.transform.rotation = spawnPoint.rotation;
-            enemy.SetActive(true);
+            if (debugSpawning) Debug.LogWarning("[SpawnerManager] No NavMesh near spawn point; agent will remain disabled for: " + enemy.name);
         }
+
+        // activate after positioning
+        enemy.SetActive(true);
 
         // Defensive: ensure required components exist before using them
         EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
@@ -363,8 +390,7 @@ public class SpawnerManager : MonoBehaviour
         EnemyShoot enemyShoot = enemy.GetComponent<EnemyShoot>();
         if (enemyShoot != null) enemyShoot.enabled = true;
 
-        NavMeshAgent nav = enemy.GetComponent<NavMeshAgent>();
-        if (nav != null) nav.enabled = true;
+        // no NavMeshAgent enabling for flying enemies
 
         // Track spawned enemy
         enemiesFromThisSpawnerList.Add(enemy);
@@ -621,6 +647,29 @@ public class SpawnerManager : MonoBehaviour
         {
             Debug.LogWarning("GameManager not found – could not trigger FadeAndLoadResults.");
         }
+    }
+
+    // Add this method (place near other helper methods, e.g. before HandleEndDialogueSequence)
+    public bool IsShieldInvincible()
+    {
+        // only guard when waves have started
+        if (!wavesStarted) return false;
+
+        // if currently in intermission, protect during the configured final seconds of intermission
+        if (inIntermission)
+        {
+            return intermissionTimer > 0f && intermissionTimer <= shieldInvincibilityIntermissionSeconds;
+        }
+
+        // if in a timed wave, check remaining time
+        Wave currentWave = (waveMode == WaveMode.Timed && currentWaveIndex < waves.Count)
+            ? waves[currentWaveIndex]
+            : endlessCurrentWave;
+
+        if (currentWave == null) return false;
+
+        float remaining = currentWave.waveTime - waveTimer;
+        return remaining > 0f && remaining <= shieldInvincibilityWaveSeconds;
     }
 
 }

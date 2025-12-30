@@ -7589,10 +7589,68 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
         type: 3}
+      propertyPath: collectionOfObjectsToBePooled.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
+        type: 3}
+      propertyPath: pooledAmountForEachObject.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
+        type: 3}
       propertyPath: collectionOfObjectsToBePooled.Array.data[4]
+      value: 
+      objectReference: {fileID: 4383604371159646071, guid: f046a4fd7cda0ea449ca7953f53f5cef,
+        type: 3}
+    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
+        type: 3}
+      propertyPath: pooledAmountForEachObject.Array.data[1]
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
+        type: 3}
+      propertyPath: pooledAmountForEachObject.Array.data[6]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
+        type: 3}
+      propertyPath: pooledAmountForEachObject.Array.data[5]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
+        type: 3}
+      propertyPath: pooledAmountForEachObject.Array.data[3]
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
+        type: 3}
+      propertyPath: collectionOfObjectsToBePooled.Array.data[3]
+      value: 
+      objectReference: {fileID: 5568970986509601867, guid: bfe1a5a5ea86f15419c4ef9b71769a1b,
+        type: 3}
+    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
+        type: 3}
+      propertyPath: collectionOfObjectsToBePooled.Array.data[1]
+      value: 
+      objectReference: {fileID: 8829255948184301283, guid: 656824176d0916543afc368625ed1522,
+        type: 3}
+    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
+        type: 3}
+      propertyPath: collectionOfObjectsToBePooled.Array.data[2]
       value: 
       objectReference: {fileID: 8829255948184301283, guid: c0b90a1365f28fb4597596e8e5a3dccc,
         type: 3}
+    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
+        type: 3}
+      propertyPath: pooledAmountForEachObject.Array.data[4]
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5700958728383478790, guid: c040cae17da156f4fb01180d27946c27,
+        type: 3}
+      propertyPath: collectionOfObjectsToBePooled.Array.data[5]
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c040cae17da156f4fb01180d27946c27, type: 3}
 --- !u!1 &576315911
@@ -10068,6 +10126,8 @@ MonoBehaviour:
   endDialogueDuration: 12
   endDialogueStartDelay: 7
   debugSpawning: 0
+  shieldInvincibilityWaveSeconds: 10
+  shieldInvincibilityIntermissionSeconds: 6
   enemiesFromThisSpawnerList: []
 --- !u!82 &745262868
 AudioSource:
