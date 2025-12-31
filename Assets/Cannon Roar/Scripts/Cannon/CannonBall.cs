@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CannonBall : MonoBehaviour
+public class CannonBall : MonoBehaviour, IResettableShot
 {
     [HideInInspector] public Rigidbody rb;
     public float force = 1;
     public int damage = 1;
-    //[HideInInspector] public TrailRenderer trailRenderer;
+   
     private SphereCollider sphereCollider;
     public GameObject standerdHitPrefab;
     public GameObject powerupHitPrefab;
@@ -22,24 +22,24 @@ public class CannonBall : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
-        //trailRenderer = GetComponent<TrailRenderer>();
+        
         sphereCollider = GetComponent<SphereCollider>();
-        /*shipHit = transform.GetChild(0).GetComponent<ParticleSystem>();
-        waterHit = transform.GetChild(1).GetComponent<ParticleSystem>();
-        rockHit = transform.GetChild(2).GetComponent<ParticleSystem>();*/
+        
         
     }
 
     void OnEnable()
     {
         hasHit = false;
+        rb.isKinematic = false;
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
     }
 
     void Update()
     {
         if (transform.position.y <= -10)
         {
-            ResetBall();
+            ResetShot();
         }
     }
 
@@ -47,7 +47,7 @@ public class CannonBall : MonoBehaviour
     {
         //Debug.Log("CannonBall hit: " + collision.gameObject.name + " (Tag: " + collision.gameObject.tag + ")");
 
-        if (hasHit) return; // Prevent multiple hits per activation
+        if (hasHit) return; 
 
         if (collision.gameObject.CompareTag("Ally"))
         {
@@ -66,7 +66,7 @@ public class CannonBall : MonoBehaviour
                 Instantiate(standerdHitPrefab, transform.position, Quaternion.identity);
                 enemyHealth.cannonBall = gameObject;
                 enemyHealth.TakeDamage(damage);
-                ResetBall();
+                ResetShot();
             }
             else
             {
@@ -77,40 +77,18 @@ public class CannonBall : MonoBehaviour
                     Instantiate(droneHitPrefab, transform.position, Quaternion.identity);
                     droneHealth.cannonBall = gameObject;
                     droneHealth.TakeDamage(damage);
-                    ResetBall();
+                    ResetShot();
                 }
-                //else
+                /*else
                 {
                     Debug.Log("NO EnemyHealth or DroneHealth found on: " + collision.gameObject.name);
-                }
+                }*/
             }
             Instantiate(standerdHitPrefab, transform.position, Quaternion.identity);
             rb.velocity = rb.velocity / 2;
         }
 
-        /*if (collision.gameObject.CompareTag("Ground") && transform.position.y >= 10)
-        {
-            Debug.Log("Cliff Collided");
-            rockHit.Play();
-            rb.velocity = rb.velocity / 2;
-        }
-
-        if (collision.gameObject.CompareTag("Ground") && transform.position.y < 1)
-        {
-            Invoke("ResetBall", 2f);
-        }
-
-        // ---------- NEW: PowerUp ----------
-        if (collision.gameObject.CompareTag("PowerUp"))
-        {
-            Debug.Log("Hit PowerUp!");
-            if (firedFrom != null)
-                firedFrom.ActivatePowerUp();
-
-            Instantiate(powerupHitPrefab, transform.position, Quaternion.identity);
-            collision.gameObject.SetActive(false); // deactivate powerup
-            ResetBall(); // also reset this cannonball
-        }*/
+        
 
         
         if (collision.gameObject.CompareTag("DroneShot"))
@@ -118,10 +96,10 @@ public class CannonBall : MonoBehaviour
             var projHealth = collision.gameObject.GetComponentInParent<ProjectileHealth>();
             if (projHealth != null)
             {
-                projHealth.TakeDamage(damage); // or just projHealth.Death() if you want instant destruction
+                projHealth.TakeDamage(damage); 
             }
-            // Optionally, play a hit effect here
-            ResetBall(); 
+            
+            ResetShot(); 
             return;
         }
 
@@ -136,22 +114,16 @@ public class CannonBall : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter(Collider trigger)
-    {
-        /*if (trigger.CompareTag("Water"))
-        {
-            waterHit.Play();
-        }*/
-    }
 
-    void ResetBall()
+
+    public void ResetShot()
     {
-        //Debug.Log("ResetBall");
-        //waterHit.Stop();
-       // rockHit.Stop();
-        //shipHit.Stop();
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative; // or Discrete
         rb.isKinematic = true;
-        //trailRenderer.enabled = false;
+
         gameObject.SetActive(false);
     }
 }

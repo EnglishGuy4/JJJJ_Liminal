@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7875701237458782574}
   - component: {fileID: -5993993302125504042}
   - component: {fileID: -587477003321740437}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: LaserBolt
   m_TagString: Ally
   m_Icon: {fileID: 0}
@@ -230,6 +230,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2103411476854300218}
     m_Modifications:
+    - target: {fileID: 5848965708628791855, guid: 02177a89d07850c46a647fdc9ace6169,
+        type: 3}
+      propertyPath: m_Name
+      value: Glow
+      objectReference: {fileID: 0}
+    - target: {fileID: 5848965708628791855, guid: 02177a89d07850c46a647fdc9ace6169,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5848965708628791854, guid: 02177a89d07850c46a647fdc9ace6169,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -299,11 +309,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 24.752668
-      objectReference: {fileID: 0}
-    - target: {fileID: 5848965708628791855, guid: 02177a89d07850c46a647fdc9ace6169,
-        type: 3}
-      propertyPath: m_Name
-      value: Glow
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02177a89d07850c46a647fdc9ace6169, type: 3}

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 470433367355224518}
   - component: {fileID: -5830589597510854564}
   - component: {fileID: 3155416588032936127}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: CannonBall
   m_TagString: PlayerShot
   m_Icon: {fileID: 0}
@@ -239,6 +239,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Glow (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 5848965708628791855, guid: 02177a89d07850c46a647fdc9ace6169,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5848965708628791854, guid: 02177a89d07850c46a647fdc9ace6169,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -329,6 +334,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Glow
       objectReference: {fileID: 0}
+    - target: {fileID: 5848965708628791855, guid: 02177a89d07850c46a647fdc9ace6169,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 5848965708628791854, guid: 02177a89d07850c46a647fdc9ace6169,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -418,6 +428,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Glow 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5848965708628791855, guid: b9e67915e3cf63e4fb8dcac43a71c006,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5848965708628791854, guid: b9e67915e3cf63e4fb8dcac43a71c006,
         type: 3}

@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LazerShot : MonoBehaviour
+public class LazerShot : MonoBehaviour, IResettableShot
 {
     [HideInInspector] public Rigidbody rb;
     public float force = 1;
     public int damage = 1;
     [HideInInspector] public TrailRenderer trailRenderer;
-    public float lifeTime = 5f; // seconds before auto-reset (settable in Inspector)
+    public float lifeTime = 5f; 
     private float timer;
 
     void Awake()
@@ -67,7 +67,7 @@ public class LazerShot : MonoBehaviour
             }
         }
     }
-    void ResetShot()
+    public void ResetShot()
     {
     rb.velocity = Vector3.zero;
     rb.angularVelocity = Vector3.zero;
