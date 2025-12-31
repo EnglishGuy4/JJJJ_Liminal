@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 4383604371159646071}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.08168004, y: 0.13066071, z: 2.0199842}
+  m_LocalScale: {x: 0.07269523, y: 0.116288036, z: 1.797786}
   m_Children:
   - {fileID: 6351552150426074260}
   m_Father: {fileID: 0}
@@ -146,7 +146,8 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9144404989fc02b479ceae783191bb2a, type: 2}
+  - {fileID: 2100000, guid: 14709d5a299ebeb49b67ab0ddd14978c, type: 2}
+  - {fileID: 2100000, guid: 14709d5a299ebeb49b67ab0ddd14978c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -169,7 +170,7 @@ TrailRenderer:
   m_Time: 0.25
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.5
+    widthMultiplier: 3
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -187,8 +188,8 @@ TrailRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 0.405365, b: 0, a: 1}
-      key1: {r: 0.8773585, g: 0.19450872, b: 0.19450872, a: 1}
+      key0: {r: 0.8820755, g: 1, b: 0.9942886, a: 1}
+      key1: {r: 0.39947838, g: 0.08962262, b: 1, a: 1}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
@@ -217,7 +218,7 @@ TrailRenderer:
     numCornerVertices: 0
     numCapVertices: 3
     alignment: 1
-    textureMode: 1
+    textureMode: 0
     shadowBias: 0.5
     generateLightingData: 0
   m_MinVertexDistance: 0.1
@@ -298,17 +299,17 @@ PrefabInstance:
     - target: {fileID: 5848965708628791854, guid: 02177a89d07850c46a647fdc9ace6169,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 41.290142
+      value: 50.914875
       objectReference: {fileID: 0}
     - target: {fileID: 5848965708628791854, guid: 02177a89d07850c46a647fdc9ace6169,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 4.5969763
+      value: 5.668532
       objectReference: {fileID: 0}
     - target: {fileID: 5848965708628791854, guid: 02177a89d07850c46a647fdc9ace6169,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 24.752668
+      value: 30.522516
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02177a89d07850c46a647fdc9ace6169, type: 3}
