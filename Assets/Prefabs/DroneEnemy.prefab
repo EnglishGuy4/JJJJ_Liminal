@@ -4819,6 +4819,36 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!1 &1200282992964944386
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2229923598490729990}
+  m_Layer: 0
+  m_Name: BarrelEnd
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2229923598490729990
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200282992964944386}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: -4.7, z: 25.09}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1649115679780916687}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &8765990736524402818
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4870,9 +4900,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 784839350538071574}
-  - component: {fileID: 1965814035458455989}
+  - component: {fileID: 3460871512496777007}
   - component: {fileID: 3079862976170846899}
-  - component: {fileID: 4951161778118456490}
+  - component: {fileID: -697805677933437115}
   - component: {fileID: 6118210425931255975}
   - component: {fileID: 4708294001130508565}
   m_Layer: 0
@@ -4898,34 +4928,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1965814035458455989
+--- !u!114 &3460871512496777007
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5568970986509601867}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a662c05c9b25dac4995af1710eb75a63, type: 3}
+  m_Script: {fileID: 11500000, guid: c70568cf01d4b274fa73d63e03a4f6a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cannonball: {fileID: 8998764143647382430, guid: 7b5807ce637cb484cb4cc21252e28c20,
+  droneShotPrefab: {fileID: 8998764143647382430, guid: eac86cbf80d82ad4e8c93d92c94004fa,
     type: 3}
-  barrellEnd:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  timeBetweenShots: 1.5
-  player: {fileID: 0}
-  targetManager: {fileID: 0}
-  targets: []
-  currentNumber: 0
-  bossShip: 0
-  reverseShot: 0
+  barrelEnd: {fileID: 2229923598490729990}
+  timeBetweenShots: 5
+  timer: 5
+  target: {fileID: 0}
+  canShoot: 0
 --- !u!114 &3079862976170846899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4971,7 +4992,7 @@ MonoBehaviour:
   scorePopupDuration: 1.25
   scorePopupScale: {x: 0.1, y: 0.1, z: 0.1}
   scorePopupPopScale: {x: 0.2, y: 0.2, z: 0.2}
---- !u!114 &4951161778118456490
+--- !u!114 &-697805677933437115
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4980,13 +5001,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 5568970986509601867}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d5cbac4f2d904847b12293411b92bcd, type: 3}
+  m_Script: {fileID: 11500000, guid: f57d6c6670d82f0469dfe0b530271a28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyWaypointSpeed: 55
-  enemyWaypointStoppingDistance: 5
-  waypoints: []
-  isDead: 0
+  holdPoint: {fileID: 0}
+  holdPosition: {x: 0, y: 0, z: 0}
+  useHoldPointTransform: 0
+  moveSpeed: 50
+  stopDistance: 1
+  arrived: 0
+  enableDroneShootingOnArrive: 1
+  moveWobbleAmplitude: 0.6
+  moveWobbleFrequency: 2
+  idleWobbleAmplitude: 0.15
+  idleWobbleFrequency: 1.2
+  useSpawnBasedHold: 1
+  holdDistanceFromSpawn: 50
+  possibleHoldPoints:
+  - {fileID: 0}
 --- !u!54 &6118210425931255975
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -24747,15 +24779,21 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3374899323987620091}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &7433303511145702934 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5331816816173651693, guid: be722b45a20e65f478540c46d9eb9494,
-    type: 3}
-  m_PrefabInstance: {fileID: 3374899323987620091}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &4019519521175030421 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1809953062754597486, guid: be722b45a20e65f478540c46d9eb9494,
+    type: 3}
+  m_PrefabInstance: {fileID: 3374899323987620091}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1649115679780916687 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4050100511425346868, guid: be722b45a20e65f478540c46d9eb9494,
+    type: 3}
+  m_PrefabInstance: {fileID: 3374899323987620091}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7433303511145702934 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5331816816173651693, guid: be722b45a20e65f478540c46d9eb9494,
     type: 3}
   m_PrefabInstance: {fileID: 3374899323987620091}
   m_PrefabAsset: {fileID: 0}

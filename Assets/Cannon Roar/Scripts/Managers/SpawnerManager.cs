@@ -348,7 +348,7 @@ public class SpawnerManager : MonoBehaviour
             navAgent = enemy.GetComponent<UnityEngine.AI.NavMeshAgent>();
             if (navAgent != null) navAgent.enabled = false;
         }
-
+ 
         // place and enable only if we found valid NavMesh
         if (foundOnNav)
         {
@@ -440,6 +440,8 @@ public class SpawnerManager : MonoBehaviour
 
         StartCoroutine(PlayCountdownSFX(intermissionTimer));
 
+        // notify drone spawner that wave ended (stop spawning)
+        if (droneSpawnManager != null) droneSpawnManager.OnWaveEnded();
     }
 
     private IEnumerator PlayCountdownSFX(float totalDelay)
@@ -473,6 +475,10 @@ public class SpawnerManager : MonoBehaviour
 
             int currentWaveNumber = currentWaveIndex + 1;
 
+            // notify drone spawner about wave start
+            if (droneSpawnManager != null)
+                droneSpawnManager.OnWaveStarted(currentWaveNumber);
+            
             // Turns on scatter shot powerup if within the specified wave range or off
             if (scatterShotStartWave > 0 && cannon != null)
             {
@@ -672,4 +678,6 @@ public class SpawnerManager : MonoBehaviour
         return remaining > 0f && remaining <= shieldInvincibilityWaveSeconds;
     }
 
+    [Header("Drone Spawner (optional)")]
+    public DroneSpawnManager droneSpawnManager;
 }

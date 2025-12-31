@@ -34,6 +34,9 @@ public class EnemyShipMovement : MonoBehaviour
     private float wobblePhase;
     private float baseY;
 
+    // if true, movement will wait until a holdPoint/holdPosition is explicitly assigned (used by spawners)
+    private bool waitingForHoldAssignment = false;
+
     // optional array for spawner usage
     public Transform[] possibleHoldPoints;
 
@@ -51,13 +54,38 @@ public class EnemyShipMovement : MonoBehaviour
     {
         spawnPosition = transform.position;
         baseY = transform.position.y;
+        Debug.Log($"[EnemyShipMovement] OnEnable for {gameObject.name}: holdPoint={(holdPoint!=null?holdPoint.name:"null")}, useSpawnBasedHold={useSpawnBasedHold}");
 
+        // Only apply spawn-based hold if no holdPoint is already assigned AND useSpawnBasedHold is true
         if (holdPoint == null && useSpawnBasedHold)
         {
             float dir = -Mathf.Sign(spawnPosition.x);
             if (Mathf.Approximately(dir, 0f)) dir = -1f;
             Vector3 offset = Vector3.right * dir * holdDistanceFromSpawn;
             SetHoldPosition(spawnPosition + offset);
+            Debug.Log($"[EnemyShipMovement] Applying spawn-based hold at {holdPosition} for {gameObject.name}");
+            waitingForHoldAssignment = false;
+        }
+        else
+        {
+            if (holdPoint != null)
+            {
+                Debug.Log($"[EnemyShipMovement] Existing holdPoint preserved for {gameObject.name}: {holdPoint.name}");
+                waitingForHoldAssignment = false;
+            }
+            else
+            {
+                // No holdPoint and spawn-based fallback disabled -> wait for spawner to assign
+                if (!useSpawnBasedHold)
+                {
+                    Debug.Log($"[EnemyShipMovement] Waiting for external hold assignment for {gameObject.name}");
+                    waitingForHoldAssignment = true;
+                }
+                else
+                {
+                    waitingForHoldAssignment = false;
+                }
+            }
         }
 
         if (droneShot != null) droneShot.canShoot = false;
@@ -66,9 +94,18 @@ public class EnemyShipMovement : MonoBehaviour
 
     void Update()
     {
+        // If we are waiting for a hold assignment, do nothing until SetHoldPoint/SetHoldPosition is called
+        if (waitingForHoldAssignment)
+            return;
+
         if (!arrived)
         {
             Vector3 targetPos = useHoldPointTransform && holdPoint != null ? holdPoint.position : holdPosition;
+            // guard: if still no valid target, skip this frame
+            if (useHoldPointTransform && holdPoint == null)
+                return;
+            if (!useHoldPointTransform && targetPos == Vector3.zero)
+                return;
 
             // Move on X/Z toward target while keeping a baseY anchor for vertical wobble
             Vector3 flatCurrent = new Vector3(transform.position.x, 0f, transform.position.z);
@@ -110,6 +147,14 @@ public class EnemyShipMovement : MonoBehaviour
             droneShot.canShoot = true;
 
         baseY = transform.position.y;
+
+        // Release reserved approach slot so other drones can use it (optional behavior)
+        var tracker = GetComponent<DroneSlotTracker>();
+        if (tracker != null && tracker.assignedSlot != null && DroneSpawnManager.Instance != null)
+        {
+            DroneSpawnManager.Instance.ReleaseApproachSlot(tracker.assignedSlot);
+            tracker.assignedSlot = null;
+        }
     }
 
     // Spawner helpers
@@ -118,7 +163,9 @@ public class EnemyShipMovement : MonoBehaviour
         holdPoint = t;
         useHoldPointTransform = true;
         arrived = false;
+        waitingForHoldAssignment = false;
         if (droneShot != null) droneShot.canShoot = false;
+        Debug.Log($"[EnemyShipMovement] SetHoldPoint called on {gameObject.name} -> {(t!=null?t.name:"null")}");
     }
 
     public void SetHoldPosition(Vector3 pos)
@@ -126,6 +173,7 @@ public class EnemyShipMovement : MonoBehaviour
         holdPosition = pos;
         useHoldPointTransform = false;
         arrived = false;
+        waitingForHoldAssignment = false;
         if (droneShot != null) droneShot.canShoot = false;
     }
 

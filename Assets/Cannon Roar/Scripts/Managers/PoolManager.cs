@@ -28,10 +28,10 @@ public class PoolManager : MonoBehaviour
             //loops through the pooledAmountForEachObject pooled array
             for (int j = 0; j < pooledAmountForEachObject[i]; j++)
             {
-                GameObject obj = Instantiate(collectionOfObjectsToBePooled[i], transform); //Creates the object in the scene
-                // If the prefab has a NavMeshAgent, disable it while pooled to avoid "no valid NavMesh" warnings
-                var nav = obj.GetComponent<UnityEngine.AI.NavMeshAgent>();
-                if (nav != null) nav.enabled = false;
+                GameObject obj = Instantiate(collectionOfObjectsToBePooled[i], transform);
+                // ensure pooled instance is inactive immediately to avoid OnEnable timing races
+                if (obj.activeSelf)
+                    obj.SetActive(false);
 
                 obj.SetActive(false);
                 pooledObjects.Add(obj); //Adds the newly created object to an array so it can be stored in a Dictionary
@@ -43,29 +43,42 @@ public class PoolManager : MonoBehaviour
 
     //This function takes the name of the object you would like to activate
     //It then searches for a non active version of the object and returns it
-    public GameObject GetPooledObject(string nameOfPooledObject)
+    public GameObject GetPooledObject(string objName)
     {
         //nameOfPooledObject holds the name of the object you would like to access in the dictionary
         //poolerData[nameOfPooledObject].Count // Loads the array stored under the specifed dictionary key and counts how many elements are in the array
-        for (int i = 0; i < poolerData[nameOfPooledObject].Count; i++)
+        var pooledObjects = poolerData[objName];
+        foreach (var o in pooledObjects)
         {
-            //Searches the array for the first non active game object
-            if (!poolerData[nameOfPooledObject][i].activeInHierarchy)
+            if (!o.activeSelf && o.name.StartsWith(objName)) // prefer inactive items
             {
-                return poolerData[nameOfPooledObject][i]; //Returns the first nonactive game object
+                // ensure definitely inactive before handing out
+                if (o.activeSelf) o.SetActive(false);
+                return o;
             }
         }
+
+        // fallback: if none inactive, return first matching (but deactivate before returning)
+        foreach (var o in pooledObjects)
+        {
+            if (o.name.StartsWith(objName))
+            {
+                if (o.activeSelf) o.SetActive(false);
+                return o;
+            }
+        }
+
         //If a non active version of an object is not available a new one is created and added to the Dictionary for future use
         if (willGrow)
         {
-            GameObject obj = Instantiate(poolerData[nameOfPooledObject][0], transform);
+            GameObject obj = Instantiate(poolerData[objName][0], transform);
             // Disable NavMeshAgent on grow as well
             var nav = obj.GetComponent<UnityEngine.AI.NavMeshAgent>();
             if (nav != null) nav.enabled = false;
 
             obj.transform.position = new Vector3(0, 0, 0);
             obj.SetActive(false);
-            poolerData[nameOfPooledObject].Add(obj);
+            poolerData[objName].Add(obj);
             return obj;
         }
         return null;

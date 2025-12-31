@@ -16,9 +16,14 @@ public class DroneShot : MonoBehaviour
 
     private void Update()
     {
-        if (target == null) return;
-        if (!canShoot) return; // don't shoot until allowed
-
+        // only attempt to shoot when allowed by movement logic
+        if (!canShoot) return;
+        if (target == null)
+        {
+            Debug.LogWarning("[DroneShot] canShoot is true but target is null — assign a target from the spawner or movement code.", this);
+            return;
+        }
+ 
         timer += Time.deltaTime;
         if (timer >= timeBetweenShots)
         {
@@ -29,7 +34,7 @@ public class DroneShot : MonoBehaviour
 
     private void ShootAtTarget()
     {
-        //Debug.Log("Drone is shooting!");
+        Debug.Log("Drone is shooting!");
 
         GameObject shot = PoolManager.current.GetPooledObject(droneShotPrefab.name);
         if (shot == null) return;
