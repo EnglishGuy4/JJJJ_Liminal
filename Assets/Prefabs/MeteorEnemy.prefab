@@ -1,98 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &-6772886796938903610
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 8051634811990668463}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8051634811990273583}
-  m_Layer: 0
-  m_Name: Missing Prefab (Dummy)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8051634811990273583
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 400000, guid: 16fa56e3bc952f8418a8c26526b344e8,
-    type: 3}
-  m_PrefabInstance: {fileID: 8051634811990668463}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: -6772886796938903610}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: -3984605735888554396}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &-1605554403795062879
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 6477688497031749376}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1712744697703703487}
-  m_Layer: 0
-  m_Name: WFXMR_FlameThrower Big (Missing Prefab)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1712744697703703487
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 6477688497031749376}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: -1605554403795062879}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 6477688497031349634}
-  m_Father: {fileID: 4407734449912597694}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &-288089992081097075
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 6477688497031749376}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 6477688497031349634}
-  m_Layer: 0
-  m_Name: Missing Prefab (Dummy)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &6477688497031349634
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 400002, guid: 3f06cc5630765384d94a7bf00f84b113,
-    type: 3}
-  m_PrefabInstance: {fileID: 6477688497031749376}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: -288089992081097075}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1712744697703703487}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &582272316697822296
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,37 +386,6 @@ Transform:
   m_Father: {fileID: 5061988602411488274}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!1 &6479138852051863222
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 8051634811990668463}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: -3984605735888554396}
-  m_Layer: 0
-  m_Name: WFXMR_Fire Natural Circle (No Smoke) (Missing Prefab)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &-3984605735888554396
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 8051634811990668463}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6479138852051863222}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 8051634811990273583}
-  m_Father: {fileID: 4407734449912597694}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8076039891444877597
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,8 +495,8 @@ Transform:
   - {fileID: 8808442054071122345}
   - {fileID: 9127374465275150995}
   - {fileID: 4437763848377134376}
-  - {fileID: -3984605735888554396}
-  - {fileID: 1712744697703703487}
+  - {fileID: 8051634811990273583}
+  - {fileID: 6477688497031349634}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -651,12 +527,12 @@ MonoBehaviour:
     type: 3}
   portalLifetime: 3
   explosionSound: {fileID: 8300000, guid: 8095a059fdc5f164c9a89b4aceb21868, type: 3}
-  explosionVolume: 0.558
+  explosionVolume: 0.432
   explosionSound2D: 0
   explosionMinDistance: 1
   explosionMaxDistance: 10000
   portalSound: {fileID: 8300000, guid: 82f4a0f6d88bbc040af762cabc4c5e5b, type: 3}
-  portalVolume: 0.664
+  portalVolume: 0.48
   portalSound2D: 0
   portalMinDistance: 1
   portalMaxDistance: 10000
@@ -779,12 +655,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96b953ba1b28fa34f9defe81c454ee7e, type: 3}
---- !u!4 &9127374465275150995 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 96b953ba1b28fa34f9defe81c454ee7e,
-    type: 3}
-  m_PrefabInstance: {fileID: 4310022329421523337}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1800843644142114077 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2534866581884222612, guid: 96b953ba1b28fa34f9defe81c454ee7e,
@@ -797,6 +667,12 @@ MeshRenderer:
     type: 3}
   m_PrefabInstance: {fileID: 4310022329421523337}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &9127374465275150995 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 96b953ba1b28fa34f9defe81c454ee7e,
+    type: 3}
+  m_PrefabInstance: {fileID: 4310022329421523337}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6477688497031749376
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -804,6 +680,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4407734449912597694}
     m_Modifications:
+    - target: {fileID: 100002, guid: 3f06cc5630765384d94a7bf00f84b113, type: 3}
+      propertyPath: m_Name
+      value: WFXMR_FlameThrower Big
+      objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 3f06cc5630765384d94a7bf00f84b113, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.017
@@ -850,23 +730,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 3f06cc5630765384d94a7bf00f84b113, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.8616477
+      value: 2.9611368
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 3f06cc5630765384d94a7bf00f84b113, type: 3}
       propertyPath: m_LocalScale.y
-      value: 7.752002
+      value: 12.330334
       objectReference: {fileID: 0}
     - target: {fileID: 400002, guid: 3f06cc5630765384d94a7bf00f84b113, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.6665145
-      objectReference: {fileID: 0}
-    - target: {fileID: 100002, guid: 3f06cc5630765384d94a7bf00f84b113, type: 3}
-      propertyPath: m_Name
-      value: WFXMR_FlameThrower Big
-      objectReference: {fileID: 0}
-    - target: {fileID: 19800000, guid: 3f06cc5630765384d94a7bf00f84b113, type: 3}
-      propertyPath: lengthInSec
-      value: 20
+      value: 2.0025752
       objectReference: {fileID: 0}
     - target: {fileID: 19800002, guid: 3f06cc5630765384d94a7bf00f84b113, type: 3}
       propertyPath: InitialModule.startColor.maxGradient.key0.g
@@ -900,12 +772,34 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.maxGradient.atime0
       value: 193
       objectReference: {fileID: 0}
+    - target: {fileID: 19800002, guid: 3f06cc5630765384d94a7bf00f84b113, type: 3}
+      propertyPath: simulationSpeed
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800002, guid: 3f06cc5630765384d94a7bf00f84b113, type: 3}
+      propertyPath: startDelay.scalar
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800000, guid: 3f06cc5630765384d94a7bf00f84b113, type: 3}
+      propertyPath: lengthInSec
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800000, guid: 3f06cc5630765384d94a7bf00f84b113, type: 3}
+      propertyPath: startDelay.scalar
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 19900000, guid: 3f06cc5630765384d94a7bf00f84b113, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f06cc5630765384d94a7bf00f84b113, type: 3}
+--- !u!4 &6477688497031349634 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400002, guid: 3f06cc5630765384d94a7bf00f84b113,
+    type: 3}
+  m_PrefabInstance: {fileID: 6477688497031749376}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8051634811990668463
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -913,6 +807,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4407734449912597694}
     m_Modifications:
+    - target: {fileID: 100000, guid: 16fa56e3bc952f8418a8c26526b344e8, type: 3}
+      propertyPath: m_Name
+      value: WFXMR_Fire Natural Circle (No Smoke)
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 16fa56e3bc952f8418a8c26526b344e8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.84
@@ -959,19 +857,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 16fa56e3bc952f8418a8c26526b344e8, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.7769644
+      value: 1.8302733
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 16fa56e3bc952f8418a8c26526b344e8, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.9468193
+      value: 2.0052238
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 16fa56e3bc952f8418a8c26526b344e8, type: 3}
       propertyPath: m_LocalScale.z
-      value: 6.4920263
-      objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 16fa56e3bc952f8418a8c26526b344e8, type: 3}
-      propertyPath: m_Name
-      value: WFXMR_Fire Natural Circle (No Smoke)
+      value: 6.686787
       objectReference: {fileID: 0}
     - target: {fileID: 19800000, guid: 16fa56e3bc952f8418a8c26526b344e8, type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
@@ -989,6 +883,10 @@ PrefabInstance:
       propertyPath: lengthInSec
       value: 30
       objectReference: {fileID: 0}
+    - target: {fileID: 19900002, guid: 16fa56e3bc952f8418a8c26526b344e8, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 19800002, guid: 16fa56e3bc952f8418a8c26526b344e8, type: 3}
       propertyPath: InitialModule.startSize.minScalar
       value: 0.8
@@ -1001,9 +899,11 @@ PrefabInstance:
       propertyPath: lengthInSec
       value: 20
       objectReference: {fileID: 0}
-    - target: {fileID: 19900002, guid: 16fa56e3bc952f8418a8c26526b344e8, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16fa56e3bc952f8418a8c26526b344e8, type: 3}
+--- !u!4 &8051634811990273583 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400000, guid: 16fa56e3bc952f8418a8c26526b344e8,
+    type: 3}
+  m_PrefabInstance: {fileID: 8051634811990668463}
+  m_PrefabAsset: {fileID: 0}

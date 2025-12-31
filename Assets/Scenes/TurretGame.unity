@@ -29001,7 +29001,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 763815352, guid: a3a99bb0dfb98e14aa71935281e1e3d7, type: 3}
       propertyPath: m_Volume
-      value: 0.379
+      value: 0.374
       objectReference: {fileID: 0}
     - target: {fileID: 366280909880016190, guid: a3a99bb0dfb98e14aa71935281e1e3d7,
         type: 3}
@@ -29171,7 +29171,7 @@ PrefabInstance:
     - target: {fileID: 366280909880016177, guid: a3a99bb0dfb98e14aa71935281e1e3d7,
         type: 3}
       propertyPath: shieldHitVolume
-      value: 0.8
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 366280909880016177, guid: a3a99bb0dfb98e14aa71935281e1e3d7,
         type: 3}
@@ -29181,7 +29181,7 @@ PrefabInstance:
     - target: {fileID: 366280909880016177, guid: a3a99bb0dfb98e14aa71935281e1e3d7,
         type: 3}
       propertyPath: explosionVolume
-      value: 0.8
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 366280909880016177, guid: a3a99bb0dfb98e14aa71935281e1e3d7,
         type: 3}
@@ -29190,7 +29190,7 @@ PrefabInstance:
       objectReference: {fileID: 100004, guid: 084c6a87873fd6e4da7978a01aa18b34, type: 3}
     - target: {fileID: 1211485396, guid: a3a99bb0dfb98e14aa71935281e1e3d7, type: 3}
       propertyPath: m_Volume
-      value: 0.289
+      value: 0.433
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3a99bb0dfb98e14aa71935281e1e3d7, type: 3}
@@ -29538,7 +29538,12 @@ PrefabInstance:
     - target: {fileID: 2381081737574060029, guid: ed4d40976a4d723439aa4a65662774f6,
         type: 3}
       propertyPath: m_Volume
-      value: 0.677
+      value: 0.567
+      objectReference: {fileID: 0}
+    - target: {fileID: 2381081737574060029, guid: ed4d40976a4d723439aa4a65662774f6,
+        type: 3}
+      propertyPath: Mute
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 902497786, guid: ed4d40976a4d723439aa4a65662774f6, type: 3}
       propertyPath: m_LocalScale.y
