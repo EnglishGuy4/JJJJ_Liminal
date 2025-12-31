@@ -249,7 +249,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 3
       scalar: 0.2
-      minScalar: 0.1
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -528,7 +528,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 16
+    maxNumParticles: 1
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -4654,7 +4654,7 @@ GameObject:
   - component: {fileID: 1034195394639048726}
   - component: {fileID: 894146293803193349}
   m_Layer: 0
-  m_Name: WFXMR_BImpact Metal
+  m_Name: GunImpactGlow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4669,7 +4669,7 @@ Transform:
   m_GameObject: {fileID: 100002}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 98.71249, y: 98.71249, z: 98.71249}
+  m_LocalScale: {x: 103.06571, y: 103.06571, z: 103.06571}
   m_Children:
   - {fileID: 400000}
   m_Father: {fileID: 0}
@@ -4829,7 +4829,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.1745283, g: 0.25611556, b: 1, a: 1}
+      maxColor: {r: 0.18396229, g: 0.25814745, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 0.8352941, g: 0.8352941, b: 0.8352941, a: 0.5019608}
@@ -5171,7 +5171,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 11
+    maxNumParticles: 5
     size3D: 0
     rotation3D: 0
     gravityModifier:

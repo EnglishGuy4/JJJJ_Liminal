@@ -1,98 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &-6772886796938903610
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 8995154633189263734}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8995154633189135350}
-  m_Layer: 0
-  m_Name: Missing Prefab (Dummy)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &8995154633189135350
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 400000, guid: 16fa56e3bc952f8418a8c26526b344e8,
-    type: 3}
-  m_PrefabInstance: {fileID: 8995154633189263734}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: -6772886796938903610}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: -3984605735888554396}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &-931815109818416740
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 1706681593369208341}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: -7868672592759519046}
-  m_Layer: 0
-  m_Name: WFXMR_FlameThrower Big Alt (Missing Prefab)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &-7868672592759519046
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 1706681593369208341}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: -931815109818416740}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 1706681593369607313}
-  m_Father: {fileID: 4407734449912597694}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &-288089992081097075
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 1706681593369208341}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1706681593369607313}
-  m_Layer: 0
-  m_Name: Missing Prefab (Dummy)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1706681593369607313
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 400004, guid: e8fb3f256cf9d9e439bd069f42a5a246,
-    type: 3}
-  m_PrefabInstance: {fileID: 1706681593369208341}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: -288089992081097075}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: -7868672592759519046}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &582272316697822296
 GameObject:
   m_ObjectHideFlags: 0
@@ -479,37 +386,6 @@ Transform:
   m_Father: {fileID: 5061988602411488274}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!1 &6479138852051863222
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 8995154633189263734}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: -3984605735888554396}
-  m_Layer: 0
-  m_Name: WFXMR_Fire Natural Circle (No Smoke) (Missing Prefab)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &-3984605735888554396
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 8995154633189263734}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6479138852051863222}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 8995154633189135350}
-  m_Father: {fileID: 4407734449912597694}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8076039891444877597
 GameObject:
   m_ObjectHideFlags: 0
@@ -619,8 +495,8 @@ Transform:
   - {fileID: 8808442054071122345}
   - {fileID: 9127374465275150995}
   - {fileID: 4437763848377134376}
-  - {fileID: -7868672592759519046}
-  - {fileID: -3984605735888554396}
+  - {fileID: 1706681593369607313}
+  - {fileID: 8995154633189135350}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -651,12 +527,12 @@ MonoBehaviour:
     type: 3}
   portalLifetime: 3
   explosionSound: {fileID: 8300000, guid: 8095a059fdc5f164c9a89b4aceb21868, type: 3}
-  explosionVolume: 0.564
+  explosionVolume: 0.539
   explosionSound2D: 0
   explosionMinDistance: 1
   explosionMaxDistance: 10000
   portalSound: {fileID: 8300000, guid: 82f4a0f6d88bbc040af762cabc4c5e5b, type: 3}
-  portalVolume: 0.499
+  portalVolume: 0.577
   portalSound2D: 0
   portalMinDistance: 1
   portalMaxDistance: 10000
@@ -692,6 +568,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4407734449912597694}
     m_Modifications:
+    - target: {fileID: 100004, guid: e8fb3f256cf9d9e439bd069f42a5a246, type: 3}
+      propertyPath: m_Name
+      value: WFXMR_FlameThrower Big Alt
+      objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: e8fb3f256cf9d9e439bd069f42a5a246, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.116
@@ -748,12 +628,42 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 6.8079166
       objectReference: {fileID: 0}
-    - target: {fileID: 100004, guid: e8fb3f256cf9d9e439bd069f42a5a246, type: 3}
-      propertyPath: m_Name
-      value: WFXMR_FlameThrower Big Alt
+    - target: {fileID: 19800004, guid: e8fb3f256cf9d9e439bd069f42a5a246, type: 3}
+      propertyPath: simulationSpeed
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800004, guid: e8fb3f256cf9d9e439bd069f42a5a246, type: 3}
+      propertyPath: lengthInSec
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 19900004, guid: e8fb3f256cf9d9e439bd069f42a5a246, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800000, guid: e8fb3f256cf9d9e439bd069f42a5a246, type: 3}
+      propertyPath: startDelay.scalar
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800000, guid: e8fb3f256cf9d9e439bd069f42a5a246, type: 3}
+      propertyPath: simulationSpeed
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 19800002, guid: e8fb3f256cf9d9e439bd069f42a5a246, type: 3}
+      propertyPath: startDelay.scalar
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 19900002, guid: e8fb3f256cf9d9e439bd069f42a5a246, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8fb3f256cf9d9e439bd069f42a5a246, type: 3}
+--- !u!4 &1706681593369607313 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400004, guid: e8fb3f256cf9d9e439bd069f42a5a246,
+    type: 3}
+  m_PrefabInstance: {fileID: 1706681593369208341}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4310022329421523337
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -848,12 +758,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 96b953ba1b28fa34f9defe81c454ee7e, type: 3}
---- !u!4 &9127374465275150995 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 96b953ba1b28fa34f9defe81c454ee7e,
-    type: 3}
-  m_PrefabInstance: {fileID: 4310022329421523337}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1800843644142114077 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2534866581884222612, guid: 96b953ba1b28fa34f9defe81c454ee7e,
@@ -866,6 +770,12 @@ MeshRenderer:
     type: 3}
   m_PrefabInstance: {fileID: 4310022329421523337}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &9127374465275150995 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 96b953ba1b28fa34f9defe81c454ee7e,
+    type: 3}
+  m_PrefabInstance: {fileID: 4310022329421523337}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8995154633189263734
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -873,6 +783,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4407734449912597694}
     m_Modifications:
+    - target: {fileID: 100000, guid: 16fa56e3bc952f8418a8c26526b344e8, type: 3}
+      propertyPath: m_Name
+      value: WFXMR_Fire Natural Circle (No Smoke)
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 16fa56e3bc952f8418a8c26526b344e8, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.539
@@ -929,9 +843,15 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 13.605228
       objectReference: {fileID: 0}
-    - target: {fileID: 100000, guid: 16fa56e3bc952f8418a8c26526b344e8, type: 3}
-      propertyPath: m_Name
-      value: WFXMR_Fire Natural Circle (No Smoke)
+    - target: {fileID: 19800000, guid: 16fa56e3bc952f8418a8c26526b344e8, type: 3}
+      propertyPath: simulationSpeed
+      value: 1.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 16fa56e3bc952f8418a8c26526b344e8, type: 3}
+--- !u!4 &8995154633189135350 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400000, guid: 16fa56e3bc952f8418a8c26526b344e8,
+    type: 3}
+  m_PrefabInstance: {fileID: 8995154633189263734}
+  m_PrefabAsset: {fileID: 0}
